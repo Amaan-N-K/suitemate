@@ -6,7 +6,8 @@ However, our initial call to action was to provide assistance to those who do no
 Conveniently, SuiteMate is a roommate finding platform designed for students at the University of Toronto that matches its users with potential partners based on their preferences. Whether the user wants a roommate of the same gender, or someone who refrains from smoking, we keep many variables into consideration when pairing two users.
 
 # TODO
-- [ ] Generate User Data + figure out what fields are required
+- [ ] Generate User Data + figure out what fields are required - James
+    - [ ] id (some int)
     - [ ] Gender Preferences + User's Gender
     - [ ] User's Age
     - [ ] Smoking Habits
@@ -14,5 +15,36 @@ Conveniently, SuiteMate is a roommate finding platform designed for students at 
     - [ ] Sleeping Habits (when they go to bed)
     - [ ] Pets
     - [ ] Contact information
-- [ ] Decision tree model + graph datastructures
-
+    - [ ] Location
+    - [ ] Noise Level
+    - [ ] Guests
+    - [ ] Cleanliness level
+    - [ ] Number of roomates
+        - Discrete intervals (i.e 1, 2, 3, 4+)
+- [ ] User dataclass - James
+    - [ ] Add the attributes
+    - [ ] Methods
+        - [ ] Simple things like get_id
+- [ ] Decision tree model - Andrew & Derek
+    - [ ] Either make from scratch (probably) or use sklearn if we don't have time
+    - [ ] get_depth type of function?
+    - [ ] We can segment differently based on the attributes that the user prefers 
+          (i.e one might be more concerned about rent than another)
+          These will kinda be the subtrees (i.e one path will divide based on rent, another on gender etc)
+    - [ ] get_category (get to one of the leafs)
+- [ ] Database (SQL or NoSQL or CSV) - Derek
+- [ ] Graph Datastructure - Amaan & Derek
+    - [ ] Matcher Graph
+    - [ ] Social Graph - keeps track of the matches that people have with others
+- [ ] Simulation/Logger Class - James & Derek
+    - [ ] User Login
+    - [ ] Enter information
+    - [ ] Match Roomates
+    - [ ] Dashboard of Matched Roommates -> allow them to cycle them
+        - [ ] "Like"/Save
+        - [ ] Skip
+        - [ ] The match graph - you can look at the matches of your matches
+- [ ] If we have time
+    - [ ] Flask backend
+    - [ ] Dashboards for user/admin
+    - [ ] Location graph

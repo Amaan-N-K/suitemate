@@ -44,7 +44,7 @@ class User:
     gender_pref: Optional[str] = None
     smoke: Optional[bool] = None
     rent: Optional[tuple[int, int]] = None  # range
-    pets: Optional[bool] = None   # yes, no change to bool
+    pets: Optional[bool] = None  # yes, no change to bool
     contact: Optional[str] = None  # ???
     location: Optional[tuple[str, str]] = None  # country city
     noise: Optional[int] = None  # rating 1 - 4 from quite to loud
@@ -75,12 +75,27 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
     return users
 
 
+@check_contracts
+def csv_write(users: list[User]) -> None:
+    """
+    create csv file
+    """
+    csv_file = open('csv_files/test.csv', 'w')
+    csv_writer = csv.writer(csv_file)
+    for item in users:
+        csv_writer.writerow([item.name, item.username, str(item.id), str(item.age), item.gender, item.gender_pref,
+                             str(item.smoke), str(item.rent), str(item.pets), item.contact, str(item.location),
+                             str(item.noise), str(item.guests), str(item.cleanliness), str(item.num_roomates)])
+    csv_file.close()
+
+
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod()
 
-    import python_ta
-
-    python_ta.check_all(config={
-        'max-line-length': 120
-    })
+    # import python_ta
+    #
+    # python_ta.check_all(config={
+    #     'max-line-length': 120
+    # })

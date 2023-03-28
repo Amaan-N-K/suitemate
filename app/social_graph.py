@@ -51,14 +51,15 @@ class Network:
         Preconditions:
             - user1 != user2
         """
-        if user1.id in self._users and user2.id in self._users:
-            u1 = self._users[user1.id]
-            u2 = self._users[user2.id]
+        if user1.id not in self._users:
+            self.add_user(user1)
+        if user2.id not in self._users:
+            self.add_user(user2)
+        u1 = self._users[user1.id]
+        u2 = self._users[user2.id]
 
-            u1.matches.add(u2)
-            u2.matches.add(u1)
-        else:
-            raise ValueError
+        u1.matches.add(u2)
+        u2.matches.add(u1)
 
     def check_connection(self, user1: User, user2: User) -> bool:
         """

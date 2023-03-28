@@ -29,11 +29,11 @@ class User:
         - noise: noise level the user is comfortable with
         - guests: whether user is fine with having guests
         - cleanliness: cleanliness preference of the user
-        - num_roomates: number of roomates the user is looking for (e.g. 1, 2, 3, 4+)
+        - num_roommates: number of roomates the user is looking for (e.g. 1, 2, 3, 4+)
 
     Representation Invariants:
         - 17 <= self.age <= 100
-        - 1 <= self.num_roomates <= 100
+        - 1 <= self.num_roommates <= 100
 
     """
     name: str
@@ -47,10 +47,10 @@ class User:
     pets: Optional[bool] = None  # yes, no change to bool
     contact: Optional[str] = None  # ???
     location: Optional[tuple[str, str]] = None  # country city
-    noise: Optional[int] = None  # rating 1 - 4 from quite to loud
+    noise: Optional[int] = None  # rating 1 - 3 from quiet, to medium, to loud
     guests: Optional[bool] = None  # could be more than just yes or no?? never, often, sometimes
-    cleanliness: Optional[int] = None  # rating 1 - 10??
-    num_roomates: Optional[int] = None  # 1, 2, 3, 4 or more
+    cleanliness: Optional[int] = None  # rating 1 - 3 from very frequent, to frequent, to occasionally
+    num_roommates: Optional[int] = None  # 1, 2, 3, 4 or more
 
 
 @check_contracts
@@ -86,7 +86,7 @@ def csv_write(users: list[User], overwrite_file: str) -> None:
     for item in users:
         csv_writer.writerow([item.name, item.username, str(item.id), str(item.age), item.gender, str(item.gender_pref),
                              str(item.smoke), str(item.rent), str(item.pets), str(item.contact), str(item.location),
-                             str(item.noise), str(item.guests), str(item.cleanliness), str(item.num_roomates)])
+                             str(item.noise), str(item.guests), str(item.cleanliness), str(item.num_roommates)])
     csv_file.close()
 
 
@@ -151,12 +151,12 @@ def csv_read(user_file: str) -> list[User]:
                 cleanliness = int(row[13])
 
             if row[14] == 'None':
-                num_roomates = None
+                num_roommates = None
             else:
-                num_roomates = int(row[14])
+                num_roommates = int(row[14])
 
             new_user = User(name, username, id, age, gender, gender_pref, smoke, rent, pets, contact, location, noise,
-                            guests, cleanliness, num_roomates)
+                            guests, cleanliness, num_roommates)
             users.append(new_user)
 
     return users

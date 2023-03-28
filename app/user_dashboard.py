@@ -75,4 +75,4 @@ def update_roommates(user: User, info: int) -> None:
     """
     Updates user's wanted room mates preferences
     """
-    user.roomates = info #spelling
+    user.roommates = info #spelling

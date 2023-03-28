@@ -90,7 +90,7 @@ def create_network(matches: list[dict[User, set[User]]]) -> Network:
     for match in matches:
         for user in match:
             s = {_User(u, set()) for u in match[user]}
-            u1 = _User(user, s)
+            u1 = _User(user, set())
             for u2 in s:
                 if not my_network.check_connection(u1, u2):
                     my_network.add_connection(u1, u2)

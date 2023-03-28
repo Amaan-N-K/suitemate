@@ -43,7 +43,7 @@ class User:
     gender: str
     gender_pref: Optional[str] = None
     smoke: Optional[bool] = None
-    rent: Optional[tuple[int, int]] = None  # range
+    rent: Optional[tuple[float, float]] = None  # range
     pets: Optional[bool] = None  # yes, no change to bool
     contact: Optional[str] = None  # ???
     location: Optional[tuple[str, str]] = None  # country city

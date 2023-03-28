@@ -25,6 +25,7 @@ Conveniently, SuiteMate is a roommate finding platform designed for students at 
 - [x] User dataclass - James
     - [x] Add the attributes
     - [ ] Methods?
+    - [ ] get user from id (return user)
         - [ ] Simple things like get_id
     - [ ] Representation Invariants for User dataclass
 - [ ] Decision tree model - Andrew & Derek

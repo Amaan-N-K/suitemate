@@ -76,23 +76,97 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
 
 
 @check_contracts
-def csv_write(users: list[User]) -> None:
+def csv_write(users: list[User], overwrite_file: str) -> None:
     """
-    create csv file
+    create csv file. Overwrite a given csv file with user data.
     """
-    csv_file = open('csv_files/test.csv', 'w')
+    # csv_file = open('csv_files/test.csv', 'w')
+    csv_file = open(overwrite_file, 'w')
     csv_writer = csv.writer(csv_file)
     for item in users:
-        csv_writer.writerow([item.name, item.username, str(item.id), str(item.age), item.gender, item.gender_pref,
-                             str(item.smoke), str(item.rent), str(item.pets), item.contact, str(item.location),
+        csv_writer.writerow([item.name, item.username, str(item.id), str(item.age), item.gender, str(item.gender_pref),
+                             str(item.smoke), str(item.rent), str(item.pets), str(item.contact), str(item.location),
                              str(item.noise), str(item.guests), str(item.cleanliness), str(item.num_roomates)])
     csv_file.close()
 
 
+@check_contracts
+def csv_read(user_file: str) -> list[User]:
+    """
+    csv file reader. Returns a list of users from csv_file
+    """
+    users = []
+    with open(user_file) as csv_file:
+        csv_reader = csv.reader(csv_file)
+        for row in csv_reader:
+            name = row[0]
+            username = row[1]
+            id = int(row[2])
+            age = int(row[3])
+            gender = row[4]
+
+            if row[5] == 'None':
+                gender_pref = None
+            else:
+                gender_pref = row[5]
+
+            if row[6] == 'None':
+                smoke = None
+            else:
+                smoke = bool(row[6])
+
+            if row[7] == 'None':
+                rent = None
+            else:
+                rent = eval(row[7])
+
+            if row[8] == 'None':
+                pets = None
+            else:
+                pets = bool(row[8])
+
+            if row[9] == 'None':
+                contact = None
+            else:
+                contact = row[9]
+
+            if row[10] == 'None':
+                location = None
+            else:
+                location = eval(row[10])
+
+            if row[11] == 'None':
+                noise = None
+            else:
+                noise = int(row[11])
+
+            if row[12] == 'None':
+                guests = None
+            else:
+                guests = bool(row[12])
+
+            if row[13] == 'None':
+                cleanliness = None
+            else:
+                cleanliness = int(row[13])
+
+            if row[14] == 'None':
+                num_roomates = None
+            else:
+                num_roomates = int(row[14])
+
+            new_user = User(name, username, id, age, gender, gender_pref, smoke, rent, pets, contact, location, noise,
+                            guests, cleanliness, num_roomates)
+            users.append(new_user)
+
+    return users
+
+
 if __name__ == '__main__':
     import doctest
-
     doctest.testmod()
+
+    # csv_write(generate_random_users('csv_files/names.csv', 5), 'csv_files/test.csv')
 
     # import python_ta
     #

@@ -18,8 +18,8 @@ class _User:
 
     def __init__(self, item: User, matches: set[_User]):
         self.item = item
-        self.matches = matches
         self.user_id = item.id
+        self.matches = matches
 
 
 @check_contracts
@@ -82,10 +82,17 @@ class Network:
             raise ValueError
 
 
-def create_network(matches: list[dict[int, set[User]]]) -> Network:
+def create_network(matches: list[dict[User, set[User]]]) -> Network:
     """
     create a network from matches
     """
     my_network = Network()
     for match in matches:
-        ...
+        for user in match:
+            s = {_User(u, set()) for u in match[user]}
+            u1 = _User(user, s)
+            for u2 in s:
+                if not my_network.check_connection(u1, u2):
+                    my_network.add_connection(u1, u2)
+
+    return my_network

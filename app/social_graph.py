@@ -2,7 +2,7 @@
 Social graph connecting user matches
 """
 from __future__ import annotations
-
+from typing import Optional
 from user import User
 from python_ta.contracts import check_contracts
 
@@ -15,11 +15,13 @@ class _User:
     item: User
     user_id: int
     suggestions: set[_User]
+    matches: Optional[set[_User]] = None
 
-    def __init__(self, item: User, suggestions: set[_User]):
+    def __init__(self, item: User, suggestions: set[_User]) -> None:
         self.item = item
         self.user_id = item.id
         self.suggestions = suggestions
+        self.matches = None
 
 
 @check_contracts
@@ -46,7 +48,7 @@ class Network:
 
     def add_connection(self, user1: User, user2: User) -> None:
         """
-        add a match/ connection between 2 users
+        add a suggestion between 2 users
 
         Preconditions:
             - user1 != user2
@@ -61,13 +63,37 @@ class Network:
         u1.suggestions.add(u2)
         u2.suggestions.add(u1)
 
+    def add_match(self, user1: _User, user2: _User) -> None:
+        """
+        Only adds a match between two users if the sum of their user ids is divisible by 2.
+
+        Preconditions:
+            - user1 != user2
+            - user1.user_id in self._users and user2.user_id in self._users
+        """
+        if (user1.user_id + user2.user_id) % 2 == 0:
+            user1.matches.add(user2)
+            user2.matches.add(user1)
+
     def check_connection(self, user1: User, user2: User) -> bool:
         """
-        check whether 2 users have a connection/ matched
+        check whether 2 users have a suggestion
         """
         if user1.id in self._users and user2.id in self._users:
             u1 = self._users[user1.id]
             return any(u2.user_id == user2.id for u2 in u1.suggestions)
+        else:
+            return False
+
+    def check_match(self, user1: User, user2: User) -> bool:
+        """
+        check match
+        Preconditions:
+            - user1 != user2
+            - user1.user_id in self._users and user2.user_id in self._users
+        """
+        if self._users[user2.id] in self._users[user1.id].matches:
+            return True
         else:
             return False
 
@@ -86,19 +112,3 @@ class Network:
         prints the network
         """
         print(self._users)
-
-
-def create_network(suggestions: list[dict[User, set[User]]]) -> Network:
-    """
-    create a network from matches
-    """
-    my_network = Network()
-    for suggestion in suggestions:
-        for user in suggestion:
-            s = {_User(u, set()) for u in suggestion[user]}
-            u1 = _User(user, set())
-            for u2 in s:
-                if not my_network.check_connection(u1, u2):
-                    my_network.add_connection(u1, u2)
-
-    return my_network

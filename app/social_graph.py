@@ -1,6 +1,8 @@
 """
 Social graph connecting user matches
 """
+from __future__ import annotations
+
 from user import User
 from python_ta.contracts import check_contracts
 

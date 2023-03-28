@@ -6,25 +6,27 @@ However, our initial call to action was to provide assistance to those who do no
 Conveniently, SuiteMate is a roommate finding platform designed for students at the University of Toronto that matches its users with potential partners based on their preferences. Whether the user wants a roommate of the same gender, or someone who refrains from smoking, we keep many variables into consideration when pairing two users.
 
 # TODO
-- [ ] Generate User Data + figure out what fields are required - James
-    - [ ] id (some int)
-    - [ ] Gender Preferences + User's Gender
-    - [ ] User's Age
-    - [ ] Smoking Habits
-    - [ ] Desired Rent
-    - [ ] Sleeping Habits (when they go to bed)
-    - [ ] Pets
-    - [ ] Contact information
-    - [ ] Location
-    - [ ] Noise Level
-    - [ ] Guests
-    - [ ] Cleanliness level
-    - [ ] Number of roomates
+- [x] Generate User Data + figure out what fields are required - James
+    - [x] id (some int)
+    - [x] Gender Preferences + User's Gender
+    - [x] User's Age
+    - [x] Smoking Habits
+    - [x] Desired Rent
+    - [x] Sleeping Habits (when they go to bed)
+    - [x] Pets
+    - [x] Contact information
+    - [x] Location
+    - [x] Noise Level
+    - [x] Guests
+    - [x] Cleanliness level
+    - [x] Number of roomates
         - Discrete intervals (i.e 1, 2, 3, 4+)
-- [ ] User dataclass - James
-    - [ ] Add the attributes
-    - [ ] Methods
+    - [ ] CSV Reader and Writer
+- [x] User dataclass - James
+    - [x] Add the attributes
+    - [ ] Methods?
         - [ ] Simple things like get_id
+    - [ ] Representation Invariants for User dataclass
 - [ ] Decision tree model - Andrew & Derek
     - [ ] Either make from scratch (probably) or use sklearn if we don't have time
     - [ ] get_depth type of function?
@@ -39,7 +41,7 @@ Conveniently, SuiteMate is a roommate finding platform designed for students at 
 - [ ] Simulation/Logger Class - James & Derek
     - [ ] User Login
     - [ ] Enter information
-    - [ ] Match Roomates
+    - [ ] Match Roommates
     - [ ] Dashboard of Matched Roommates -> allow them to cycle them
         - [ ] "Like"/Save
         - [ ] Skip

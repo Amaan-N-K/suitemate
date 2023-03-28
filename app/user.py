@@ -32,7 +32,8 @@ class User:
         - num_roomates: number of roomates the user is looking for (e.g. 1, 2, 3, 4+)
 
     Representation Invariants:
-        - isinstance(self.name, str)
+        - 17 <= self.age <= 100
+        - 1 <= self.num_roomates <= 100
 
     """
     name: str

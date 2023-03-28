@@ -16,10 +16,10 @@ class _User:
     user_id: int
     suggestions: set[_User]
 
-    def __init__(self, item: User, matches: set[_User]):
+    def __init__(self, item: User, suggestions: set[_User]):
         self.item = item
         self.user_id = item.id
-        self.suggestions = matches
+        self.suggestions = suggestions
 
 
 @check_contracts
@@ -71,13 +71,13 @@ class Network:
         else:
             return False
 
-    def get_matches(self, user: User) -> set[int]:
+    def get_suggestions(self, user: User) -> set[int]:
         """
         return a set of user ids for the matches of the given user
         """
         if user.id in self._users:
             u = self._users[user.id]
-            return {match.user_id for match in u.suggestions}
+            return {suggestion.user_id for suggestion in u.suggestions}
         else:
             raise ValueError
 
@@ -88,14 +88,14 @@ class Network:
         print(self._users)
 
 
-def create_network(matches: list[dict[User, set[User]]]) -> Network:
+def create_network(suggestions: list[dict[User, set[User]]]) -> Network:
     """
     create a network from matches
     """
     my_network = Network()
-    for match in matches:
-        for user in match:
-            s = {_User(u, set()) for u in match[user]}
+    for suggestion in suggestions:
+        for user in suggestion:
+            s = {_User(u, set()) for u in suggestion[user]}
             u1 = _User(user, set())
             for u2 in s:
                 if not my_network.check_connection(u1, u2):

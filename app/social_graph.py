@@ -25,6 +25,12 @@ class Network:
     """
     _users: dict[User, _User]
 
+    def __init__(self) -> None:
+        """
+        Initialized an empty network
+        """
+        self._users = {}
+
     def add_user(self, user: User) -> None:
         """
         add user to given graph
@@ -69,3 +75,12 @@ class Network:
             return {match.user for match in u.matches}
         else:
             raise ValueError
+
+
+def create_network(matches: list[dict[User, set[User]]]) -> Network:
+    """
+    create a network from matches
+    """
+    my_network = Network
+    for match in matches:
+        ...

@@ -111,4 +111,6 @@ class Network:
         """
         prints the network
         """
-        print(self._users)
+        for id in self._users:
+            print(f"suggestions: {id}, {self._users[id].suggestions}")
+            print(f"matches: {id}, {self._users[id].matches}")

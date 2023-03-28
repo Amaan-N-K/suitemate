@@ -81,6 +81,10 @@ class Network:
         else:
             raise ValueError
 
+    def print_graph(self):
+        """
+        prints the network
+        """
 
 def create_network(matches: list[dict[User, set[User]]]) -> Network:
     """

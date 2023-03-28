@@ -14,12 +14,12 @@ class _User:
     """
     item: User
     user_id: int
-    matches: set[_User]
+    suggestions: set[_User]
 
     def __init__(self, item: User, matches: set[_User]):
         self.item = item
         self.user_id = item.id
-        self.matches = matches
+        self.suggestions = matches
 
 
 @check_contracts
@@ -58,8 +58,8 @@ class Network:
         u1 = self._users[user1.id]
         u2 = self._users[user2.id]
 
-        u1.matches.add(u2)
-        u2.matches.add(u1)
+        u1.suggestions.add(u2)
+        u2.suggestions.add(u1)
 
     def check_connection(self, user1: User, user2: User) -> bool:
         """
@@ -67,7 +67,7 @@ class Network:
         """
         if user1.id in self._users and user2.id in self._users:
             u1 = self._users[user1.id]
-            return any(u2.user_id == user2.id for u2 in u1.matches)
+            return any(u2.user_id == user2.id for u2 in u1.suggestions)
         else:
             return False
 
@@ -77,7 +77,7 @@ class Network:
         """
         if user.id in self._users:
             u = self._users[user.id]
-            return {match.user_id for match in u.matches}
+            return {match.user_id for match in u.suggestions}
         else:
             raise ValueError
 
@@ -85,6 +85,8 @@ class Network:
         """
         prints the network
         """
+        print(self._users)
+
 
 def create_network(matches: list[dict[User, set[User]]]) -> Network:
     """

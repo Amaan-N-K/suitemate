@@ -68,7 +68,7 @@ def update_cleanliness(user: User, info: int) -> None:
     """
     Updates user's cleanliness preferences
     """
-    user.cleanliness = info 
+    user.cleanliness = info
 
 
 def update_roommates(user: User, info: int) -> None:

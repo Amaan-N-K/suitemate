@@ -47,9 +47,9 @@ class User:
     pets: Optional[bool] = None  # yes, no change to bool
     contact: Optional[str] = None  # ???
     location: Optional[tuple[str, str]] = None  # country city
-    noise: Optional[int] = None  # rating 1 - 4 from quite to loud
+    noise: Optional[int] = None  # rating 1 - 3 from quiet, to medium, to loud
     guests: Optional[bool] = None  # could be more than just yes or no?? never, often, sometimes
-    cleanliness: Optional[int] = None  # rating 1 - 10??
+    cleanliness: Optional[int] = None  # rating 1 - 3 from very frequent, to frequent, to occasionally
     num_roommates: Optional[int] = None  # 1, 2, 3, 4 or more
 
 

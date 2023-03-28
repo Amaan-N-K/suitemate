@@ -46,9 +46,9 @@ class DecisionTree:
     category: the category that each child will split up
     _partitions: the segmentations of the population based on the current particular category.
     """
-    user: User
+    prev_subtrees: list[DecisionTree]
     category: str
-    _partitions: list[DecisionTree]
+    partitions: list[DecisionTree]
 
     # def __init__(self, user: User):
     #     self.user = user
@@ -59,7 +59,7 @@ class DecisionTree:
 
     def train(self, data: ArrayLike, category_names: list[str] = None) -> DecisionTree:
         if category_names == []:
-            return self
+            return [self]
         else:
             self._category = cat_name
             is_categorical = not any(isinstance(data[:, 0], tp) for tp in continuous_types)
@@ -72,10 +72,12 @@ class DecisionTree:
 
             return self
 
-    def _partition(self, column: np.ndarray) -> list[tuple[DecisionTree, np.ndarray]]:
+    def partition(self, column: np.ndarray, continuous: bool) -> list[tuple[DecisionTree, np.ndarray]]:
         num_partitions = 8
         partitions = []
-        if any(tp == column.dtype for tp in CONTINUOUS_TYPES):
+        if self.partitions == []:
+          return self
+        if continuous:
             min_val = np.min(column)
             max_val = np.max(column)
 
@@ -85,10 +87,18 @@ class DecisionTree:
             for p in range(num_partitions):
                 partitioned_data = column[cur_min <= column <= cur_min + partition_size * p]
                 partitions.append((DecisionTree(), partitioned_data))
+        else:
+          for partition in self._partitions:
+            tree = [self]
+            subtree = partition.partition
+            partitions.append(subtree)
+            tree.extend(subtree)
+            partitions.append(tree)
+
+          return partitions
 
         # Add the case for categorical data, should be easier
         # Hint: np.unique should help in this case
         else:
 
         return partitions
-

@@ -70,7 +70,16 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
         new_age = random.randint(17, 100)
         new_user = new_name[0].lower() + '_' + str(random.randint(100, 999))
         # we could also randomly choose the gender from 3 options (others) instead of taking from csv
-        users.append(User(new_name[0], new_user, i, new_age, new_name[1]))
+
+        # one third of chance to get other as gender
+        prob = random.randint(1, 3)
+        if prob == 3:
+            new_gender = 'other'
+        else:
+            new_gender = new_name[1]
+
+        users.append(User(new_name[0], new_user, i, new_age, new_gender))
+        # users.append(User(new_name[0], new_user, i, new_age, new_name[1]))
 
     return users
 

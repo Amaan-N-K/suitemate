@@ -15,13 +15,13 @@ class _User:
     item: User
     user_id: int
     suggestions: set[_User]
-    matches: Optional[set[_User]] = None
+    matches: Optional[set[_User]] = set()
 
     def __init__(self, item: User, suggestions: set[_User]) -> None:
         self.item = item
         self.user_id = item.id
         self.suggestions = suggestions
-        self.matches = None
+        self.matches = set()
 
 
 @check_contracts
@@ -63,7 +63,7 @@ class Network:
         u1.suggestions.add(u2)
         u2.suggestions.add(u1)
 
-    def add_match(self, user1: _User, user2: _User) -> None:
+    def add_match(self, user1: User, user2: User) -> None:
         """
         Only adds a match between two users if the sum of their user ids is divisible by 2.
 
@@ -71,9 +71,11 @@ class Network:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
         """
-        if (user1.user_id + user2.user_id) % 2 == 0:
-            user1.matches.add(user2)
-            user2.matches.add(user1)
+        if (user1.id + user2.id) % 2 == 0:
+            u1 = self._users[user1.id]
+            u2 = self._users[user2.id]
+            u1.matches.add(u2)
+            u2.matches.add(u1)
 
     def check_connection(self, user1: User, user2: User) -> bool:
         """
@@ -92,8 +94,11 @@ class Network:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
         """
-        if self._users[user2.id] in self._users[user1.id].matches:
-            return True
+        if user1.id in self._users and user2.id in self._users:
+            if self._users[user2.id] in self._users[user1.id].matches:
+                return True
+            else:
+                return False
         else:
             return False
 
@@ -111,6 +116,7 @@ class Network:
         """
         prints the network
         """
-        for id in self._users:
-            print(f"suggestions: {id}, {self._users[id].suggestions}")
-            print(f"matches: {id}, {self._users[id].matches}")
+        for key in self._users:
+            vertex = self._users[key]
+            print(f"suggestions: {key}, {[u.user_id for u in vertex.suggestions]}")
+            print(f"matches: {key}, {[u.user_id for u in vertex.matches]}")

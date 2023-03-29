@@ -2,23 +2,44 @@
 Simulation of the suitemate program
 """
 from __future__ import annotations
-from social_graph import Network, _User
+from social_graph import Network
 from user import User
 from python_ta.contracts import check_contracts
+from user import generate_random_users
 
 
 @check_contracts
-def create_network(suggestions: list[dict[User, set[User]]]) -> Network:
+def create_network(suggestions: list[tuple[User, tuple]]) -> Network:
     """
     create a network from matches
     """
     my_network = Network()
     for suggestion in suggestions:
-        for u1 in suggestion:
-            for u2 in suggestion[u1]:
-                if not my_network.check_connection(u1, u2):
-                    my_network.add_connection(u1, u2)
-                if not my_network.check_match(u1, u2):
-                    my_network.add_match(u1, u2)
+        u1 = suggestion[0]
+        for u2 in suggestion[1]:
+            if not my_network.check_connection(u1, u2):
+                my_network.add_connection(u1, u2)
+            if not my_network.check_match(u1, u2):
+                my_network.add_match(u1, u2)
+
+    my_network.print_graph()
 
     return my_network
+
+
+def create_data(lst: list[User]) -> list:
+    """
+    create sugesstions for create network
+
+    Preconditions:
+        - len(lst) % 5 == 0
+    """
+    accum = []
+    for i in range(len(lst)//5):
+        accum.append((lst[i], (lst[i * 5 + 1], lst[i * 5 + 2], lst[i * 5 + 3], lst[i * 5 + 4])))
+    return accum
+
+
+test_list = generate_random_users('csv_files/names.csv', 5)
+test_list = create_data(test_list)
+create_network(test_list)

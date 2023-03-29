@@ -41,7 +41,7 @@ class User:
     id: int
     age: int
     gender: str
-    gender_pref: Optional[str] = None
+    gender_pref: Optional[bool] = None   # yes means care, no means do not care
     smoke: Optional[bool] = None
     rent: Optional[tuple[float, float]] = None  # range
     pets: Optional[bool] = None  # yes, no change to bool
@@ -108,7 +108,7 @@ def csv_read(user_file: str) -> list[User]:
             if row[5] == 'None':
                 gender_pref = None
             else:
-                gender_pref = row[5]
+                gender_pref = bool(row[5])
 
             if row[6] == 'None':
                 smoke = None

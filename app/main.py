@@ -35,11 +35,22 @@ def create_data(lst: list[User]) -> list:
         - len(lst) % 5 == 0
     """
     accum = []
-    for i in range(len(lst)//5):
+    for i in range(len(lst) // 5):
         accum.append((lst[i], (lst[i * 5 + 1], lst[i * 5 + 2], lst[i * 5 + 3], lst[i * 5 + 4])))
     return accum
 
 
-test_list = generate_random_users('csv_files/names.csv', 5)
-test_list = create_data(test_list)
-create_network(test_list)
+if __name__ == '__main__':
+    import doctest
+
+    doctest.testmod()
+
+    test_list = generate_random_users('csv_files/names.csv', 5)
+    test_list = create_data(test_list)
+    create_network(test_list)
+
+    # import python_ta
+    #
+    # python_ta.check_all(config={
+    #     'max-line-length': 120
+    # })

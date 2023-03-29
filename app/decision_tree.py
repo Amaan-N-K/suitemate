@@ -161,7 +161,8 @@ class DecisionTree:
           function that recurses into the tree
           """
           preferences = get_user_preferences
-          self.find_exact_matches_simple_recursively(user, preferences)
+          matches = self.find_exact_matches_simple_recursively(user, preferences)
+          return matches
 
     @check_contracts
     def find_exact_matches_simple_recursively(self, 
@@ -179,11 +180,12 @@ class DecisionTree:
           if len(user_preferences) == 7:
             if preference:
               gender = user.gender
-              self.partitions[gender].add_user_to_tree_recursively(user, user_preferences[1:])
+              users = self.partitions[gender].add_user_to_tree_recursively(user, user_preferences[1:])
             else:
-              self.partitions["any"].add_user_to_tree_recursively(user, user_preferences[1:])
+              users = self.partitions["any"].add_user_to_tree_recursively(user, user_preferences[1:])
           else:
-            self.partitions[preference].add_user_to_tree_recursively(user, user_preferences[1:])   
+            users =self.partitions[preference].add_user_to_tree_recursively(user, user_preferences[1:])   
+        return users
             
 
 

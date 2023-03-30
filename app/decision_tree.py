@@ -118,6 +118,9 @@ class DecisionTree:
 
         return partitions
     
+    def get_partitions(self) -> list[DecisionTree]:
+        """Return the subtrees of this decision tree."""
+        return list(self.partitions.values())
 
     @check_contracts
     def add_user_to_tree(self, user: User) -> None:
@@ -127,6 +130,14 @@ class DecisionTree:
       """
       preferences = get_user_preferences
       self.add_user_to_tree_recursively(user, preferences)
+
+    
+    def find_all_possible_combinations_with_users(self) -> list[int | str | tuple[int | str, ...] | bool]:
+      """
+      This method recurses through the entire tree using a simple bfs algorithm, returning the sequence of nodes (preferences) 
+      it visited in order if the leaf at the end contains users.
+      """
+
     
 
     @check_contracts
@@ -184,9 +195,49 @@ class DecisionTree:
             else:
               users = self.partitions["any"].add_user_to_tree_recursively(user, user_preferences[1:])
           else:
-            users =self.partitions[preference].add_user_to_tree_recursively(user, user_preferences[1:])   
+            users = self.partitions[preference].add_user_to_tree_recursively(user, user_preferences[1:])   
         return users
             
+    @check_contracts
+    def find_closest_matches(self, user: User) -> list[User]:
+          """
+          This method takes a user and finds their preferences, and then finds the leaf (that is at the end of a 
+          path from the root node) containing the users that have the exact same preferences by calling a helper 
+          function that recurses into the tree. If none are found, it goes back one node, and recurses into the next
+          leaf to find the next closest match, as the preferences are ordered top down from most to least important.
+          If none are found in that node's subtrees, then it goes back again to the previous node and tries again 
+          from that node until it reaches a hard stop at gender preferences and no matches are returned
+          """
+          preferences = get_user_preferences
+          matches = self.find_exact_matches_simple_recursively(user, preferences)
+          return matches
+
+    @check_contracts
+    def find_closests_matches_recursively(self, 
+                                          user: User, 
+                                          user_preferences: list[int | str | tuple[int | str, ...] | bool]) -> list[User]:
+        """
+        Recursively goes through the decision tree using the user's preferences, until it reaches a leaf
+        with the list of all users that exactly matches the user's preferences, if none are found an empty list
+        is returned instead
+        """
+        if user_preferences == []:
+          return self.users
+        else: 
+          preference = [0]
+          if len(user_preferences) == 7:
+            if preference:
+              gender = user.gender
+              users = self.partitions[gender].add_user_to_tree_recursively(user, user_preferences[1:])
+            else:
+              users = self.partitions["any"].add_user_to_tree_recursively(user, user_preferences[1:])
+          else:
+            users = self.partitions[preference].add_user_to_tree_recursively(user, user_preferences[1:]) 
+          if users == []:  
+            
+        return users
+
+
 
 
 @check_contracts

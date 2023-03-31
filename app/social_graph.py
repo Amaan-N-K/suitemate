@@ -16,12 +16,34 @@ class _User:
     user_id: int
     suggestions: set[_User]
     matches: Optional[set[_User]] = set()
+    requests: Optional[set[_User]] = set()
 
     def __init__(self, item: User, suggestions: set[_User]) -> None:
         self.item = item
         self.user_id = item.id
         self.suggestions = suggestions
         self.matches = set()
+        self.requests = set()
+
+    def accept_request(self, id_num: int) -> None:
+        """
+        move request to match.
+        """
+        for user in self.requests:
+            if user.user_id == id_num:
+                self.requests.remove(user)
+                self.matches.add(user)
+                return
+
+    def send_request(self, id_num: int) -> None:
+        """
+        move suggestion to request
+        """
+        for user in self.requests:
+            if user.user_id == id_num:
+                self.suggestions.remove(user)
+                self.requests.add(user)
+                return
 
 
 @check_contracts
@@ -63,7 +85,7 @@ class Network:
         u1.suggestions.add(u2)
         u2.suggestions.add(u1)
 
-    def add_match(self, user1: User, user2: User) -> None:
+    def add_match_random(self, user1: User, user2: User) -> None:
         """
         Only adds a match between two users if the sum of their user ids is divisible by 2.
 
@@ -76,6 +98,28 @@ class Network:
             u2 = self._users[user2.id]
             u1.matches.add(u2)
             u2.matches.add(u1)
+
+    def send_request(self, user1: User, user2: User) -> None:
+        """
+        send request from user1 to user2
+        Preconditions:
+            - user1 != user2
+            - user1.user_id in self._users and user2.user_id in self._users
+        """
+        u1 = self._users[user1.id]
+        u2 = self._users[user2.id]
+        u1.send_request(u2.user_id)
+
+    def accept_request(self, user1: User, user2: User) -> None:
+        """
+        user1 accepts request from user2
+        Preconditions:
+            - user1 != user2
+            - user1.user_id in self._users and user2.user_id in self._users
+        """
+        u1 = self._users[user1.id]
+        u2 = self._users[user2.id]
+        u1.accept_request(u2.user_id)
 
     def check_connection(self, user1: User, user2: User) -> bool:
         """

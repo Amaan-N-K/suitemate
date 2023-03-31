@@ -49,6 +49,11 @@ if __name__ == '__main__':
     test_list = create_data(test_list)
     create_network(test_list)
 
+    # Creating and running flask app
+    # from __init__ import create_app
+    # app = create_app()
+    # app.run(debug=True)
+
     # import python_ta
     #
     # python_ta.check_all(config={

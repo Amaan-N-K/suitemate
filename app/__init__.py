@@ -24,9 +24,6 @@ def create_app(test_config=None):
         pass
 
     # Registering database initialization
-    # from . import db 
-    # db.init_app(app)
-
     db.init_app(app)
 
     from . import auth

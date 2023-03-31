@@ -2,10 +2,14 @@
 Simulation of the suitemate program
 """
 from __future__ import annotations
+
+import random
+
 from social_graph import Network
 from user import User
 from python_ta.contracts import check_contracts
 from user import generate_random_users
+from random import choice
 
 
 @check_contracts
@@ -25,6 +29,24 @@ def create_network(suggestions: list[tuple[User, tuple]]) -> Network:
     my_network.print_graph()
 
     return my_network
+
+
+def random_request(u1: User, u2: User, network: Network) -> None:
+    """
+    ranomly send a request
+    """
+    if random.choice([True, False]):
+        network.send_request(u1, u2)
+
+
+def random_accept(u1: User, u2: User, network: Network) -> None:
+    """
+    ranomly accept a request
+    """
+    if random.choice([True, False]):
+        network.accept_request(u1, u2)
+
+
 
 
 def create_data(lst: list[User]) -> list:

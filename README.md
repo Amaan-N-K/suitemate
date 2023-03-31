@@ -8,7 +8,7 @@ Conveniently, SuiteMate is a roommate finding platform designed for students at 
 # How to Run
 You will need python 3.x and an up to date version of Flask and FlaskSQLAlchemy. 
 Dependencies are in the `requirements.txt` file which can be downloaded by running
-`pip3 -r requirements.txt`.
+`pip3 install -r requirements.txt`.
 Run the following command to start up the app in dev mode and type 
 `localhost:<port-name>` in your web browser of choice (`<port-name>`) defaults to 5000.
 ```sh

@@ -191,11 +191,11 @@ class DecisionTree:
           if len(user_preferences) == 7:
             if preference:
               gender = user.gender
-              users = self.partitions[gender].add_user_to_tree_recursively(user, user_preferences[1:])
+              users = self.partitions[gender].find_exact_matches_simple_recursively(user, user_preferences[1:])
             else:
-              users = self.partitions["any"].add_user_to_tree_recursively(user, user_preferences[1:])
+              users = self.partitions["any"].find_exact_matches_simple_recursively(user, user_preferences[1:])
           else:
-            users = self.partitions[preference].add_user_to_tree_recursively(user, user_preferences[1:])   
+            users = self.partitions[preference].find_exact_matches_simple_recursively(user, user_preferences[1:])   
         return users
             
     @check_contracts
@@ -209,7 +209,7 @@ class DecisionTree:
           from that node until it reaches a hard stop at gender preferences and no matches are returned
           """
           preferences = get_user_preferences
-          matches = self.find_exact_matches_simple_recursively(user, preferences)
+          matches = self.find_closests_matches_recursively(user, preferences)
           return matches
 
     @check_contracts
@@ -228,13 +228,21 @@ class DecisionTree:
           if len(user_preferences) == 7:
             if preference:
               gender = user.gender
-              users = self.partitions[gender].add_user_to_tree_recursively(user, user_preferences[1:])
+              users = self.partitions[gender].find_closests_matches_recursively(user, user_preferences[1:])
             else:
-              users = self.partitions["any"].add_user_to_tree_recursively(user, user_preferences[1:])
+              users = self.partitions["any"].find_closests_matches_recursively(user, user_preferences[1:])
           else:
-            users = self.partitions[preference].add_user_to_tree_recursively(user, user_preferences[1:]) 
+            users = self.partitions[preference].find_closests_matches_recursively(user, user_preferences[1:]) 
           if users == []:  
-            
+            if len(user_preferences) >= 7:
+              return users
+            else:
+              partitions_copy = self.get_partitions()
+              partitions_copy.remove[preference]
+              for alt_pref in partitions_copy:
+                users = self.partition[alt_pref].find_exact_matches_simple_recursively(user, user_preferences[1:])
+                if users != []:
+                  return users
         return users
 
 

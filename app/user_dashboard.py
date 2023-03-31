@@ -61,7 +61,7 @@ def update_guests(user: User, info: int) -> None:
     """
     Updates user's guests preferences
     """
-    user.guests = info #may be bool and not int
+    user.guests = info 
 
 
 def update_cleanliness(user: User, info: int) -> None:
@@ -75,4 +75,4 @@ def update_roommates(user: User, info: int) -> None:
     """
     Updates user's wanted room mates preferences
     """
-    user.roommates = info #spelling
+    user.roommates = info 

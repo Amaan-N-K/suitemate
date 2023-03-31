@@ -1,0 +1,98 @@
+<!-- Creating a modal for editing profile information -->
+<form action="" method="post">
+<div id='userModal' class='modal'>
+  <div id='userModalWrapper' class='modal-wrapper'>
+    <div id='userModalContent' class='modal-content'>
+      <div id='userModalHeader' class='modal-header'>
+        <h2 class='modal-title'>Edit Profile Information</h2>
+        <button id='userModalClose' type="button" class="btn-close" aria-label="Close"></button>
+      </div>
+      <div class='user-form' id='userForm'>
+        <div class='form-group'>
+          <label for='userName'>First Name</label>
+          <input class='p-2 border-radius rounded-pill' type="text" id='userName' required='true'>
+        </div>
+        <div class='form-group'>
+          <label for='userName'>Last Name</label>
+          <input class='p-2 border-radius rounded-pill' type="text" id='userName' required='true'>
+        </div>
+        <div class='form-group'>
+          <label for='userAge'>Age</label>
+          <input class='p-2 border-radius rounded-pill' type="number" id='userAge' required='true'>
+        </div>
+        <div class='form-group'>
+          <label for='userGender'>Gender</label>
+          <select class='p-2 border-radius rounded-pill' name='gender' id='userGender'>
+            <option value='male'>Male</option>
+            <option value='female'>Female</option>
+            <option value='other'>Other</option>
+          </select>
+        </div>
+        <script async src="{{ url_for('static', filename='dragAndDrop.js') }}"></script>
+        <div class='form-group'>
+          <label for='userNotes'>Short Description About Yourself</label>
+          <textarea class='p-2 border-radius rounded' id='userNotes' name='userNotes' rows=5></textarea>
+        </div>
+        <div class='user-upload-wrapper'>
+          <div class="user-upload" id='uploadLeft' ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+            <img src="{{ url_for('static', filename='img/cloud_upload_icon.png') }}" height=100px id="previewImageLeft">
+            <p>Drag and drop image</p>
+            <p>or</p>
+              <label class='upload-button' for="profileImageLeft">Browse Images</label>
+              <input type="file" id="profileImageLeft" name="profileImageLeft" accept="image/*" hidden/>
+          </div>
+        </div>
+        <div class="auth-field">
+          <button class='submit'>Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+{% extends "base.html" %}
+{% block content %}
+<div class="m-5 .container-fluid text-center border border-dark border-radius rounded">
+  <div class="d-flex flex-row">
+  <div class="p-2 flex-fill align-items-stretch">
+    <img src="{{ url_for("static", filename="img/default_pfp.png") }}" width=200px></img>
+    {% with user_name = session.get("username") %}
+    <h6 class="p-2 flex-fill flex-col"> {{ session.get('name') }} - <em>{{ user_name }} </em></h6>
+    {% endwith %}
+
+    <div class='new-user-wrapper'>
+      <button id='addUser' class='new-user' type='button'>Edit Profile</button>
+    </div>
+    <script type='text/javascript' src="{{ url_for("static", filename="dashboard.js") }}"></script>
+    <script type='text/javascript'>
+      addShowHideModal();
+    </script>
+  </div>
+    <div class="p-3 flex-fill flex-col">
+      <h6 class="flex-fill flex-col">Age</h6>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('age') }}</p>
+      <h6 class="flex-fill flex-col">Gender</h6>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('gender') }}</p>
+      <h6 class="flex-fill flex-col">Gender Preference</h6>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('gender_pref') }}</p>
+      <h6 class="flex-fill flex-col">Smoke</h6>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('smoke') }}</p>
+      <h6 class="flex-fill flex-col">Rent</h6>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>${{ session.get('rent') }}</p>
+      <h6 class="flex-fill flex-col">Pets</h6>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('smoke') }}</p>
+      <h6 class="flex-fill flex-col">Smoke</h6>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('smoke') }}</p>
+      <h6 class="flex-fill flex-col">Smoke</h6>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('smoke') }}</p>
+    </div>
+  </div>
+  </div>
+  <div class='new-user-wrapper'>
+    <button id='findMatch' class='p-4 btn btn-primary' type='button'>Find Me A Match</button>
+  </div>
+  <script type='text/javascript' src="{{ url_for("static", filename="dashboard.js") }}"></script>
+  <script type='text/javascript'>
+    addShowHideModal();
+  </script>
+{% endblock %}

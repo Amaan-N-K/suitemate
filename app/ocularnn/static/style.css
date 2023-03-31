@@ -1,0 +1,249 @@
+html {
+  height: 100%
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  text-decoration: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  margin: 0.5em;
+}
+
+.side-nav {
+  margin-left: auto;
+  display: flex;
+  text-decoration: none;
+  list-style-type: none;
+  column-gap: 15px;
+}
+
+.home {
+  font-weight: 900;
+}
+
+.home:hover{
+  background-color: lightgrey;
+}
+
+a {
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  colour: black;
+}
+
+a:visited {
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.nav-link {
+  flex: 1;
+  margin: auto;
+  font-weight: 400;
+  display: block;
+}
+
+.nav-link:hover {
+  background-color: lightgrey;
+}
+
+/* Login */
+.auth-container {
+  display: flex;
+  justify-content: center;
+}
+
+.auth {
+  border-style: solid;
+  border-color: #DCDCDC;
+  border-radius: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  padding: 0.75rem;
+}
+
+.auth-field {
+  display: block;
+  margin: auto;
+  padding: 5px;
+}
+
+.submit {
+  padding: 15px;
+  font-weight: 900;
+  font-size: 1em;
+  color: white;
+  border: None;
+  background: linear-gradient(transparent,rgba(0, 0, 0, 0.15)) top/100% 800%;
+  background-color: #1E90FF;
+  cursor: pointer;
+  margin: 0.5em;
+  border-radius: 0.5rem;
+  transition: transform 0.5s;
+}
+
+.submit:hover {
+  background-position:bottom;
+}
+
+.submit:active {
+  transform: scale(1.2);
+}
+
+input[type="text"], input[type='password'] {
+ font-family: 'Inter', sans-serif;
+}
+
+/* Dashboard */
+.user-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: solid;
+  border-color: rgb(118, 118, 118);	/* grey */
+  border-width: 2px;
+  border-radius: 0.5rem;
+  padding: 1em;
+  flex-grow: 1;
+
+}
+
+.upload-button {
+  background-color: indigo;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.user-upload-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-user-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-user {
+  display: block;
+  width:100%;
+  padding:0.5rem;
+  background-color: indigo;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  border-color: transparent;
+  font-family: 'Inter' sans-serif;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.modal {
+  display: none; /* Will be hidden by default, shows when clicking on "add user" button */
+  position: fixed;
+  z-index: 1; /* Order is before everything else, sits on top of all other elements */
+  /* The following allows the backdrop to cover the entire screen */
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Gives scroll to modal, away from body */
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  background: white;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  margin: 0.5em;
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  column-gap: 200px;
+  flex-wrap: nowrap;
+}
+
+.modal-title {
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  font-size: 1.25em;
+  line-height: 0.5em;
+  height: 0.75em; 
+  width: 0.75em;
+  padding: 0.5em;
+  background: red;
+  font-weight: 900;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%
+}
+
+/* Styling for the user form */
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Styling for input fields and titles in the form */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#drop_zone {
+  border: 5px solid blue;
+  width:  400px;
+  height: 200px;
+}

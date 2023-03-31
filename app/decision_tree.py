@@ -11,19 +11,20 @@ import csv
 
 CONTINUOUS_TYPES = {np.float, float}
 
+
 @check_contracts
 class DecisionTree:
     """
     A decision tree model for segmenting the population of potential roommates
     based on a given user's personal preferences and data.
 
-    Simple personalized model trained using the CART/ID/5 (whatever will work best) algorithm, 
+    Simple personalized model trained using the CART/ID/5 (whatever will work best) algorithm,
     meant for categorization to make resonable recommendation.
 
     TODO:
         - Create the partitions based on a better learning algorithm; see ID.3, CART.
           Will need a metric like the Gini Impurity or Information Gain (see Wikipedia).
-        - 
+        -
 
     Implementation Notes for Andrew
     ---
@@ -117,7 +118,7 @@ class DecisionTree:
         # else:
 
         return partitions
-    
+
     def get_partitions(self) -> list[DecisionTree]:
         """Return the subtrees of this decision tree."""
         return list(self.partitions.values())
@@ -125,25 +126,25 @@ class DecisionTree:
     @check_contracts
     def add_user_to_tree(self, user: User) -> None:
       """
-      This method takes a user and finds their preferences, and then adds them to a leaf that is at the end of a path 
+      This method takes a user and finds their preferences, and then adds them to a leaf that is at the end of a path
       from the root node by calling a helper function that recurses into the tree
       """
       preferences = get_user_preferences
       self.add_user_to_tree_recursively(user, preferences)
 
-    
+
     def find_all_possible_combinations_with_users(self) -> list[int | str | tuple[int | str, ...] | bool]:
       """
-      This method recurses through the entire tree using a simple bfs algorithm, returning the sequence of nodes (preferences) 
+      This method recurses through the entire tree using a simple bfs algorithm, returning the sequence of nodes (preferences)
       it visited in order if the leaf at the end contains users.
       """
 
-    
+
 
     @check_contracts
     def add_user_to_tree_recursively(self, user: User, user_preferences: list[int | str | tuple[int | str, ...] | bool]) -> None:
       """
-      This helper method takes a list of user preferences in order (it will be assumed to always be in order) and recurses into 
+      This helper method takes a list of user preferences in order (it will be assumed to always be in order) and recurses into
       the tree to add them in a leaf
       """
       if user_preferences == []:
@@ -152,7 +153,7 @@ class DecisionTree:
         else:
           self.users.append(user)
         return
-      else: 
+      else:
         preference = [0]
         if len(user_preferences) == 7:
           if preference:
@@ -162,13 +163,13 @@ class DecisionTree:
             self.partitions["any"].add_user_to_tree_recursively(user, user_preferences[1:])
         else:
           self.partitions[preference].add_user_to_tree_recursively(user, user_preferences[1:])
-    
+
 
     @check_contracts
     def find_exact_matches_simple(self, user: User) -> list[User]:
           """
-          This method takes a user and finds their preferences, and then finds the leaf (that is at the end of a 
-          path from the root node) containing the users that have the exact same preferences by calling a helper 
+          This method takes a user and finds their preferences, and then finds the leaf (that is at the end of a
+          path from the root node) containing the users that have the exact same preferences by calling a helper
           function that recurses into the tree
           """
           preferences = get_user_preferences
@@ -176,8 +177,8 @@ class DecisionTree:
           return matches
 
     @check_contracts
-    def find_exact_matches_simple_recursively(self, 
-                                  user: User, 
+    def find_exact_matches_simple_recursively(self,
+                                  user: User,
                                   user_preferences: list[int | str | tuple[int | str, ...] | bool]) -> list[User]:
         """
         Recursively goes through the decision tree using the user's preferences, until it reaches a leaf
@@ -186,7 +187,7 @@ class DecisionTree:
         """
         if user_preferences == []:
           return self.users
-        else: 
+        else:
           preference = [0]
           if len(user_preferences) == 7:
             if preference:
@@ -195,17 +196,17 @@ class DecisionTree:
             else:
               users = self.partitions["any"].find_exact_matches_simple_recursively(user, user_preferences[1:])
           else:
-            users = self.partitions[preference].find_exact_matches_simple_recursively(user, user_preferences[1:])   
+            users = self.partitions[preference].find_exact_matches_simple_recursively(user, user_preferences[1:])
         return users
-            
+
     @check_contracts
     def find_closest_matches(self, user: User) -> list[User]:
           """
-          This method takes a user and finds their preferences, and then finds the leaf (that is at the end of a 
-          path from the root node) containing the users that have the exact same preferences by calling a helper 
+          This method takes a user and finds their preferences, and then finds the leaf (that is at the end of a
+          path from the root node) containing the users that have the exact same preferences by calling a helper
           function that recurses into the tree. If none are found, it goes back one node, and recurses into the next
           leaf to find the next closest match, as the preferences are ordered top down from most to least important.
-          If none are found in that node's subtrees, then it goes back again to the previous node and tries again 
+          If none are found in that node's subtrees, then it goes back again to the previous node and tries again
           from that node until it reaches a hard stop at gender preferences and no matches are returned
           """
           preferences = get_user_preferences
@@ -213,8 +214,8 @@ class DecisionTree:
           return matches
 
     @check_contracts
-    def find_closests_matches_recursively(self, 
-                                          user: User, 
+    def find_closests_matches_recursively(self,
+                                          user: User,
                                           user_preferences: list[int | str | tuple[int | str, ...] | bool]) -> list[User]:
         """
         Recursively goes through the decision tree using the user's preferences, until it reaches a leaf
@@ -223,7 +224,7 @@ class DecisionTree:
         """
         if user_preferences == []:
           return self.users
-        else: 
+        else:
           preference = [0]
           if len(user_preferences) == 7:
             if preference:
@@ -232,8 +233,8 @@ class DecisionTree:
             else:
               users = self.partitions["any"].find_closests_matches_recursively(user, user_preferences[1:])
           else:
-            users = self.partitions[preference].find_closests_matches_recursively(user, user_preferences[1:]) 
-          if users == []:  
+            users = self.partitions[preference].find_closests_matches_recursively(user, user_preferences[1:])
+          if users == []:
             if len(user_preferences) >= 7:
               return users
             else:
@@ -249,12 +250,12 @@ class DecisionTree:
 
 
 @check_contracts
-def build_decision_tree(preferences: list[tuple[str, tuple[int | str | tuple[int | str, ...] | bool, ...]]], 
+def build_decision_tree(preferences: list[tuple[str, tuple[int | str | tuple[int | str, ...] | bool, ...]]],
                         decision: Optional[str | int | tuple[int | str, ...]]) -> DecisionTree:
   """
-  A function that builds the decision tree for us by creating then recursing into its partitions (subtrees), 
-  following an already set order of choices starting from an empty root node that decies between rent range, then 
-  gender preferences, and then the following choices in order from most to least important: number of roommates, 
+  A function that builds the decision tree for us by creating then recursing into its partitions (subtrees),
+  following an already set order of choices starting from an empty root node that decies between rent range, then
+  gender preferences, and then the following choices in order from most to least important: number of roommates,
   pets, cleanliness, guests, smoking, and finally noise.
   """
   if preferences == []:
@@ -271,14 +272,14 @@ def build_decision_tree(preferences: list[tuple[str, tuple[int | str | tuple[int
       subtree = build_decision_tree(preferences[1:], choice)
       curr_node.partitions[choice] = subtree
     return curr_node
-      
+
 
 @check_contracts
 def read_file(preferences_file: str) -> list[tuple[str, tuple[int | str | tuple[int | str, ...] | bool, ...]]]:
     """
     Reads a csv file with the preferences and the possible options on each row, returning a list containing a tuple that stores
     the preference name, and the possible choices in a tuple as the choices and all possible preferences are concrete and should
-    not be changed. 
+    not be changed.
     """
     preferences = []
     with open(preferences_file) as file:
@@ -327,10 +328,9 @@ def get_users_preferences(users: list[User]) -> list[list[int | str | tuple[int 
     for user in users:
         preference = get_user_preferences(user)
         preferences.append(preference)
-    return preferences    
+    return preferences
 
 
 if __name__ == '__main__':
   parameters = read_file("csv_files/decision_tree_parameters.csv")
   decision_tree = build_decision_tree(parameters, None)
-  

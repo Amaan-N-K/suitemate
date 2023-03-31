@@ -68,7 +68,7 @@ class Network:
         """
         self._users[user.id] = _User(user, set())
 
-    def add_connection(self, user1: User, user2: User) -> None:
+    def add_suggestion(self, user1: User, user2: User) -> None:
         """
         add a suggestion between 2 users
 
@@ -121,7 +121,7 @@ class Network:
         u2 = self._users[user2.id]
         u1.accept_request(u2.user_id)
 
-    def check_connection(self, user1: User, user2: User) -> bool:
+    def check_suggestion(self, user1: User, user2: User) -> bool:
         """
         check whether 2 users have a suggestion
         """
@@ -131,15 +131,15 @@ class Network:
         else:
             return False
 
-    def check_match(self, user1: User, user2: User) -> bool:
+    def check_request(self, user1: User, user2: User) -> bool:
         """
-        check match
+        check if user2 sent a request to user1
         Preconditions:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
         """
         if user1.id in self._users and user2.id in self._users:
-            if self._users[user2.id] in self._users[user1.id].matches:
+            if self._users[user2.id] in self._users[user1.id].requests:
                 return True
             else:
                 return False
@@ -155,6 +155,36 @@ class Network:
             return {suggestion.user_id for suggestion in u.suggestions}
         else:
             raise ValueError
+
+    def find_new_suggestion(self, user: User) -> None:
+        """
+        if 2 or more matches of user have another user in common, suggest the common user to user. Common user cannot
+        already be a suggestion
+        """
+        u = self._users[user.id]
+        if len(u.matches) < 2:
+            return
+        else:
+            common_matches = set()
+            for u1 in u.matches:
+                for u2 in u.matches:
+                    if u1.user_id != u2.user_id:
+                        c = self.find_common_matches(u1, u2, u)
+                        common_matches = common_matches.union(c)
+            for suggested_user in common_matches:
+                self.add_suggestion(u.item, suggested_user.item)
+
+    def find_common_matches(self, u1: _User, u2: _User, avoid: _User) -> set[_User]:
+        """
+        find all the common matches between users and return them in a set. avoid is not a common user.
+
+        Preconditions:
+            - u1 != u2 and avoid != u1 and avoid != u2
+        """
+        common_matches = u1.matches.intersection(u2.matches)
+        if avoid in common_matches:
+            common_matches.remove(avoid)
+        return common_matches
 
     def print_graph(self):
         """

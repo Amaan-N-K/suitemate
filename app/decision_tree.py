@@ -331,6 +331,6 @@ def get_users_preferences(users: list[User]) -> list[list[int | str | tuple[int 
 
 
 if __name__ == '__main__':
-  parameters = read_file("data/decision_tree_parameters.csv")
+  parameters = read_file("csv_files/decision_tree_parameters.csv")
   decision_tree = build_decision_tree(parameters, None)
   

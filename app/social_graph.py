@@ -45,6 +45,18 @@ class _User:
                 self.requests.add(user)
                 return
 
+    def find_all_connected_matches(self, visited: set[int]) -> tuple[set[int], list[_User]]:
+        """
+        find all users connected to self.
+        """
+        visited.add(self.user_id)
+        all_users = [self]
+        for neighbour in self.matches:
+            if neighbour.user_id not in visited:
+                all_users.append(self)
+                all_users.append(neighbour.find_all_connected_matches(visited)[1])
+        return (visited, all_users)
+
 
 @check_contracts
 class Network:
@@ -169,12 +181,12 @@ class Network:
             for u1 in u.matches:
                 for u2 in u.matches:
                     if u1.user_id != u2.user_id:
-                        c = self.find_common_matches(u1, u2, u)
+                        c = self._find_common_matches(u1, u2, u)
                         common_matches = common_matches.union(c)
             for suggested_user in common_matches:
                 self.add_suggestion(u.item, suggested_user.item)
 
-    def find_common_matches(self, u1: _User, u2: _User, avoid: _User) -> set[_User]:
+    def _find_common_matches(self, u1: _User, u2: _User, avoid: _User) -> set[_User]:
         """
         find all the common matches between users and return them in a set. avoid is not a common user.
 
@@ -185,6 +197,19 @@ class Network:
         if avoid in common_matches:
             common_matches.remove(avoid)
         return common_matches
+
+    def find_connected_communities(self) -> list[list[_User]]:
+        """
+        find all connected communities in the network
+        """
+        communities = []
+        visited = set()
+        for u_id in self._users:
+            if u_id not in visited:
+                connected = self._users[u_id].find_all_connected_matches(set())
+                visited = visited.union(connected[0])
+                communities.append(connected[1])
+        return communities
 
     def print_graph(self):
         """

@@ -63,6 +63,7 @@ def register():
                     noise=int(request.form['noise']),
                     guests=int(request.form['guests']),
                     cleanliness=int(request.form['cleanliness']),
+                    num_roommates=int(request.form['num_roommates']),
 
             )
             db.session.add(user)
@@ -140,6 +141,7 @@ def login():
             session['noise'] = cur_user.noise
             session['guests'] = cur_user.guests
             session['cleanliness'] = int(cur_user.cleanliness)
+            session['num_roommates'] = request.form['num_roommates']
 
             return redirect(
                 url_for('dashboard.dashboard', username=session['username']))

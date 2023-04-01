@@ -179,8 +179,10 @@ def csv_read(user_file: str) -> list[User]:
             else:
                 num_roommates = int(row[14])
 
-            new_user = User(name, username, id, age, gender, gender_pref, smoke, rent, pets, contact, location, noise,
-                            guests, cleanliness, num_roommates)
+            new_user = User(name, username, id, age, gender, gender_pref, 
+                            smoke, rent, pets, contact, location, noise,
+                            guests, cleanliness, num_roommates
+            )
             users.append(new_user)
 
     return users
@@ -192,8 +194,6 @@ if __name__ == '__main__':
 
     # csv_write(generate_random_users('csv_files/names.csv', 10000), 'random_users/test.csv')
     # csv_write(generate_random_users('csv_files/names.csv', 5), 'csv_files/test.csv')
-
-    # print(csv_read('random_users/test.csv'))
 
     # import python_ta
     # 

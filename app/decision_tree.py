@@ -156,7 +156,7 @@ class DecisionTree:
         return
       else:
         preference = user_preferences[0]
-        print(user, preference)
+        print(user, preference, user_preferences)
         if len(user_preferences) == 7:
           if preference:
             gender = user.gender.lower()
@@ -168,18 +168,18 @@ class DecisionTree:
 
 
     # @check_contracts
-    def find_exact_matches_simple(self, user: User) -> list[User]:
+    def find_exact_matches(self, user: User) -> list[User]:
           """
           This method takes a user and finds their preferences, and then finds the leaf (that is at the end of a
           path from the root node) containing the users that have the exact same preferences by calling a helper
           function that recurses into the tree
           """
-          preferences = get_user_preferences
-          matches = self.find_exact_matches_simple_recursively(user, preferences)
+          preferences = get_user_preferences(user)
+          matches = self.find_exact_matches_recursively(user, preferences)
           return matches
 
     # @check_contracts
-    def find_exact_matches_simple_recursively(self,
+    def find_exact_matches_recursively(self,
                                   user: User,
                                   user_preferences: list[int | str | tuple[int | str, ...] | bool]) -> list[User]:
         """
@@ -194,11 +194,11 @@ class DecisionTree:
           if len(user_preferences) == 7:
             if preference:
               gender = user.gender.lower()
-              users = self.partitions[gender].find_exact_matches_simple_recursively(user, user_preferences[1:])
+              users = self.partitions[gender].find_exact_matches_recursively(user, user_preferences[1:])
             else:
-              users = self.partitions["any"].find_exact_matches_simple_recursively(user, user_preferences[1:])
+              users = self.partitions["any"].find_exact_matches_recursively(user, user_preferences[1:])
           else:
-            users = self.partitions[preference].find_exact_matches_simple_recursively(user, user_preferences[1:])
+            users = self.partitions[preference].find_exact_matches_recursively(user, user_preferences[1:])
         return users
 
     # @check_contracts
@@ -244,12 +244,10 @@ class DecisionTree:
               print(partitions_copy)
               partitions_copy.remove(preference)
               for alt_pref in partitions_copy:
-                users = self.partition[alt_pref].find_exact_matches_simple_recursively(user, user_preferences[1:])
+                users = self.partitions[alt_pref].find_exact_matches_recursively(user, user_preferences[1:])
                 if users != []:
                   return users
         return users
-
-
 
 
 # @check_contracts
@@ -326,7 +324,7 @@ def get_user_preferences(user: User) -> list[int | str | tuple[int | str, ...] |
         (2601, 2900), (2901, 3200), (3201, math.inf)
     )
     user_rent_range = None
-    mid = (user.rent[0] + user.rent[1]) / 2
+    mid = (user.rent[0] + user.rent[1]) // 2
     for low, high in rent_ranges:
         if low <= mid <= high:
             user_rent_range = (low, high)
@@ -357,4 +355,4 @@ if __name__ == '__main__':
   for user in users:
       decision_tree.add_user_to_tree(user)
 
-  print(decision_tree.find_closest_matches(users[0]))
+  print(len(decision_tree.find_closest_matches(users[0])))

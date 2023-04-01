@@ -81,7 +81,7 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
         else:
             new_gender = 'Male' if new_gender == 'boy' else 'Female'
 
-        low_bound_rent = round(random.gauss(1100, 300))
+        low_bound_rent = round(abs(random.gauss(1100, 300)))
         user = User(new_name, new_user, i, new_age, new_gender, 
                     gender_pref=random.choice([True, False]),
                     smoke=random.choice([True, False]),
@@ -192,7 +192,7 @@ if __name__ == '__main__':
     import doctest
     doctest.testmod()
 
-    # csv_write(generate_random_users('csv_files/names.csv', 10000), 'random_users/test.csv')
+    csv_write(generate_random_users('csv_files/names.csv', 10000), 'random_users/test.csv')
     # csv_write(generate_random_users('csv_files/names.csv', 5), 'csv_files/test.csv')
 
     # import python_ta

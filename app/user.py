@@ -78,7 +78,20 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
         else:
             new_gender = new_name[1]
 
-        users.append(User(new_name[0], new_user, i, new_age, new_gender))
+        low_bound_rent = round(random.gauss(1100, 300))
+        user = User(new_name[0], new_user, i, new_age, new_gender, 
+                    gender_pref=random.choice([True, False]),
+                    smoke=random.choice([True, False]),
+                    rent=(low_bound_rent, low_bound_rent + random.uniform(200)),
+                    pets=random.choice([True, False])
+                    contact=f"{new_name}{random.randint(1000)}@gmail.com"
+                    location=('Toronto', 'Ontario'),
+                    noise=random.randint(1, 3),
+                    guests=random.choice([True, False]),
+                    cleanliness=random.randint(1, 3),
+                    num_roommates=random.randint(1, 4)
+        )
+        users.append(user)
         # users.append(User(new_name[0], new_user, i, new_age, new_name[1]))
 
     return users

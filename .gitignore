@@ -2,6 +2,7 @@
 .vscode/
 __pycache__/
 .DS_Store
+random_users/
 
 # Flask stuff:
 instance/

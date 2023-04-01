@@ -1,5 +1,7 @@
 """
-user class
+User class
+
+Comment out check contracts to generate users more quickly.
 """
 import csv
 import random
@@ -8,8 +10,8 @@ from typing import Optional
 from python_ta.contracts import check_contracts
 
 
-@check_contracts
 @dataclass
+# @check_contracts
 class User:
     """
     A custom data type that represents each user
@@ -53,19 +55,19 @@ class User:
     num_roommates: Optional[int] = None  # 1, 2, 3, 4 or more
 
 
-@check_contracts
+# @check_contracts
 def generate_random_users(name_file: str, num_user: int) -> list[User]:
     """
     generate a random list of users. Number of users will be specified in the function parameter
 
-    >>> people = generate_random_users(str('csv_files/names.csv'), 5)
+    >>> people = generate_random_users('csv_files/names.csv', 5)
     >>> len(people)
     5
     """
     users = []
     with open(name_file) as csv_file:
         csv_reader = csv.reader(csv_file)
-        name_list = [(line[1], line[3]) for line in csv_reader]
+        name_list = [(line[1], line[3]) for line in csv_reader][1:]
 
     for i in range(num_user):
         new_name, new_gender = random.choice(name_list)
@@ -77,13 +79,13 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
         if prob == 3:
             new_gender = 'other'
         else:
-            new_gender = 'Male' if new_name[1] == 'boy' else 'Female'
+            new_gender = 'Male' if new_gender == 'boy' else 'Female'
 
         low_bound_rent = round(random.gauss(1100, 300))
         user = User(new_name, new_user, i, new_age, new_gender, 
                     gender_pref=random.choice([True, False]),
                     smoke=random.choice([True, False]),
-                    rent=(low_bound_rent, low_bound_rent + random.uniform(0, 200)),
+                    rent=(low_bound_rent, round(low_bound_rent + random.uniform(0, 200))),
                     pets=random.choice([True, False]),
                     contact=f"{new_name.lower()}{random.randint(0, 1000)}@gmail.com",
                     location=('Toronto', 'Ontario'),
@@ -98,19 +100,19 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
 
 
 @check_contracts
-def csv_write(users: list[User], overwrite_file: str) -> None:
+def csv_write(users: list[User], dest: str) -> None:
     """
     create csv file. Overwrite a given csv file with user data.
     """
-    # csv_file = open('csv_files/test.csv', 'w')
-    csv_file = open(overwrite_file, 'w')
-    csv_writer = csv.writer(csv_file)
-    for item in users:
-        csv_writer.writerow([item.name, item.username, str(item.id), str(item.age), item.gender, str(item.gender_pref),
-                             str(item.smoke), str(item.rent), str(item.pets), str(item.contact), str(item.location),
-                             str(item.noise), str(item.guests), str(item.cleanliness), str(item.num_roommates)])
-    csv_file.close()
-
+    with open(dest, 'w') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        for user in users:
+            csv_writer.writerow([user.name, user.username, str(user.id), 
+                                 str(user.age), user.gender, str(user.gender_pref),
+                                 str(user.smoke), str(user.rent), str(user.pets),
+                                 str(user.contact), str(user.location),
+                                 str(user.noise), str(user.guests), str(user.cleanliness),
+                                 str(user.num_roommates)])
 
 @check_contracts
 def csv_read(user_file: str) -> list[User]:
@@ -188,7 +190,10 @@ if __name__ == '__main__':
     import doctest
     doctest.testmod()
 
+    # csv_write(generate_random_users('csv_files/names.csv', 10000), 'random_users/test.csv')
     # csv_write(generate_random_users('csv_files/names.csv', 5), 'csv_files/test.csv')
+
+    # print(csv_read('random_users/test.csv'))
 
     # import python_ta
     # 

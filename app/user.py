@@ -58,33 +58,34 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
     """
     generate a random list of users. Number of users will be specified in the function parameter
 
-    >>> people = generate_random_users('csv_files/names.csv', 5)
+    >>> people = generate_random_users(str('csv_files/names.csv'), 5)
     >>> len(people)
     5
     """
     users = []
-    for i in range(num_user):
-        with open(name_file) as csv_file:
-            csv_reader = csv.reader(csv_file)
-            new_name = random.choice([(line[1], line[3]) for line in csv_reader])
-        new_age = random.randint(17, 100)
-        new_user = new_name[0].lower() + '_' + str(random.randint(100, 999))
-        # we could also randomly choose the gender from 3 options (others) instead of taking from csv
+    with open(name_file) as csv_file:
+        csv_reader = csv.reader(csv_file)
+        name_list = [(line[1], line[3]) for line in csv_reader]
 
-        # one third of chance to get other as gender
+    for i in range(num_user):
+        new_name, new_gender = random.choice(name_list)
+        new_age = random.randint(17, 100)
+        new_user = new_name.lower() + '_' + str(random.randint(100, 999))
+
+        # One third of chance to get other as gender
         prob = random.randint(1, 3)
         if prob == 3:
             new_gender = 'other'
         else:
-            new_gender = new_name[1]
+            new_gender = 'Male' if new_name[1] == 'boy' else 'Female'
 
         low_bound_rent = round(random.gauss(1100, 300))
-        user = User(new_name[0], new_user, i, new_age, new_gender, 
+        user = User(new_name, new_user, i, new_age, new_gender, 
                     gender_pref=random.choice([True, False]),
                     smoke=random.choice([True, False]),
-                    rent=(low_bound_rent, low_bound_rent + random.uniform(200)),
-                    pets=random.choice([True, False])
-                    contact=f"{new_name}{random.randint(1000)}@gmail.com"
+                    rent=(low_bound_rent, low_bound_rent + random.uniform(0, 200)),
+                    pets=random.choice([True, False]),
+                    contact=f"{new_name.lower()}{random.randint(0, 1000)}@gmail.com",
                     location=('Toronto', 'Ontario'),
                     noise=random.randint(1, 3),
                     guests=random.choice([True, False]),
@@ -92,7 +93,6 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
                     num_roommates=random.randint(1, 4)
         )
         users.append(user)
-        # users.append(User(new_name[0], new_user, i, new_age, new_name[1]))
 
     return users
 
@@ -191,7 +191,7 @@ if __name__ == '__main__':
     # csv_write(generate_random_users('csv_files/names.csv', 5), 'csv_files/test.csv')
 
     # import python_ta
-    #
+    # 
     # python_ta.check_all(config={
     #     'max-line-length': 120
     # })

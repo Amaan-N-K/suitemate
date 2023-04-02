@@ -266,7 +266,7 @@ class Network:
         if random.choice([True, False]):
             self.accept_request(u1, u2)
 
-    def create_network(self, suggestions: list[User]) -> None:
+    def create_network(self, suggestions: list[User], exclude: User) -> None:
         """
         create a network from matches
         """
@@ -276,7 +276,7 @@ class Network:
                 if u1.id != u2.id and (u1.id, u2.id) not in visited and (u2.id, u1.id) not in visited:
                     if not self.check_suggestion(u1, u2):
                         self.add_suggestion(u1, u2)
-                    if not self.check_request(u1, u2):
+                    if u1.id != exclude.id and u2.id != exclude.id and not self.check_request(u1, u2):
                         self.random_request(u1, u2)
                         self.random_accept(u1, u2)
 

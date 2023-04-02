@@ -49,9 +49,9 @@ class DecisionTree:
     """
     # prev_subtrees: list[DecisionTree] I don't think this is necessary
     category: Optional[str]
-    decision: Optional[str | int | tuple[int | str, ...] | bool]
+    decision: Optional[str | int | tuple[int, ...] | bool]
     users: Optional[list[User]]
-    partitions: dict[str | int | tuple[int | str, ...] | bool, DecisionTree]
+    partitions: dict[str | int | tuple[int, ...] | bool, DecisionTree]
 
     # def __init__(self, user: User):
     #     self.user = user
@@ -80,7 +80,7 @@ class DecisionTree:
     # @check_contracts
     def add_user_to_tree_recursively(self,
                                      user_to_add: User,
-                                     user_preferences: list[int | str | tuple[int | str, ...] | bool]) -> None:
+                                     user_preferences: list[int | str | tuple[int, ...] | bool]) -> None:
         """
         This helper method takes a list of user preferences in order (it will be assumed to always be in order)
         and recurses into the tree to add them in a leaf
@@ -117,7 +117,7 @@ class DecisionTree:
     # @check_contracts
     def find_exact_matches_recursively(self,
                                        user_: User,
-                                       user_preferences: list[int | str | tuple[int | str, ...] | bool]) -> list[User]:
+                                       user_preferences: list[int | str | tuple[int, ...] | bool]) -> list[User]:
         """
         Recursively goes through the decision tree using the user's preferences, until it reaches a leaf
         with the list of all users that exactly matches the user's preferences, if none are found an empty list
@@ -187,7 +187,7 @@ class DecisionTree:
 
 # @check_contracts
 def build_decision_tree(preferences: list[tuple[str, tuple[int | str | tuple[int, ...] | bool, ...]]],
-                        decision: Optional[str | int | tuple[int | str, ...]]) -> DecisionTree:
+                        decision: Optional[str | int | tuple[int, ...] | bool]) -> DecisionTree:
     """
     A function that builds the decision tree for us by creating then recursing into its partitions (subtrees),
     following an already set order of choices starting from an empty root node that decies between rent range, then

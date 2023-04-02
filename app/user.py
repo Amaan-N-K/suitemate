@@ -1,5 +1,15 @@
 """
-User class
+CSC111 Winter 2023 Final Project: Suite Mate
+
+Derek Huynh, James Yung, Andrew Xie, Amaan Khan
+
+================================================
+
+This module is where we implemented our primary data type User which represents all users in the system.
+Each User data type represents their personal information and preferences that they enter into the system
+(e.g. name, age, contact)
+
+This module also includes the csv read and write functions for User data sets.
 
 Comment out check contracts to generate users more quickly.
 """
@@ -35,7 +45,7 @@ class User:
 
     Representation Invariants:
         - 17 <= self.age <= 100
-        - 1 <= self.num_roommates <= 100
+        - 1 <= self.num_roommates <= 4
 
     """
     name: str
@@ -58,7 +68,8 @@ class User:
 # @check_contracts
 def generate_random_users(name_file: str, num_user: int) -> list[User]:
     """
-    generate a random list of users. Number of users will be specified in the function parameter
+    generate a random list of users. Number of users wanted in the generated can be specified
+    in the function parameter
 
     >>> people = generate_random_users('csv_files/names.csv', 5)
     >>> len(people)
@@ -99,7 +110,7 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
                     guests=random.choice([True, False]),
                     cleanliness=random.randint(1, 3),
                     num_roommates=random.randint(1, 4)
-        )
+                    )
         users.append(user)
 
     return users
@@ -108,7 +119,7 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
 @check_contracts
 def csv_write(users: list[User], dest: str) -> None:
     """
-    create csv file. Overwrite a given csv file with user data.
+    Overwrite a given csv file with a given list of user data.
     """
     with open(dest, 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
@@ -120,10 +131,11 @@ def csv_write(users: list[User], dest: str) -> None:
                                  str(user.noise), str(user.guests), str(user.cleanliness),
                                  str(user.num_roommates)])
 
+
 @check_contracts
 def csv_read(user_file: str) -> list[User]:
     """
-    csv file reader. Returns a list of users from csv_file
+    csv file reader. This function returns a list of users from a given csv file.
     """
     users = []
     with open(user_file) as csv_file:
@@ -188,7 +200,7 @@ def csv_read(user_file: str) -> list[User]:
             new_user = User(name, username, id, age, gender, gender_pref,
                             smoke, rent, pets, contact, location, noise,
                             guests, cleanliness, num_roommates
-            )
+                            )
             users.append(new_user)
 
     return users

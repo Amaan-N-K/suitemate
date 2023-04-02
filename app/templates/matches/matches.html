@@ -1,7 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
 {% for match in user_matches %}
-    <h1>{{ match }}</h1>
+<div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{match.username}} | {{match.name}}</h5>
+      <p class="card-text">
+        Age: {{match.age}} 
+        Gender: {{match.gender}}
+        Rent: {{match.rent}}
+        # of Roommates: {{match.roommates}}
+        {% if match.pets %}
+            Pets: Allowed
+        {% else %}
+            Pets: Not allowed
+        {% endif %}
+        Cleanliness: {{match.cleanliness}}
+        {% if match.guests %}
+            Guests: Allowed
+        {% else %}
+            Guests: Not allowed
+        {% endif %}
+        {% if match.smoking %}
+            Smoking: Allowed
+        {% else %}
+            Smoking: Not allowed
+        {% endif %}
+        {{match.noise}}
+      </p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+<!-- <div id="carouselExample" class="carousel slide">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <h1>{{match.username}}</h1>
+        <h1>{{match.name}}</h1>
+        <b>{{match.age}}</b><br>
+        <b>{{match.gender}}</b><br>
+        <b>{{match.rent}}</b><br>
+        <b>{{match.roommates}}</b><br>
+        <b>{{match.cleanliness}}</b><br>
+        <b>{{match.guests}}</b><br>
+        <b>{{match.smoking}}</b><br>
+        <b>{{match.noise}}</b><br>
+      </div>
+      <div class="carousel-item">
+        <img src="..." class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="..." class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div> -->
 {% endfor %}
 {% endblock %}
 

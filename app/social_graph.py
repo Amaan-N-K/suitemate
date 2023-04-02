@@ -42,7 +42,7 @@ class _User:
         """
 
         self.suggestions.remove(other)
-        self.requests.add(other)
+        other.requests.add(self)
 
     def find_all_connected_matches(self, visited: set[int]) -> tuple[set[int], list[_User]]:
         """
@@ -280,6 +280,6 @@ class Network:
                         self.add_suggestion(u1, u2)
                     if u1.id != exclude.id and u2.id != exclude.id and not self.check_request(u1, u2):
                         self.random_request(u1, u2)
-                        self.random_accept(u1, u2)
+                        self.random_accept(u2, u1)
 
                 visited.add((u1.id, u2.id))

@@ -17,7 +17,6 @@ my_network = Network()
 
 parameters = decision_tree.read_file("csv_files/decision_tree_parameters.csv")
 tree = decision_tree.build_decision_tree(parameters, None)
-communities = []
 
 @bp.route("/get_matches", methods=["GET", "POST"])
 def get_matches():
@@ -31,18 +30,22 @@ def get_matches():
     all_users = user_res.scalars()
 
     converted_users = find_match.convert_to_user_flask(all_users)
+    print(converted_users[-1])
 
     for u in converted_users:
         u.rent = (u.rent, u.rent)
 
-    if tree.users is None:
-        for u in converted_users:
-            tree.add_user_to_tree(u)
+    #if tree.users is None:
+        #for u in converted_users:
+    tree.add_user_to_tree(u)
 
+    tree.add_user_to_tree(cur_user)
     communities = tree.find_all_leaves()
 
-    if my_network.is_empty():
-        my_network.create_network_all(communities, cur_user)
+    #if my_network.is_empty():
+    #my_network.create_network_all(communities, cur_user)
+
+    #assert cur_user.id in my_network._users
 
     # cur_user = User(**session.get('cur_user'))
     # cur_user.rent = (cur_user.rent, cur_user.rent)
@@ -51,11 +54,11 @@ def get_matches():
 
     # converted_users = find_match.convert_to_user_flask(all_users)
 
-    user_cluster = tree.find_exact_matches(cur_user) + [cur_user]
+    user_cluster = [tree.find_exact_matches(cur_user) + [cur_user]]
 
-    #my_network.create_network(user_cluster, cur_user)
+    my_network.create_network_all(user_cluster, cur_user)
 
-    suggestions = [sugg.item for sugg in my_network.get_user(cur_user.id).suggestions]
+    suggestions = [sugg.item for sugg in my_network.get_user(cur_user.id).suggestions] + user_cluster
 
     if request.method == 'POST':
         u1 = my_network.get_user(cur_user.id)

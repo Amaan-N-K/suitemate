@@ -344,4 +344,4 @@ class Network:
         for suggestion in all_suggestions:
             self.create_network_single_community(suggestion, exclude)
 
-        self.random_suggestions(exclude, n)
+        #self.random_suggestions(exclude, n)

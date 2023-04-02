@@ -283,9 +283,9 @@ class Network:
         if random.choice([True, False]):
             self.accept_request(u1, u2)
 
-    def create_network(self, suggestions: list[User], exclude: User) -> None:
+    def create_network_single_community(self, suggestions: list[User], exclude: User) -> None:
         """
-        create a network from matches
+        create a network from suggestions
         """
         if len(suggestions) == 1:
             self.add_user(suggestions[0])
@@ -300,3 +300,10 @@ class Network:
                         self.random_accept(u2, u1)
 
                 visited.add((u1.id, u2.id))
+
+    def create_network_all(self, all_suggestions: list[list[User]], exlude: User) -> None:
+        """
+        all suggs
+        """
+        for suggestion in all_suggestions:
+            self.create_network_single_community(suggestion, exlude)

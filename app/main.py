@@ -12,23 +12,22 @@ from user import generate_random_users
 
 
 # @check_contracts
-def create_network(suggestions: list[tuple[User, tuple]]) -> Network:
+def create_network(net: Network, suggestions: list[User]) -> Network:
     """
     create a network from matches
     """
-    my_network = Network()
-    for suggestion in suggestions:
-        u1 = suggestion[0]
-        for u2 in suggestion[1]:
-            if not my_network.check_suggestion(u1, u2):
-                my_network.add_suggestion(u1, u2)
-            if not my_network.check_request(u1, u2):
-                random_request(u1, u2, my_network)
-                random_accept(u1, u2, my_network)
+    for u1 in suggestions:
+        for u2 in suggestions:
+            if u1.id != u2.id:
+                if not net.check_suggestion(u1, u2):
+                    net.add_suggestion(u1, u2)
+                if not net.check_request(u1, u2):
+                    random_request(u1, u2, net)
+                    random_accept(u1, u2, net)
 
-    my_network.print_graph()
+    net.print_graph()
 
-    return my_network
+    return net
 
 
 def random_request(u1: User, u2: User, network: Network) -> None:
@@ -69,14 +68,23 @@ if __name__ == '__main__':
 
     # doctest.testmod()
 
-    # test_list = generate_random_users('csv_files/names.csv', 5)
+    test_list = generate_random_users('csv_files/names.csv', 5)
     # test_list = create_data(test_list)
-    # create_network(test_list)
+    network = Network()
+    network.create_network(test_list)
+    import pickle
 
-    # Creating and running flask app
-    from __init__ import create_app
-    app = create_app()
-    app.run(debug=True)
+    with open('test_network.pkl', 'wb') as f:
+        pickle.dump(network, f)
+    with open('test_network.pkl', 'rb') as f:
+        loaded_network = pickle.load(f)
+    print(loaded_network._users)
+    loaded_network.print_graph
+
+    # # Creating and running flask app
+    # from __init__ import create_app
+    # app = create_app()
+    # app.run(debug=True)
 
     # import python_ta
     #

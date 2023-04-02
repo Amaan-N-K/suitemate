@@ -152,6 +152,8 @@ class Network:
         if user1.id in self._users and user2.id in self._users:
             if self._users[user2.id] in self._users[user1.id].requests:
                 return True
+            elif self._users[user2.id] in self._users[user1.id].matches:
+                return True
             else:
                 return False
         else:
@@ -240,3 +242,31 @@ class Network:
             vertex = self._users[key]
             print(f"suggestions: {key}, {[u.user_id for u in vertex.suggestions]}")
             print(f"matches: {key}, {[u.user_id for u in vertex.matches]}")
+
+    def random_request(self, u1: User, u2: User) -> None:
+        """
+        ranomly send a request
+        """
+        if random.choice([True, False]):
+            self.send_request(u1, u2)
+
+    def random_accept(self, u1: User, u2: User) -> None:
+        """
+        ranomly accept a request
+        """
+
+        if random.choice([True, False]):
+            self.accept_request(u1, u2)
+
+    def create_network(self, suggestions: list[User]) -> None:
+        """
+        create a network from matches
+        """
+        for u1 in suggestions:
+            for u2 in suggestions:
+                if u1.id != u2.id:
+                    if not self.check_suggestion(u1, u2):
+                        self.add_suggestion(u1, u2)
+                    if not self.check_request(u1, u2):
+                        self.random_request(u1, u2)
+                        self.random_accept(u1, u2)

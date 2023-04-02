@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Optional
 from user import User
 from python_ta.contracts import check_contracts
+import random
 
 
 # @check_contracts
@@ -115,7 +116,6 @@ class Network:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
         """
-        print(0)
         u1 = self._users[user1.id]
         u2 = self._users[user2.id]
         u1.send_request(u2)
@@ -197,6 +197,13 @@ class Network:
             common_matches.remove(avoid)
         return common_matches
 
+    def find_all_new_suggestions(self) -> None:
+        """
+        Find all new suggestions if they exist for every node
+        """
+        for u_id in self._users:
+            self.find_new_suggestion(self._users[u_id].item)
+
     def find_connected_communities(self) -> list[list[_User]]:
         """
         find all connected communities in the network
@@ -209,6 +216,21 @@ class Network:
                 visited = visited.union(connected[0])
                 communities.append(connected[1])
         return communities
+
+    def random_suggestion(self) -> None:
+        """
+        Randomly suggest users to each other from different communities
+        """
+        communities = self.find_connected_communities()
+        index_1 = random.randint(0, len(communities) - 1)
+        index_2 = random.randint(0, len(communities) - 1)
+        while index_1 != index_2:
+            index_2 = random.randint(0, len(communities) - 1)
+
+        user1 = random.choice(communities[index_1])
+        user2 = random.choice(communities[index_2])
+
+        self.add_suggestion(user1.item, user2.item)
 
     def print_graph(self):
         """

@@ -43,9 +43,9 @@ def get_matches():
         #session['tree'] = tree
 
     #tree = session['tree']
-    user_matches = tree.find_exact_matches(cur_user)
-    my_network.create_network(user_matches)
+    user_suggestions = tree.find_exact_matches(cur_user)
+    my_network.create_network(user_suggestions)
 
-    print(user_matches)
+    print(user_suggestions)
 
-    return render_template('matches/matches.html', user_matches=user_matches)
+    return render_template('matches/matches.html', user_matches=user_suggestions)

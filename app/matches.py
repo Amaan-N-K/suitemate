@@ -40,9 +40,13 @@ def get_matches():
     my_network.create_network(user_cluster, cur_user)
 
     suggestions = [sugg.item for sugg in my_network.get_user(cur_user.id).suggestions]
-    u1 = my_network.get_user(cur_user.id)
-    for user in suggestions:
-        u2 = my_network.get_user(user.id)
+
+    if request.method == 'POST':
+        u1 = my_network.get_user(cur_user.id)
+        other_user_id = int(request.form['other'])
+
+        u2 = my_network.get_user(other_user_id)
         u1.send_request(u2)
+        u2.accept_request(u2)
 
     return render_template('matches/matches.html', user_matches=suggestions)

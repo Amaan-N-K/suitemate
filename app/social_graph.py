@@ -270,6 +270,8 @@ class Network:
         """
         create a network from matches
         """
+        if len(suggestions) == 1:
+            self.add_user(suggestions[0])
         visited = set()
         for u1 in suggestions:
             for u2 in suggestions:

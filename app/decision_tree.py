@@ -5,7 +5,6 @@ from __future__ import annotations
 from user import User
 import math
 from typing import Optional
-from numpy.typing import ArrayLike
 from python_ta.contracts import check_contracts
 import csv
 

@@ -284,9 +284,9 @@ class Network:
             random_user_id = random.choice(list(s))
             u2 = self._users[random_user_id]
             self.add_suggestion(u1.item, u2.item)
-            if u1.user_id != exclude.id and u2.user_id != exclude.id:
-                self.random_request(u1.item, u2.item)
-                self.random_accept(u2.item, u1.item)
+            # if u1.user_id != exclude.id and u2.user_id != exclude.id:
+            #     self.random_request(u1.item, u2.item)
+            #     self.random_accept(u2.item, u1.item)
 
     def random_suggestion_user(self, user: User) -> None:
         """

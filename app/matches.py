@@ -42,7 +42,7 @@ def get_matches():
     tree.add_user_to_tree(cur_user)
     communities = tree.find_all_leaves()
 
-    my_network.create_network_all(communities, cur_user, 1000)
+    my_network.create_network_all(communities, cur_user, 10000)
 
     # cur_user = User(**session.get('cur_user'))
     # cur_user.rent = (cur_user.rent, cur_user.rent)
@@ -83,7 +83,6 @@ def get_matches():
     # my_network.find_new_suggestion(cur_user)
     # #my_network.random.
 
+    my_network.print_graph()
+
     return render_template('matches/matches.html', user_matches=suggestions)
-
-
-my_network.print_graph()

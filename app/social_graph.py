@@ -341,7 +341,7 @@ class Network:
 
                 visited.add((u1.id, u2.id))
 
-    def create_network_all(self, all_suggestions: list[list[User]], exclude: User, n: Optional[int] = 10) -> None:
+    def create_network_all(self, all_suggestions: list[list[User]], exclude: User, n: Optional[int] = 1000) -> None:
         """
         all suggs
         """
@@ -349,4 +349,3 @@ class Network:
             self.create_network_single_community(suggestion, exclude)
 
         self.random_suggestions(exclude, n)
-        self.find_all_new_suggestions()

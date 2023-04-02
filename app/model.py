@@ -1,6 +1,7 @@
 from flask import current_app, g
 from flask_sqlalchemy import SQLAlchemy
 from __init__ import db
+from werkzeug.security import generate_password_hash, check_password_hash
 import user
 
 class User(db.Model):
@@ -30,7 +31,7 @@ class User(db.Model):
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     name = db.Column(db.String)
-    contact = db.Column(db.String, unique=True, nullable=False)
+    contact = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer)
     gender = db.Column(db.String)
     gender_pref = db.Column(db.Boolean)
@@ -57,16 +58,32 @@ def convert_to_model(user: user.User) -> User:
     new_gender = user.gender
     new_gender_pref = user.gender_pref
     new_smoke = user.smoke
-    new_rent = user.rent
+    new_rent = (user.rent[0] + user.rent[1]) // 2
     new_pets = user.pets
-    new_location = user.location
+    new_location = f"{user.location[0]}, {user.location[1]}"
     new_noise = user.noise
     new_guests = user.guests
     new_cleanliness = user.cleanliness
     new_num_roommates = user.num_roommates
 
-    new_user = User(new_id, new_user, new_pass, new_name, new_contact, new_age, new_gender, new_gender_pref, new_smoke,
-                    new_rent, new_pets, new_location, new_noise, new_guests, new_cleanliness, new_num_roommates)
+    new_user = User(
+        id=new_id,
+        username=new_user,
+        password=new_pass,
+        name=new_name,
+        contact=new_contact,
+        age=new_age,
+        gender=new_gender,
+        gender_pref=new_gender_pref,
+        smoke=new_smoke,
+        rent=new_rent,
+        pets=new_pets, 
+        location=new_location,
+        noise=new_noise,
+        guests=new_guests,
+        cleanliness=new_cleanliness,
+        num_roommates=new_num_roommates
+    )
 
     return new_user
 

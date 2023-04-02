@@ -72,7 +72,7 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
     for i in range(num_user):
         new_name, new_gender = random.choice(name_list)
         new_age = random.randint(17, 100)
-        new_user = new_name.lower() + '_' + str(random.randint(1, 10000))
+        new_user = new_name.lower() + '_' + str(random.randint(1, 20000))
 
         # One third of chance to get other as gender
         prob = random.randint(1, 3)
@@ -81,7 +81,7 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
         else:
             new_gender = 'Male' if new_gender == 'boy' else 'Female'
 
-        low_bound_rent = min(round(abs(random.gauss(1100, 300))), 10000)
+        low_bound_rent = min(round(abs(random.gauss(1100, 300))), 5000)
         user = User(new_name, new_user, i, new_age, new_gender,
                     gender_pref=random.choice([True, False]),
                     smoke=random.choice([True, False]),

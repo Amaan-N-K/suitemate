@@ -79,11 +79,26 @@ if __name__ == '__main__':
     #     loaded_network = pickle.load(f)
     # print(loaded_network._users)
 
-    # # Creating and running flask app
-    from __init__ import create_app
-    app = create_app()
-    app.run(debug=True)
+    # Creating and running flask app
+    from __init__ import create_app, db
+    import model
 
+    app = create_app()
+
+    @app.before_first_request
+    def generate_users_and_insert_into_db():
+        model.User.query.delete()
+        model.User.query.
+        db.session.commit()
+        list_users = generate_random_users('csv_files/names.csv', 10000)
+        entry = []
+        for u in list_users:
+            converted = model.convert_to_model(u)
+            entry.append(converted)
+        db.session.add_all(entry)
+        db.session.commit()
+
+    app.run(debug=True)
     # import python_ta
     #
     # python_ta.check_all(config={

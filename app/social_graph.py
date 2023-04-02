@@ -139,12 +139,14 @@ class Network:
         if user1.id in self._users and user2.id in self._users:
             u1 = self._users[user1.id]
             return any(u2.user_id == user2.id for u2 in u1.suggestions)
+        elif self.check_request(user1, user2):
+            return True
         else:
             return False
 
     def check_request(self, user1: User, user2: User) -> bool:
         """
-        check if user2 sent a request to user1
+        check if user2 sent a request to user1 or if they are a match
         Preconditions:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users

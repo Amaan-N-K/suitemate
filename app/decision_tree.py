@@ -93,7 +93,6 @@ class DecisionTree:
             return
         else:
             preference = user_preferences[0]
-            print(user_to_add, preference, user_preferences)
             if len(user_preferences) == 7:
                 if preference:
                     gender = user_to_add.gender.lower()
@@ -124,6 +123,10 @@ class DecisionTree:
         is returned instead
         """
         if user_preferences == []:
+            if user_ in self.users:
+                copy_of_users = self.users.copy()
+                copy_of_users.remove(user_)
+                return copy_of_users
             return self.users
         else:
             preference = user_preferences[0]
@@ -157,10 +160,14 @@ class DecisionTree:
             user_: User, user_preferences: list[int | str | tuple[int, ...] | bool]) -> list[User]:
         """
         Recursively goes through the decision tree using the user's preferences, until it reaches a leaf
-        with the list of all users that exactly matches the user's preferences, if none are found an empty list
-        is ret  urned instead
+        with the list of all users that exactly matches the user's preferences by accessing the other subtrees,
+        if none are found an empty list is returned instead
         """
         if user_preferences == []:
+            if user_ in self.users:
+                copy_of_users = self.users.copy()
+                copy_of_users.remove(user_)
+                return copy_of_users
             return self.users
         else:
             preference = user_preferences[0]
@@ -176,10 +183,10 @@ class DecisionTree:
                 if len(user_preferences) >= 7:
                     return matches
                 else:
-                    partitions_copy = user_preferences.copy()
+                    partitions_copy = self.partitions.copy()
                     partitions_copy.pop(preference)
                     for alt_pref in partitions_copy:
-                        matches = self.partitions[alt_pref].find_exact_matches_recursively(user_, user_preferences[1:])
+                        matches = self.partitions[alt_pref].find_closest_matches_recursively(user_, user_preferences[1:])
                         if matches != []:
                             return matches
         return matches
@@ -234,13 +241,13 @@ def read_file(preferences_file: str) -> list[tuple[str, tuple[int | str | tuple[
 
         for row in reader:
             category = row[0]
-            if category in ("roommates", "cleanliness", "noise", "guests"):
+            if category in ("roommates", "cleanliness", "noise"):
                 choices = []
                 for item in row[1:]:
                     choice = int(item)
                     choices.append(choice)
                 choices = tuple(choices)
-            elif category in ("pets", "smoking"):
+            elif category in ("pets", "smoking", "guests"):
                 choices = (True, False)
             else:
                 choices = tuple(row[1:])
@@ -287,9 +294,18 @@ if __name__ == '__main__':
     decision_tree = build_decision_tree(parameters, None)
 
     import user
-
-    users = user.csv_read('random_users/test.csv')# list of users
-    for u in users:
+    file = 'csv_files/big_test.csv'
+    users = user.csv_read(file)# list of users
+    for u in users[:10]:
         decision_tree.add_user_to_tree(u)
-
-    print(len(decision_tree.find_closest_matches(users[0])))
+    new_user = User("a", "user", 12, 1, "Male", True, True, (1401, 1700), False, "nah", None, 2, True, 2, 3)
+    print(get_user_preferences(new_user))
+    decision_tree.add_user_to_tree(new_user)
+    new_user = User("b", "user", 100, 1, "Male", True, True, (1401, 1700), True, "nah", None, 2, True, 2, 2)
+    print(get_user_preferences(new_user))
+    decision_tree.add_user_to_tree(new_user)
+    user_to_match = users[0]
+    print(get_user_preferences(user_to_match))
+    print("------")
+    matches_tree = decision_tree.find_closest_matches(user_to_match)
+    print(matches_tree)

@@ -11,6 +11,8 @@ from python_ta.contracts import check_contracts
 from user import generate_random_users
 
 
+
+
 @check_contracts
 def create_network(suggestions: list[tuple[User, tuple]]) -> Network:
     """

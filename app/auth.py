@@ -1,7 +1,6 @@
 from flask import (
     g, session, request, Blueprint, redirect, render_template, flash, url_for, abort
 )
-# from ocularnn.db import get_db
 from . import db
 from app.model import User
 from sqlalchemy.exc import IntegrityError
@@ -49,7 +48,7 @@ def register():
             #print(request.form['first_name'], request.form['age'])
             print(request.form['smoke'])
             user = User(
-                    username=username, 
+                    username=username,
                     password=generate_password_hash(password),
                     name=f"{request.form['first_name']} {request.form['last_name']}",
                     contact=request.form['contact'],
@@ -68,7 +67,6 @@ def register():
             )
             db.session.add(user)
             db.session.commit()
-            #db.commit()
         except IntegrityError:
             error.append("That username/email was already taken")
 
@@ -88,7 +86,7 @@ def login():
     Once the user has been authenticated store their username in a session
     so they can access restricted views.
     """
-    # For when the redirect to the dashboard fails and the user has to reload 
+    # For when the redirect to the dashboard fails and the user has to reload
     # the page, no need to return to the login page
     cached_username = session.get('username')
     if cached_username is not None:
@@ -141,7 +139,7 @@ def login():
             session['noise'] = cur_user.noise
             session['guests'] = cur_user.guests
             session['cleanliness'] = int(cur_user.cleanliness)
-            session['num_roommates'] = request.form['num_roommates']
+            session['num_roommates'] = cur_user.num_roommates
 
             return redirect(
                 url_for('dashboard.dashboard', username=session['username']))
@@ -178,7 +176,7 @@ def requires_auth(view):
         # Potential username variable in view URL
         username_url = kwargs.get('username')
 
-        if username == None: 
+        if username == None:
             return redirect(url_for('auth.login'))
 
         # If username passed to view does equal the session username, throw 403

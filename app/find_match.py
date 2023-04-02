@@ -126,10 +126,22 @@ def convert_to_user_single(user: model.User) -> Us:
     """
     conver user
     """
-    ret = Us(name=user.name, username=user.username, id=user.id, age=user.age, rent=user.rent,
-           gender=user.gender, gender_pref=user.gender_pref, smoke=user.smoke, pets=user.pets,
-           contact=user.contact, location=user.location, noise=user.noise, guests=user.guests,
-           cleanliness=user.cleanliness, num_roommates=user.num_roommates)
+    ret = Us(name=user.name, 
+             username=user.username, 
+             id=user.id,
+             age=user.age,
+             rent=user.rent, 
+             gender=user.gender,
+             gender_pref=bool(user.gender_pref),
+             smoke=bool(user.smoke),
+             pets=bool(user.pets),
+             contact=user.contact,
+             location=user.location,
+             noise=user.noise,
+             guests=user.guests, 
+             cleanliness=user.cleanliness,
+             num_roommates=user.num_roommates
+    )
 
     return ret
 

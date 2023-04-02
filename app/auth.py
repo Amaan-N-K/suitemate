@@ -54,10 +54,10 @@ def register():
                     contact=request.form['contact'],
                     age=request.form['age'],
                     gender=request.form['gender'],
-                    gender_pref=request.form['gender_pref'] == 'yes',
-                    smoke=request.form['smoke'] == 'yes',
+                    gender_pref=request.form['gender_pref'] == 'True',
+                    smoke=request.form['smoke'] == 'True',
                     rent=int(request.form['rent']),
-                    pets=request.form['pets'] == 'yes',
+                    pets=request.form['pets'] == 'True',
                     location=request.form['location'],
                     noise=int(request.form['noise']),
                     guests=bool(request.form['guests']),
@@ -127,6 +127,7 @@ def login():
         else:
             cur_user = convert_to_user_single(user_info[0])
             print(cur_user)
+            print(user_info[0].gender_pref)
             session['cur_user'] = cur_user
             session['username'] = username
             # session['name'] = cur_user.name

@@ -42,7 +42,7 @@ def get_matches():
     tree.add_user_to_tree(cur_user)
     communities = tree.find_all_leaves()
 
-    my_network.create_network_all(communities, cur_user, 1000)
+    my_network.create_network_all(communities, cur_user, 10000)
 
     # cur_user = User(**session.get('cur_user'))
     # cur_user.rent = (cur_user.rent, cur_user.rent)
@@ -62,12 +62,19 @@ def get_matches():
         other_user_id = int(request.form['other_id'])
 
         u2 = my_network.get_user(other_user_id)
+
+        if u2.item not in suggestions:
+            suggestions.append(u2.item)
+
         my_network.add_suggestion(u2.item, u1.item)
         u1.send_request(u2)
         u2.accept_request(u1)
 
         match_msg = "Successful match"
         flash(match_msg)
+
+        print(u1.item, u2.item)
+        print(suggestions)
         suggestions.remove(u2.item)
 
     matches = [sugg.item for sugg in my_network.get_user(cur_user.id).matches]

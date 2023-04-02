@@ -47,6 +47,7 @@ class _User:
         """
         find all users connected to self.
         """
+        print('inf')
         visited.add(self.user_id)
         all_users = [self]
         for neighbour in self.matches:
@@ -232,7 +233,7 @@ class Network:
                 communities.append(connected[1])
         return communities
 
-    def random_suggestions(self, n: Optional[int] = 1, exclude: User) -> None:
+    def random_suggestions(self, exclude: User, n: Optional[int] = 1) -> None:
         """
         Randomly suggest users to each other from different communities
         """
@@ -246,7 +247,7 @@ class Network:
             user1 = random.choice(communities[index_1])
             user2 = random.choice(communities[index_2])
 
-            while user1.item != exclude and user2.item != exclude:
+            while user1.user_id != exclude.id and user2.user_id != exclude.id:
                 user1 = random.choice(communities[index_1])
                 user2 = random.choice(communities[index_2])
 
@@ -274,7 +275,6 @@ class Network:
         random_user_id = random.choice(list(s))
         u2 = self._users[random_user_id]
         self.add_suggestion(u1.item, u2.item)
-
 
     def print_graph(self):
         """
@@ -317,11 +317,11 @@ class Network:
 
                 visited.add((u1.id, u2.id))
 
-    def create_network_all(self, all_suggestions: list[list[User]], exclude: User, n: Optional[int] = 1000) -> None:
+    def create_network_all(self, all_suggestions: list[list[User]], exclude: User, n: Optional[int] = 10) -> None:
         """
         all suggs
         """
         for suggestion in all_suggestions:
             self.create_network_single_community(suggestion, exclude)
 
-        self.random_suggestions(n, exclude)
+        self.random_suggestions(exclude, n)

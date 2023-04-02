@@ -60,7 +60,7 @@ def register():
                     pets=request.form['pets'] == 'yes',
                     location=request.form['location'],
                     noise=int(request.form['noise']),
-                    guests=int(request.form['guests']),
+                    guests=bool(request.form['guests']),
                     cleanliness=int(request.form['cleanliness']),
                     num_roommates=int(request.form['num_roommates']),
 

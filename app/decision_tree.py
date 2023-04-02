@@ -292,7 +292,7 @@ def get_user_preferences(user_: User) -> list[int | str | tuple[int, ...] | bool
     rent_ranges = ( (0, 800),
         (801, 1100), (1101, 1400), (1401, 1700),
         (1701, 2000), (2001, 2300), (2301, 2600),
-        (2601, 2900), (2901, 3200), (3201, math.inf)
+        (2601, 2900), (2901, 3200), (3201, 12000)
     )
     user_rent_range = None
     mid = (user_.rent[0] + user_.rent[1]) // 2

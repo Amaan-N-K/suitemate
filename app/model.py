@@ -70,3 +70,15 @@ def convert_to_model(user: user.User) -> User:
                     new_rent, new_pets, new_location, new_noise, new_guests, new_cleanliness, new_num_roommates)
 
     return new_user
+
+
+def convert_and_write(users: list[User]) -> None:
+    """
+    given users, add it to the database
+    """
+    for user in users:
+        user_res = db.session.execute(db.select(User).where(User.id == user.id))
+        user_info = user_res.one_or_none()
+        if user_info is not None:
+            db.session.add(user_res)
+            db.session.commit()

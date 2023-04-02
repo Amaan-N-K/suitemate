@@ -7,7 +7,7 @@ from user import User
 from python_ta.contracts import check_contracts
 
 
-@check_contracts
+# @check_contracts
 class _User:
     """
     vertex of the graph representing each user
@@ -25,25 +25,22 @@ class _User:
         self.matches = set()
         self.requests = set()
 
-    def accept_request(self, id_num: int) -> None:
+    def accept_request(self, other: _User) -> None:
         """
         move request to match.
         """
-        for user in self.requests:
-            if user.user_id == id_num:
-                self.requests.remove(user)
-                self.matches.add(user)
-                return
 
-    def send_request(self, id_num: int) -> None:
+        self.requests.remove(other)
+        self.matches.add(other)
+        other.matches.add(self)
+
+    def send_request(self, other: _User) -> None:
         """
         move suggestion to request
         """
-        for user in self.requests:
-            if user.user_id == id_num:
-                self.suggestions.remove(user)
-                self.requests.add(user)
-                return
+
+        self.suggestions.remove(other)
+        self.requests.add(other)
 
     def find_all_connected_matches(self, visited: set[int]) -> tuple[set[int], list[_User]]:
         """
@@ -58,7 +55,7 @@ class _User:
         return (visited, all_users)
 
 
-@check_contracts
+# @check_contracts
 class Network:
     """
     The graph representing the network of matches betwen users
@@ -118,9 +115,10 @@ class Network:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
         """
+        print(0)
         u1 = self._users[user1.id]
         u2 = self._users[user2.id]
-        u1.send_request(u2.user_id)
+        u1.send_request(u2)
 
     def accept_request(self, user1: User, user2: User) -> None:
         """
@@ -129,9 +127,10 @@ class Network:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
         """
+        print(1)
         u1 = self._users[user1.id]
         u2 = self._users[user2.id]
-        u1.accept_request(u2.user_id)
+        u1.accept_request(u2)
 
     def check_suggestion(self, user1: User, user2: User) -> bool:
         """

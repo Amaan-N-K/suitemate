@@ -72,7 +72,7 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
     for i in range(num_user):
         new_name, new_gender = random.choice(name_list)
         new_age = random.randint(17, 100)
-        new_user = new_name.lower() + '_' + str(random.randint(100, 999))
+        new_user = new_name.lower() + '_' + str(random.randint(1, 10000))
 
         # One third of chance to get other as gender
         prob = random.randint(1, 3)

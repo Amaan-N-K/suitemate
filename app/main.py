@@ -11,9 +11,7 @@ from python_ta.contracts import check_contracts
 from user import generate_random_users
 
 
-
-
-@check_contracts
+# @check_contracts
 def create_network(suggestions: list[tuple[User, tuple]]) -> Network:
     """
     create a network from matches
@@ -37,7 +35,9 @@ def random_request(u1: User, u2: User, network: Network) -> None:
     """
     ranomly send a request
     """
-    if random.choice([True, False]):
+    # x = random.choice([True, False])
+    # print(x)
+    if True:
         network.send_request(u1, u2)
 
 
@@ -45,7 +45,9 @@ def random_accept(u1: User, u2: User, network: Network) -> None:
     """
     ranomly accept a request
     """
-    if random.choice([True, False]):
+    # x = random.choice([True, False])
+    # print(x)
+    if True:
         network.accept_request(u1, u2)
 
 

@@ -284,6 +284,9 @@ class Network:
             random_user_id = random.choice(list(s))
             u2 = self._users[random_user_id]
             self.add_suggestion(u1.item, u2.item)
+            if u1.user_id != exclude.id and u2.user_id != exclude.id:
+                self.random_request(u1.item, u2.item)
+                self.random_accept(u2.item, u1.item)
 
     def random_suggestion_user(self, user: User) -> None:
         """
@@ -345,5 +348,5 @@ class Network:
         for suggestion in all_suggestions:
             self.create_network_single_community(suggestion, exclude)
 
-        #self.random_suggestion_user(exclude)
         self.random_suggestions(exclude, n)
+        self.find_all_new_suggestions()

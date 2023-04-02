@@ -46,6 +46,11 @@ class DecisionTree:
           its data
     category: the category that each child will split up
     _partitions: the segmentations of the population based on the current particular category.
+
+    Representation Invariants:
+        - (len(self.partitions) == 0 and len(self.users) >= 0) or (len(self.partitions) > 0 and len(self.users) == 0)
+        - (self.decision is None and self.category == 'rent ranges') or \
+          (self.decision is not None and self.category != 'rent ranges')
     """
     # prev_subtrees: list[DecisionTree] I don't think this is necessary
     category: Optional[str]
@@ -53,9 +58,6 @@ class DecisionTree:
     users: Optional[list[User]]
     partitions: dict[str | int | tuple[int, ...] | bool, DecisionTree]
 
-    # def __init__(self, user: User):
-    #     self.user = user
-    #     # self.user.tree = self
     # @check_contracts
     def __init__(self, category: str, initial_users: Optional[list[User]] = None) -> None:
         self.category = category
@@ -67,6 +69,10 @@ class DecisionTree:
     def get_partitions(self) -> list[DecisionTree]:
         """
         Return the partitions of this decision tree.
+
+        Preconditions:
+            - (len(self.partitions) == 0 and len(self.users) >= 0) or (len(self.partitions) > 0 and len(self.users) == 0)
+
         """
         return list(self.partitions.values())
 
@@ -87,6 +93,10 @@ class DecisionTree:
         """
         This method takes a user and finds their preferences, and then adds them to a leaf that is at the end of a path
         from the root node by calling a helper function that recurses into the tree
+
+        Preconditions:
+            - len(get_user_preferences(user_to_add)) == 8 
+
         """
         preferences = get_user_preferences(user_to_add)
         self.add_user_to_tree_recursively(user_to_add, preferences)
@@ -98,6 +108,10 @@ class DecisionTree:
         """
         This helper method takes a list of user preferences in order (it will be assumed to always be in order)
         and recurses into the tree to add them in a leaf
+
+        Preconditions:
+            - 0 <= len(user_preferences) <= 8 
+
         """
         if user_preferences == []:
             if self.users is None:
@@ -122,6 +136,10 @@ class DecisionTree:
         This method takes a user and finds their preferences, and then finds the leaf (that is at the end of a
         path from the root node) containing the users that have the exact same preferences by calling a helper
         function that recurses into the tree
+        
+        Preconditions:
+            - len(get_user_preferences(user_)) == 8
+
         """
         preferences = get_user_preferences(user_)
         matches = self.find_exact_matches_recursively(user_, preferences)
@@ -135,6 +153,10 @@ class DecisionTree:
         Recursively goes through the decision tree using the user's preferences, until it reaches a leaf
         with the list of all users that exactly matches the user's preferences, if none are found an empty list
         is returned instead
+        
+        Preconditions:
+            - 0 <= len(user_preferences) <= 8
+
         """
         if user_preferences == []:
             if user_ in self.users:
@@ -163,6 +185,10 @@ class DecisionTree:
         leaf to find the next closest match, as the preferences are ordered top down from most to least important.
         If none are found in that node's subtrees, then it goes back again to the previous node and tries again
         from that node until it reaches a hard stop at gender preferences and no matches are returned
+        
+        Preconditions:
+            - len(get_user_preferences(user_)) == 8
+          
         """
         preferences = get_user_preferences(user_)
         matches = self.find_closest_matches_recursively(user_, preferences)
@@ -176,6 +202,10 @@ class DecisionTree:
         Recursively goes through the decision tree using the user's preferences, until it reaches a leaf
         with the list of all users that exactly matches the user's preferences by accessing the other subtrees,
         if none are found an empty list is returned instead
+
+        Preconditions:
+            - 0 <= len(get_user_preferences(user_)) <= 8
+          
         """
         if user_preferences == []:
             if user_ in self.users:
@@ -208,6 +238,10 @@ class DecisionTree:
     def find_all_leaves(self) -> list[list[User]]:
         """
         returns all the users in the tree, each leaf grouped in a list 
+
+        Preconditions:
+            - (self.decision is None and self.count_leaves() = 11520) or \
+            (self.decision is not None and self.count_leaves() < 11520)
         """
         all_users = []
         if len(self.partitions) == 0:
@@ -227,6 +261,9 @@ def build_decision_tree(preferences: list[tuple[str, tuple[int | str | tuple[int
     following an already set order of choices starting from an empty root node that decies between rent range, then
     gender preferences, and then the following choices in order from most to least important: number of roommates,
     pets, cleanliness, guests, smoking, and finally noise.
+    
+    Preconditions:
+        - 0 <= len(preferences) <= 8
     """
     if preferences == []:
         subtree = DecisionTree("users", [])
@@ -250,6 +287,12 @@ def read_file(preferences_file: str) -> list[tuple[str, tuple[int | str | tuple[
     Reads a csv file with the preferences and the possible options on each row, returning a list containing
     a tuple that stores the preference name, and the possible choices in a tuple as the choices and all
     possible preferences are concrete and should not be changed.
+
+    Preconditions:
+        - preferences_file refers to a valid CSV file in the format described on the submission
+        - preferences_file has exactly 8 lines with data (parameters) on them
+        - preferences_file is ordered from first to last line: rent ranges, gender pref, \
+          roommates, pets, cleanliness, guests, smoking, and noise
     """
     preferences = []
     with open(preferences_file) as file:
@@ -287,6 +330,9 @@ def read_file(preferences_file: str) -> list[tuple[str, tuple[int | str | tuple[
 def get_user_preferences(user_: User) -> list[int | str | tuple[int, ...] | bool]:
     """
     Returns a list of the user's preferences in the same order as seen in the decision_tree
+
+    Preconditions:
+        - user is unique to all other users
     """
     rent_ranges = ( (0, 800),
         (801, 1100), (1101, 1400), (1401, 1700),
@@ -308,6 +354,9 @@ def get_user_preferences(user_: User) -> list[int | str | tuple[int, ...] | bool
 def get_users_preferences(users: list[User]) -> list[list[int | str | tuple[int, ...] | bool]]:
     """
     Returns a list of users preferences
+    
+    Preconditions:
+        - users != []
     """
     preferences = []
     for user in users:
@@ -319,6 +368,13 @@ def get_users_preferences(users: list[User]) -> list[list[int | str | tuple[int,
 if __name__ == '__main__':
     parameters = read_file("csv_files/decision_tree_parameters.csv")
     decision_tree = build_decision_tree(parameters, None)
+    # import python_ta
+    # python_ta.check_all(config={
+    #     'max-line-length': 120,
+    #     'extra-imports': ['csv', 'user'],
+    #     'disable': ['unused-import'],
+    #     'allowed-io': ['read_packet_csv']
+    # })
     # for choice in decision_tree.partitions:
     #   print(list(decision_tree.partitions[choice].partitions.keys()))
 
@@ -339,8 +395,12 @@ if __name__ == '__main__':
     # matches_tree = decision_tree.find_closest_matches(user_to_match)
     # print(matches_tree)
     # print(decision_tree.count_leaves())
-    print(decision_tree.find_all_leaves())
-    print(len(decision_tree.find_all_leaves()))
-    new_user = User(name='c', username='c', id=68e2, age=21, gender='other', gender_pref=True, smoke=True, rent=(1956, 2128), pets=True, contact='jacquelyn162@gmail.com', location=('Toronto', 'Ontario'), noise=1, guests=True, cleanliness=2, num_roommates=3)
-    print(decision_tree.find_closest_matches(new_user))
+    # for lst in decision_tree.find_all_leaves():
+    #   for u in lst:
+    #     if not isinstance(u, User):
+    #       print(False)
+    # print(True)
+    # print(len(decision_tree.find_all_leaves()))
+    # new_user = User(name='c', username='c', id=68e2, age=21, gender='other', gender_pref=True, smoke=True, rent=(1956, 2128), pets=True, contact='jacquelyn162@gmail.com', location=('Toronto', 'Ontario'), noise=1, guests=True, cleanliness=2, num_roommates=3)
+    # print(decision_tree.find_closest_matches(new_user))
     # User(name='Jacquelyn', username='jacquelyn_611', id=682, age=81, gender='other', gender_pref=True, smoke=True, rent=(1956, 2128), pets=True, contact='jacquelyn162@gmail.com', location=('Toronto', 'Ontario'), noise=1, guests=True, cleanliness=2, num_roommates=3)

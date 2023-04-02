@@ -26,6 +26,22 @@ def create_app(test_config=None):
     # Registering database initialization
     db.init_app(app)
 
+    import model
+    from user import generate_random_users
+
+    @app.before_first_request
+    def generate_users_and_insert_into_db():
+        print('this has run')
+        db.session.query(model.User).delete()
+        db.session.commit()
+        list_users = generate_random_users('csv_files/names.csv', 10000)
+        entry = []
+        for u in list_users:
+            converted = model.convert_to_model(u)
+            entry.append(converted)
+        db.session.add_all(entry)
+        db.session.commit()
+
     # from . import auth
     import auth
     app.register_blueprint(auth.bp)

@@ -94,7 +94,6 @@ def convert_and_write(users: list[Us]) -> None:
         for u in users:
             user_res = select(UserDB).where(UserDB.id == u.id)
             user_info = session.scalars(user_res).one_or_none()
-            print(user_info)
             if user_info is None:
                 entry = convert_to_model(u)
                 session.add(entry)
@@ -138,4 +137,3 @@ def convert_to_user_single(user: model.User) -> Us:
 if __name__ == '__main__':
     list_users = generate_random_users('csv_files/names.csv', 1000)
     convert_and_write(list_users)
-    print(convert_to_user(engine))

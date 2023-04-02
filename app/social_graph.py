@@ -31,6 +31,7 @@ class _User:
         move request to match.
         """
 
+        print(other.item)
         self.requests.remove(other)
         self.matches.add(other)
         other.matches.add(self)
@@ -249,8 +250,7 @@ class Network:
         """
         ranomly send a request
         """
-        if random.choice([True, False]):
-            self.send_request(u1, u2)
+        self.send_request(u1, u2)
 
     def random_accept(self, u1: User, u2: User) -> None:
         """
@@ -267,10 +267,11 @@ class Network:
         visited = set()
         for u1 in suggestions:
             for u2 in suggestions:
-                visited.add((u1.id, u2.id))
                 if u1.id != u2.id and (u1.id, u2.id) not in visited and (u2.id, u1.id) not in visited:
                     if not self.check_suggestion(u1, u2):
                         self.add_suggestion(u1, u2)
                     if not self.check_request(u1, u2):
                         self.random_request(u1, u2)
                         self.random_accept(u1, u2)
+
+                visited.add((u1.id, u2.id))

@@ -1,20 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class=auth-container>
-  <form action="" method="post" class="auth"> 
-        <h1>Login</h1>
-      <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username" required>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password" required>
-    </div>
-    <div class="auth-field">
-      <button class='submit'>Submit</button>
-    </div>
-  </form>
-  </div>
+{% for match in user_matches %}
+    <h1>{{ match }}</h1>
+{% endfor %}
 {% endblock %}
 

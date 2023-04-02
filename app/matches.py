@@ -13,7 +13,6 @@ from social_graph import Network, _User
 from functools import wraps
 
 bp = Blueprint("matches", __name__, url_prefix="/matches")
-my_network = Network()
 @bp.route("/get_matches", methods=["GET", "POST"])
 def get_matches():
     """
@@ -21,7 +20,6 @@ def get_matches():
     """
     cur_user = User(**session.get('cur_user'))
     cur_user.rent = (cur_user.rent, cur_user.rent)
-    print("Flask Cur User", cur_user)
     #if 'tree' not in session:
     user_res = db.session.execute(db.select(model.User).where(model.User.id != cur_user.id))
     all_users = user_res.scalars()
@@ -31,7 +29,6 @@ def get_matches():
     for u in converted_users:
         u.rent = (u.rent, u.rent)
 
-    print("Converted Users", converted_users)
     #user_preferences = decision_tree.get_users_preferences(converted_users)
 
     parameters = decision_tree.read_file("csv_files/decision_tree_parameters.csv")
@@ -43,9 +40,9 @@ def get_matches():
         #session['tree'] = tree
 
     #tree = session['tree']
-    user_suggestions = tree.find_exact_matches(cur_user)
+    user_suggestions = tree.find_exact_matches(cur_user) + [cur_user]
+    #print("suggestions", user_suggestions)
+    my_network = Network()
     my_network.create_network(user_suggestions)
-
-    print(user_suggestions)
 
     return render_template('matches/matches.html', user_matches=user_suggestions)

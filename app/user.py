@@ -65,6 +65,7 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
     5
     """
     users = []
+    usernames = set()
     with open(name_file) as csv_file:
         csv_reader = csv.reader(csv_file)
         name_list = [(line[1], line[3]) for line in csv_reader][1:]
@@ -73,6 +74,11 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
         new_name, new_gender = random.choice(name_list)
         new_age = random.randint(17, 100)
         new_user = new_name.lower() + '_' + str(random.randint(1, 20000))
+
+        while new_user in usernames:
+            new_user = new_name.lower() + '_' + str(random.randint(1, 20000))
+
+        usernames.add(new_user)
 
         # One third of chance to get other as gender
         prob = random.randint(1, 3)

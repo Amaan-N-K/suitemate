@@ -126,8 +126,8 @@ def login():
             error = "Password was not valid"
         else:
             cur_user = convert_to_user_single(user_info[0])
-            print(cur_user)
-            print(user_info[0].gender_pref)
+            # print(cur_user)
+            # print(user_info[0].gender_pref)
             session['cur_user'] = cur_user
             session['username'] = username
             # session['name'] = cur_user.name

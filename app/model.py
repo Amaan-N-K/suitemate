@@ -1,6 +1,8 @@
 from flask import current_app, g
 from flask_sqlalchemy import SQLAlchemy
 from . import db
+import user
+
 
 class User(db.Model):
     """
@@ -41,3 +43,30 @@ class User(db.Model):
     guests = db.Column(db.Integer)
     cleanliness = db.Column(db.Integer)
     num_roommates = db.Column(db.Integer)
+
+
+def convert_to_model(user: user.User) -> User:
+    """
+    Given a user from the original user.py file, return the equivalent User db model.
+    """
+    new_id = user.id
+    new_user = user.username
+    new_pass = "abc123"
+    new_name = user.name
+    new_contact = user.contact
+    new_age = user.age
+    new_gender = user.gender
+    new_gender_pref = user.gender_pref
+    new_smoke = user.smoke
+    new_rent = user.rent
+    new_pets = user.pets
+    new_location = user.location
+    new_noise = user.noise
+    new_guests = user.guests
+    new_cleanliness = user.cleanliness
+    new_num_roommates = user.num_roommates
+
+    new_user = User(new_id, new_user, new_pass, new_name, new_contact, new_age, new_gender, new_gender_pref, new_smoke,
+                    new_rent, new_pets, new_location, new_noise, new_guests, new_cleanliness, new_num_roommates)
+
+    return new_user

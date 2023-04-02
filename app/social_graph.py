@@ -69,6 +69,12 @@ class Network:
         """
         self._users = {}
 
+    def is_empty(self) -> bool:
+        """
+        return if empty
+        """
+        return len(self._users) == 0
+
     def get_user(self, id_of_user: int) -> _User:
         """
         return user
@@ -240,6 +246,19 @@ class Network:
         user2 = random.choice(communities[index_2])
 
         self.add_suggestion(user1.item, user2.item)
+
+    def random_suggestion_user(self, user: User) -> None:
+        """
+        Randomly suggest across diferent communites for this user
+        """
+
+        u1 = self._users[user.id]
+        community = u1.find_all_connected_matches(set())
+        s = set(self._users.keys()).difference(community[0])
+        random_user_id = random.choice(list(s))
+        u2 = self._users[random_user_id]
+        self.add_suggestion(u1.item, u2.item)
+
 
     def print_graph(self):
         """

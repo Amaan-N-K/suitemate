@@ -70,6 +70,12 @@ class Network:
         """
         self._users = {}
 
+    def get_user(self, id_of_user: int) -> _User:
+        """
+        return user
+        """
+        return self._users[id_of_user]
+
     def add_user(self, user: User) -> None:
         """
         add user to given graph

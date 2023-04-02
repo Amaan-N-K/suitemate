@@ -261,6 +261,7 @@ def get_user_preferences(user_: User) -> list[int | str | tuple[int, ...] | bool
     """
     Returns a list of the user's preferences in the same order as seen in the decision_tree
     """
+    print("DT Users", user_)
     rent_ranges = ( (0, 800),
         (801, 1100), (1101, 1400), (1401, 1700),
         (1701, 2000), (2001, 2300), (2301, 2600),

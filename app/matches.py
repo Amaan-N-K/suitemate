@@ -19,22 +19,30 @@ def get_matches():
     View for listing relevant matches for the logged on user.
     """
     cur_user = User(**session.get('cur_user'))
-    if 'tree' not in session:
-        user_res = db.session.execute(db.select(model.User).where(model.User.id != cur_user.id))
-        all_users = user_res.scalars()
+    cur_user.rent = (cur_user.rent, cur_user.rent)
+    print("Flask Cur User", cur_user)
+    #if 'tree' not in session:
+    user_res = db.session.execute(db.select(model.User).where(model.User.id != cur_user.id))
+    all_users = user_res.scalars()
 
-        print(all_users)
 
-        converted_users = find_match.convert_to_user_flask(all_users)
-        user_preferences = decision_tree.get_user_preferences(converted_users)
-        tree = decision_tree.build_decision_tree(user_preferences)
+    converted_users = find_match.convert_to_user_flask(all_users)
+    for u in converted_users:
+        u.rent = (u.rent, u.rent)
 
-        for u in all_users:
-            tree.add_user_to_tree(u)
+    print("Converted Users", converted_users)
+    #user_preferences = decision_tree.get_users_preferences(converted_users)
 
-        session['tree'] = tree
-    else:
-        tree = session['tree']
-        user_matches = tree.find_exact_matches(cur_user)
+    parameters = decision_tree.read_file("csv_files/decision_tree_parameters.csv")
+    tree = decision_tree.build_decision_tree(parameters, None)
+
+    for u in converted_users:
+        tree.add_user_to_tree(u)
+
+        #session['tree'] = tree
+
+    #tree = session['tree']
+    user_matches = tree.find_exact_matches(cur_user)
+    print(user_matches)
 
     return render_template('matches/matches.html', user_matches=user_matches)

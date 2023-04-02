@@ -1,4 +1,5 @@
 import decision_tree
+import random
 import find_match
 from flask import (
     g, session, request, Blueprint, redirect, render_template, flash, url_for, abort
@@ -42,7 +43,7 @@ def get_matches():
     tree.add_user_to_tree(cur_user)
     communities = tree.find_all_leaves()
 
-    my_network.create_network_all(communities, cur_user, 10000)
+    my_network.create_network_all(communities, cur_user, 500)
 
     # cur_user = User(**session.get('cur_user'))
     # cur_user.rent = (cur_user.rent, cur_user.rent)
@@ -56,6 +57,14 @@ def get_matches():
     # my_network.create_network_single_community(user_cluster, cur_user)
 
     suggestions = [sugg.item for sugg in my_network.get_user(cur_user.id).suggestions]
+
+    if suggestions == []:
+        my_network.random_suggestion_user(cur_user) # add atleast one random suggestion
+    else:
+        if random.choice([True, False]):
+            my_network.random_suggestion_user(cur_user)
+
+        suggestions = [sugg.item for sugg in my_network.get_user(cur_user.id).suggestions]
 
     if request.method == 'POST':
         u1 = my_network.get_user(cur_user.id)
@@ -75,12 +84,30 @@ def get_matches():
 
         suggestions.remove(u2.item)
 
-    matches = [sugg.item for sugg in my_network.get_user(cur_user.id).matches]
-    # print(matches)
-    # print(my_network.get_user(cur_user.id).find_all_connected_matches(set()))
-    # my_network.find_new_suggestion(cur_user)
-    # #my_network.random.
-
-    my_network.print_graph()
-
     return render_template('matches/matches.html', user_matches=suggestions)
+
+
+@bp.route("/current_matches", methods=["GET", "POST"])
+def current_matches():
+    cur_user = User(**session.get('cur_user'))
+
+    node = my_network.get_user(cur_user.id)
+    if node is not None:
+        cur_user_matches = [sugg.item for sugg in node.matches]
+    else:
+        cur_user_matches  = []
+
+    return render_template('matches/current_matches.html', cur_user_matches=cur_user_matches)
+
+@bp.route("/community", methods=["GET", "POST"])
+def community():
+    cur_user = User(**session.get('cur_user'))
+
+    node = my_network.get_user(cur_user.id)
+    if node is not None:
+        _, cur_community = node.find_all_connected_matches(set())
+        cur_community = [comm.item for comm in cur_community]
+    else:
+        cur_community = []
+
+    return render_template('matches/community.html', cur_community=cur_community)

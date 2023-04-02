@@ -47,13 +47,12 @@ class _User:
         """
         find all users connected to self.
         """
-        # print('inf')
         visited.add(self.user_id)
         all_users = [self]
         for neighbour in self.matches:
             if neighbour.user_id not in visited:
                 seen, recur = neighbour.find_all_connected_matches(visited.copy())
-                all_users.append(recur)
+                all_users.extend(recur)
                 visited = visited.union(seen)
 
         return (visited, all_users)
@@ -78,11 +77,14 @@ class Network:
         """
         return len(self._users) == 0
 
-    def get_user(self, id_of_user: int) -> _User:
+    def get_user(self, id_of_user: int) -> _User | None:
         """
         return user
         """
-        return self._users[id_of_user]
+        if id_of_user in self._users:
+            return self._users[id_of_user]
+        else:
+            return None
 
     def add_user(self, user: User) -> None:
         """
@@ -278,11 +280,13 @@ class Network:
         #     self.random_accept(user2.item, user1.item)
 
         for _ in range(n):
-            u1 = self._users[random.choice(list(self._users.keys()))]
-            community = u1.find_all_connected_matches(set())
-            s = set(self._users.keys()).difference(community[0])
-            random_user_id = random.choice(list(s))
-            u2 = self._users[random_user_id]
+            keys = list(self._users.keys())
+            u1 = self._users[random.choice(keys)]
+            # community = u1.find_all_connected_matches(set())
+            # s = set(self._users.keys()).difference(community[0])
+            # random_user_id = random.choice(list(s))
+            # u2 = self._users[random_user_id]
+            u2 = self._users[random.choice(keys)]
             self.add_suggestion(u1.item, u2.item)
             # if u1.user_id != exclude.id and u2.user_id != exclude.id:
             #     self.random_request(u1.item, u2.item)
@@ -290,14 +294,16 @@ class Network:
 
     def random_suggestion_user(self, user: User) -> None:
         """
-        Randomly suggest across diferent communites for this user
+        Randomly suggest across different communities for this user
         """
 
         u1 = self._users[user.id]
-        community = u1.find_all_connected_matches(set())
-        s = set(self._users.keys()).difference(community[0])
-        random_user_id = random.choice(list(s))
-        u2 = self._users[random_user_id]
+        # community = u1.find_all_connected_matches(set())
+        # s = set(self._users.keys()).difference(community[0])
+        keys = list(self._users.keys())
+        u2 = self._users[random.choice(keys)]
+        # random_user_id = random.choice(list(s))
+        # u2 = self._users[random_user_id]
         self.add_suggestion(u1.item, u2.item)
 
     def print_graph(self):

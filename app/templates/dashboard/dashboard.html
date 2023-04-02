@@ -68,27 +68,30 @@
       addShowHideModal();
     </script>
   </div>
+  {% with cur_user = session.get("cur_user") %}
     <div class="p-3 flex-fill flex-col">
       <h6 class="flex-fill flex-col">Age</h6>
-      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('age') }}</p>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ cur_user.age }}</p>
       <h6 class="flex-fill flex-col">Gender</h6>
-      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('gender') }}</p>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ cur_user.gender }}</p>
       <h6 class="flex-fill flex-col">Gender Preference</h6>
-      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('gender_pref') }}</p>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ cur_user.gender_pref }}</p>
       <h6 class="flex-fill flex-col">Smoke</h6>
-      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('smoke') }}</p>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ cur_user.smoke }}</p>
       <h6 class="flex-fill flex-col">Rent</h6>
-      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>${{ session.get('rent') }}</p>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>${{ cur_user.rent }}</p>
       <h6 class="flex-fill flex-col">Pets</h6>
-      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('smoke') }}</p>
-      <h6 class="flex-fill flex-col">Smoke</h6>
-      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('smoke') }}</p>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ cur_user.pets }}</p>
+      <h6 class="flex-fill flex-col">Num Roommates</h6>
+      <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ cur_user.num_roommates }}</p>
       <h6 class="flex-fill flex-col">Smoke</h6>
       <p id='nameProfile' class="p-2 text-start border border-dark border-radius rounded-pill" style=>{{ session.get('smoke') }}</p>
     </div>
+  {% endwith %}
   </div>
   </div>
   <div class='new-user-wrapper'>
+    <a href=" {{ url_for('matches.get_matches') }}">
     <button id='findMatch' class='p-4 btn btn-primary' type='button'>Find Me A Match</button>
   </div>
   <script type='text/javascript' src="{{ url_for("static", filename="dashboard.js") }}"></script>

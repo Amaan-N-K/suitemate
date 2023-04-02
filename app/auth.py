@@ -1,8 +1,9 @@
 from flask import (
     g, session, request, Blueprint, redirect, render_template, flash, url_for, abort
 )
-from . import db
-from app.model import User
+from __init__ import db
+from model import User
+from find_match import convert_to_user_single
 from sqlalchemy.exc import IntegrityError
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -46,7 +47,6 @@ def register():
             #     (username, generate_password_hash(password))
             # )
             #print(request.form['first_name'], request.form['age'])
-            print(request.form['smoke'])
             user = User(
                     username=username,
                     password=generate_password_hash(password),
@@ -56,7 +56,7 @@ def register():
                     gender=request.form['gender'],
                     gender_pref=request.form['gender_pref'] == 'yes',
                     smoke=request.form['smoke'] == 'yes',
-                    rent=request.form['rent'],
+                    rent=int(request.form['rent']),
                     pets=request.form['pets'] == 'yes',
                     location=request.form['location'],
                     noise=int(request.form['noise']),
@@ -125,21 +125,23 @@ def login():
         if not authenticated:
             error = "Password was not valid"
         else:
-            cur_user = user_info[0]
+            cur_user = convert_to_user_single(user_info[0])
+            print(cur_user)
+            session['cur_user'] = cur_user
             session['username'] = username
-            session['name'] = cur_user.name
-            session['contact'] = cur_user.contact
-            session['age'] = cur_user.age
-            session['gender'] = cur_user.gender
-            session['gender_pref'] = 'Yes' if cur_user.gender_pref == 'yes' else 'No'
-            session['smoke'] = 'Yes' if cur_user.smoke == 'Yes' else 'No'
-            session['rent'] = cur_user.rent
-            session['pets'] = 'Yes' if cur_user.pets == 'Yes' else 'No'
-            session['location'] = cur_user.location
-            session['noise'] = cur_user.noise
-            session['guests'] = cur_user.guests
-            session['cleanliness'] = int(cur_user.cleanliness)
-            session['num_roommates'] = cur_user.num_roommates
+            # session['name'] = cur_user.name
+            # session['contact'] = cur_user.contact
+            # session['age'] = cur_user.age
+            # session['gender'] = cur_user.gender
+            # session['gender_pref'] = 'Yes' if cur_user.gender_pref == 'yes' else 'No'
+            # session['smoke'] = 'Yes' if cur_user.smoke == 'Yes' else 'No'
+            # session['rent'] = cur_user.rent
+            # session['pets'] = 'Yes' if cur_user.pets == 'Yes' else 'No'
+            # session['location'] = cur_user.location
+            # session['noise'] = cur_user.noise
+            # session['guests'] = cur_user.guests
+            # session['cleanliness'] = int(cur_user.cleanliness)
+            # session['num_roommates'] = cur_user.num_roommates
 
             return redirect(
                 url_for('dashboard.dashboard', username=session['username']))

@@ -26,18 +26,23 @@ def create_app(test_config=None):
     # Registering database initialization
     db.init_app(app)
 
-    from . import auth
+    # from . import auth
+    import auth
     app.register_blueprint(auth.bp)
 
-    from . import dashboard
+    #from . import dashboard
+    import dashboard
     app.register_blueprint(dashboard.bp)
+
+    import matches
+    app.register_blueprint(matches.bp)
 
     def main_template():
         return render_template('base.html')
 
     app.add_url_rule('/', endpoint='home', view_func=main_template)
 
-    from . import model
+    # from . import model
 
     with app.app_context():
         db.create_all()

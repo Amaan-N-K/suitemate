@@ -37,7 +37,7 @@ class UserDB(Base):
         - 17 <= self.age <= 100
         - 1 <= self.num_roommates <= 100
     """
-    __tablename__ = 'users'
+    __tablename__ = 'users_db'
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
@@ -115,6 +115,24 @@ def convert_to_user(eng) -> list[Us]:
 
             accum.append(u)
         return accum
+
+def convert_to_user_flask(users: list[model.User]) -> list[Us]:
+    """
+    conver user
+    """
+    all_users = [convert_to_user_single(u) for u in users]
+    return all_users
+
+def convert_to_user_single(user: model.User) -> Us:
+    """
+    conver user
+    """
+    ret = Us(name=user.name, username=user.username, id=user.id, age=user.age, rent=user.rent,
+           gender=user.gender, gender_pref=user.gender_pref, smoke=user.smoke, pets=user.pets,
+           contact=user.contact, location=user.location, noise=user.noise, guests=user.guests,
+           cleanliness=user.cleanliness, num_roommates=user.num_roommates)
+
+    return ret
 
 
 if __name__ == '__main__':

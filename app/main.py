@@ -67,16 +67,16 @@ def create_data(lst: list[User]) -> list:
 if __name__ == '__main__':
     import doctest
 
-    doctest.testmod()
+    # doctest.testmod()
 
-    test_list = generate_random_users('csv_files/names.csv', 5)
-    test_list = create_data(test_list)
-    create_network(test_list)
+    # test_list = generate_random_users('csv_files/names.csv', 5)
+    # test_list = create_data(test_list)
+    # create_network(test_list)
 
     # Creating and running flask app
-    # from __init__ import create_app
-    # app = create_app()
-    # app.run(debug=True)
+    from __init__ import create_app
+    app = create_app()
+    app.run(debug=True)
 
     # import python_ta
     #

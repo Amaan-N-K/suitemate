@@ -47,13 +47,15 @@ class _User:
         """
         find all users connected to self.
         """
-        print('inf')
+        # print('inf')
         visited.add(self.user_id)
         all_users = [self]
         for neighbour in self.matches:
             if neighbour.user_id not in visited:
-                recur = neighbour.find_all_connected_matches(visited.copy())
-                all_users.append(recur[1])
+                seen, recur = neighbour.find_all_connected_matches(visited.copy())
+                all_users.append(recur)
+                visited = visited.union(seen)
+
         return (visited, all_users)
 
 
@@ -241,16 +243,34 @@ class Network:
             communities = self.find_connected_communities()
             index_1 = random.randint(0, len(communities) - 1)
             index_2 = random.randint(0, len(communities) - 1)
-            while index_1 != index_2:
+
+            while index_1 == index_2:
                 index_2 = random.randint(0, len(communities) - 1)
 
-            user1 = random.choice(communities[index_1])
-            user2 = random.choice(communities[index_2])
+            community1 = communities[index_1]
+            community2 = communities[index_2]
+            user1 = random.choice(community1)
+            user2 = random.choice(community2)
 
-            while user1.user_id != exclude.id and user2.user_id != exclude.id:
-                user1 = random.choice(communities[index_1])
-                user2 = random.choice(communities[index_2])
+            print(user1, user2)
+            if isinstance(user1, list):
+                user1 = user1[0]
+            if isinstance(user2, list):
+                user2 = user2[0]
 
+            while user1.user_id == exclude.id and user2.user_id == exclude.id:
+                # user1 = random.choice(communities[index_1])
+                # user2 = random.choice(communities[index_2])
+
+                user1 = random.choice(community1)
+                user2 = random.choice(community2)
+
+                if isinstance(user1, list):
+                    user1 = user1[0]
+                if isinstance(user2, list):
+                    user2 = user2[0]
+
+            print(user1, user2)
             self.add_suggestion(user1.item, user2.item)
 
             self.random_request(user1.item, user2.item)

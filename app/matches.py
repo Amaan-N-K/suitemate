@@ -31,7 +31,6 @@ def get_matches():
     all_users = user_res.scalars()
 
     converted_users = find_match.convert_to_user_flask(all_users)
-    print(converted_users[-1])
 
     for u in converted_users:
         u.rent = (u.rent, u.rent)

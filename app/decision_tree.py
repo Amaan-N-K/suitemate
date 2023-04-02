@@ -229,7 +229,7 @@ def read_file(preferences_file: str) -> list[tuple[str, tuple[int | str | tuple[
             rent_upper_bound = int(rent_row[i + 1])
             rent_range = (rent_lower_bound, rent_upper_bound)
             rent_ranges.append(rent_range)
-        rent_ranges = tuple(rent_ranges + [(3201, math.inf)])
+        rent_ranges = tuple(rent_ranges + [(3201, 12000)])
         preferences.append((category, rent_ranges))
 
         for row in reader:

@@ -242,14 +242,18 @@ class Network:
             index_2 = random.randint(0, len(communities) - 1)
             while index_1 != index_2:
                 index_2 = random.randint(0, len(communities) - 1)
-            
+
             user1 = random.choice(communities[index_1])
             user2 = random.choice(communities[index_2])
-            
+
+            while user1.item != exclude and user2.item != exclude:
+                user1 = random.choice(communities[index_1])
+                user2 = random.choice(communities[index_2])
+
             self.add_suggestion(user1.item, user2.item)
 
-            self.random_request(u1, u2)
-            self.random_accept(u2, u1)
+            self.random_request(user1.item, user2.item)
+            self.random_accept(user2.item, user1.item)
 
         # for _ in range(n):
         #     u1 = self._users[random.choice(list(self._users.keys()))]
@@ -318,7 +322,6 @@ class Network:
         all suggs
         """
         for suggestion in all_suggestions:
-            self.create_network_single_community(suggestion, exlude)
-        
-        random_suggestions(n=n, exclude)
+            self.create_network_single_community(suggestion, exclude)
 
+        self.random_suggestions(n, exclude)

@@ -262,9 +262,11 @@ class Network:
         """
         create a network from matches
         """
+        visited = set()
         for u1 in suggestions:
             for u2 in suggestions:
-                if u1.id != u2.id:
+                visited.add((u1.id, u2.id))
+                if u1.id != u2.id and (u1.id, u2.id) not in visited and (u2.id, u1.id) not in visited:
                     if not self.check_suggestion(u1, u2):
                         self.add_suggestion(u1, u2)
                     if not self.check_request(u1, u2):

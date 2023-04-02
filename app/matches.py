@@ -73,8 +73,6 @@ def get_matches():
         match_msg = "Successful match"
         flash(match_msg)
 
-        print(u1.item, u2.item)
-        print(suggestions)
         suggestions.remove(u2.item)
 
     matches = [sugg.item for sugg in my_network.get_user(cur_user.id).matches]

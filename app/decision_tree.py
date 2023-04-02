@@ -65,8 +65,22 @@ class DecisionTree:
 
     # @check_contracts
     def get_partitions(self) -> list[DecisionTree]:
-        """Return the partitions of this decision tree."""
+        """
+        Return the partitions of this decision tree.
+        """
         return list(self.partitions.values())
+
+    def count_leaves(self) -> int:
+      """
+      Counts and returns the amount of leaves in the tree.
+      """
+      count = 0
+      if len(self.partitions) == 0:
+        count += 1
+      else:
+        for subtree in self.partitions.values():
+          count += subtree.count_leaves()
+      return count
 
     # @check_contracts
     def add_user_to_tree(self, user_to_add: User) -> None:
@@ -191,6 +205,19 @@ class DecisionTree:
                             return matches
         return matches
 
+    def find_all_leaves(self) -> list[list[User]]:
+        """
+        returns all the users in the tree, each leaf grouped in a list 
+        """
+        all_users = []
+        if len(self.partitions) == 0:
+            all_users.append(self.users)
+            return all_users
+        else:
+            for choice in self.partitions:
+              all_users.extend(self.partitions[choice].find_all_leaves())
+            return all_users
+
 
 # @check_contracts
 def build_decision_tree(preferences: list[tuple[str, tuple[int | str | tuple[int, ...] | bool, ...]]],
@@ -293,20 +320,28 @@ def get_users_preferences(users: list[User]) -> list[list[int | str | tuple[int,
 if __name__ == '__main__':
     parameters = read_file("csv_files/decision_tree_parameters.csv")
     decision_tree = build_decision_tree(parameters, None)
+    # for choice in decision_tree.partitions:
+    #   print(list(decision_tree.partitions[choice].partitions.keys()))
 
     import user
     file = 'csv_files/big_test.csv'
     users = user.csv_read(file)# list of users
-    for u in users[:10]:
+    for u in users:
         decision_tree.add_user_to_tree(u)
-    new_user = User("a", "user", 12, 1, "Male", True, True, (1401, 1700), False, "nah", None, 2, True, 2, 3)
-    print(get_user_preferences(new_user))
-    decision_tree.add_user_to_tree(new_user)
-    new_user = User("b", "user", 100, 1, "Male", True, True, (1401, 1700), True, "nah", None, 2, True, 2, 2)
-    print(get_user_preferences(new_user))
-    decision_tree.add_user_to_tree(new_user)
-    user_to_match = users[0]
-    print(get_user_preferences(user_to_match))
-    print("------")
-    matches_tree = decision_tree.find_closest_matches(user_to_match)
-    print(matches_tree)
+    # new_user = User("a", "user", 12, 1, "Male", True, True, (1401, 1700), False, "nah", None, 2, True, 2, 3)
+    # print(get_user_preferences(new_user))
+    # decision_tree.add_user_to_tree(new_user)
+    # new_user = User("b", "user", 100, 1, "Male", True, True, (1401, 1700), True, "nah", None, 2, True, 2, 2)
+    # print(get_user_preferences(new_user))
+    # decision_tree.add_user_to_tree(new_user)
+    # user_to_match = users[0]
+    # print(get_user_preferences(user_to_match))
+    # print("------")
+    # matches_tree = decision_tree.find_closest_matches(user_to_match)
+    # print(matches_tree)
+    # print(decision_tree.count_leaves())
+    print(decision_tree.find_all_leaves())
+    print(len(decision_tree.find_all_leaves()))
+    new_user = User(name='c', username='c', id=68e2, age=21, gender='other', gender_pref=True, smoke=True, rent=(1956, 2128), pets=True, contact='jacquelyn162@gmail.com', location=('Toronto', 'Ontario'), noise=1, guests=True, cleanliness=2, num_roommates=3)
+    print(decision_tree.find_closest_matches(new_user))
+    # User(name='Jacquelyn', username='jacquelyn_611', id=682, age=81, gender='other', gender_pref=True, smoke=True, rent=(1956, 2128), pets=True, contact='jacquelyn162@gmail.com', location=('Toronto', 'Ontario'), noise=1, guests=True, cleanliness=2, num_roommates=3)

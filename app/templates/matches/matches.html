@@ -1,37 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 {% for match in user_matches %}
-<!--<div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">{{match.username}} | {{match.name}}</h5>
-      <p class="card-text">
-        Age: {{match.age}} 
-        Gender: {{match.gender}}
-        Rent: {{match.rent}}
-        # of Roommates: {{match.roommates}}
-        {% if match.pets %}
-            Pets: Allowed
-        {% else %}
-            Pets: Not allowed
-        {% endif %}
-        Cleanliness: {{match.cleanliness}}
-        {% if match.guests %}
-            Guests: Allowed
-        {% else %}
-            Guests: Not allowed
-        {% endif %}
-        {% if match.smoking %}
-            Smoking: Allowed
-        {% else %}
-            Smoking: Not allowed
-        {% endif %}
-        {{match.noise}}
-      </p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-</div> -->
-<form action="" method="post">
+<form action="" method="post">  
+<h1><={{match}}</h1>
 <div class="card" style="width: 18rem;">
     <img src="..." class="card-img-top" alt="...">
     <div class="card-body">
@@ -64,12 +35,43 @@
             <button class="submit" type="submit" name="other_id", value="{{ match.id }}">
             Match Request
             </button>
-
-
         </div>
     </div>
-  </div>
+  </div>   
 </form>
+{% endfor %}
+{% endblock %}
+<!--<div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{match.username}} | {{match.name}}</h5>
+      <p class="card-text">
+        Age: {{match.age}} 
+        Gender: {{match.gender}}
+        Rent: {{match.rent}}
+        # of Roommates: {{match.roommates}}
+        {% if match.pets %}
+            Pets: Allowed
+        {% else %}
+            Pets: Not allowed
+        {% endif %}
+        Cleanliness: {{match.cleanliness}}
+        {% if match.guests %}
+            Guests: Allowed
+        {% else %}
+            Guests: Not allowed
+        {% endif %}
+        {% if match.smoking %}
+            Smoking: Allowed
+        {% else %}
+            Smoking: Not allowed
+        {% endif %}
+        {{match.noise}}
+      </p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+</div> -->
+
 <!-- <div id="carouselExample" class="carousel slide">
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -100,6 +102,3 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div> -->
-{% endfor %}
-{% endblock %}
-

@@ -31,7 +31,6 @@ class _User:
         move request to match.
         """
 
-        print(other.item)
         self.requests.remove(other)
         self.matches.add(other)
         other.matches.add(self)
@@ -134,7 +133,6 @@ class Network:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
         """
-        print(1)
         u1 = self._users[user1.id]
         u2 = self._users[user2.id]
         u1.accept_request(u2)

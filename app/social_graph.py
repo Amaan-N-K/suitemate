@@ -52,8 +52,8 @@ class _User:
         all_users = [self]
         for neighbour in self.matches:
             if neighbour.user_id not in visited:
-                all_users.append(self)
-                all_users.append(neighbour.find_all_connected_matches(visited)[1])
+                recur = neighbour.find_all_connected_matches(visited.copy())
+                all_users.append(recur[1])
         return (visited, all_users)
 
 

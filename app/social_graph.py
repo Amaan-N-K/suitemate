@@ -31,7 +31,6 @@ class _User:
         move request to match.
         """
 
-        print(other.item)
         self.requests.remove(other)
         self.matches.add(other)
         other.matches.add(self)

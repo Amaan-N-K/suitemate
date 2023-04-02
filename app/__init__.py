@@ -34,7 +34,7 @@ def create_app(test_config=None):
         print('this has run')
         db.session.query(model.User).delete()
         db.session.commit()
-        list_users = generate_random_users('csv_files/names.csv', 20000)
+        list_users = generate_random_users('csv_files/names.csv', 10000)
         entry = []
         for u in list_users:
             converted = model.convert_to_model(u)

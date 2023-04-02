@@ -232,26 +232,32 @@ class Network:
                 communities.append(connected[1])
         return communities
 
-    def random_suggestion(self) -> None:
+    def random_suggestions(self, n: Optional[int] = 1, exclude: User) -> None:
         """
         Randomly suggest users to each other from different communities
         """
-        # communities = self.find_connected_communities()
-        # index_1 = random.randint(0, len(communities) - 1)
-        # index_2 = random.randint(0, len(communities) - 1)
-        # while index_1 != index_2:
-        #     index_2 = random.randint(0, len(communities) - 1)
-        #
-        # user1 = random.choice(communities[index_1])
-        # user2 = random.choice(communities[index_2])
-        #
-        # self.add_suggestion(user1.item, user2.item)
-        u1 = self._users[random.choice(list(self._users.keys()))]
-        community = u1.find_all_connected_matches(set())
-        s = set(self._users.keys()).difference(community[0])
-        random_user_id = random.choice(list(s))
-        u2 = self._users[random_user_id]
-        self.add_suggestion(u1.item, u2.item)
+        for _ in range(n):
+            communities = self.find_connected_communities()
+            index_1 = random.randint(0, len(communities) - 1)
+            index_2 = random.randint(0, len(communities) - 1)
+            while index_1 != index_2:
+                index_2 = random.randint(0, len(communities) - 1)
+            
+            user1 = random.choice(communities[index_1])
+            user2 = random.choice(communities[index_2])
+            
+            self.add_suggestion(user1.item, user2.item)
+
+            self.random_request(u1, u2)
+            self.random_accept(u2, u1)
+
+        # for _ in range(n):
+        #     u1 = self._users[random.choice(list(self._users.keys()))]
+        #     community = u1.find_all_connected_matches(set())
+        #     s = set(self._users.keys()).difference(community[0])
+        #     random_user_id = random.choice(list(s))
+        #     u2 = self._users[random_user_id]
+        #     self.add_suggestion(u1.item, u2.item)
 
     def random_suggestion_user(self, user: User) -> None:
         """
@@ -307,9 +313,12 @@ class Network:
 
                 visited.add((u1.id, u2.id))
 
-    def create_network_all(self, all_suggestions: list[list[User]], exlude: User) -> None:
+    def create_network_all(self, all_suggestions: list[list[User]], exclude: User, n: Optional[int] = 1000) -> None:
         """
         all suggs
         """
         for suggestion in all_suggestions:
             self.create_network_single_community(suggestion, exlude)
+        
+        random_suggestions(n=n, exclude)
+

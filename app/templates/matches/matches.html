@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% for match in user_matches %}
-<div class="card" style="width: 18rem;">
+<!--<div class="card" style="width: 18rem;">
     <img src="..." class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">{{match.username}} | {{match.name}}</h5>
@@ -30,7 +30,46 @@
       </p>
       <a href="#" class="btn btn-primary">Go somewhere</a>
     </div>
+</div> -->
+<form action="" method="post">
+<div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{match.username}} | {{match.name}}</h5>
+      <p class="card-text">
+        Age: {{match.age}}
+        Gender: {{match.gender}}
+        Rent: {{match.rent}}
+        ID: {{match.id}}
+        # of Roommates: {{match.roommates}}
+        {% if match.pets %}
+            Pets: Allowed
+        {% else %}
+            Pets: Not allowed
+        {% endif %}
+        Cleanliness: {{match.cleanliness}}
+        {% if match.guests %}
+            Guests: Allowed
+        {% else %}
+            Guests: Not allowed
+        {% endif %}
+        {% if match.smoking %}
+            Smoking: Allowed
+        {% else %}
+            Smoking: Not allowed
+        {% endif %}
+        {{match.noise}}
+      </p>
+        <div class="auth-field">
+            <button class="submit" type="submit" name="other_id", value="{{ match.id }}">
+            Match Request
+            </button>
+
+
+        </div>
+    </div>
   </div>
+</form>
 <!-- <div id="carouselExample" class="carousel slide">
     <div class="carousel-inner">
       <div class="carousel-item active">

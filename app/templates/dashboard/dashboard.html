@@ -90,10 +90,23 @@
   {% endwith %}
   </div>
   </div>
-  <div class='new-user-wrapper'>
+<div class="p-2 d-flex align-items-stretch border border-dark border-radius rounded-pill">
+   <div class='flex-fill new-user-wrapper'>
     <a href=" {{ url_for('matches.get_matches') }}">
     <button id='findMatch' class='p-4 btn btn-primary' type='button'>Find Me A Match</button>
+    </a>
   </div>
+  <div class='flex-fill new-user-wrapper'>
+    <a href=" {{ url_for('matches.get_matches') }}">
+    <button id='currentMatches' class='p-4 btn btn-primary' type='button'>Current Matches</button>
+    </a>
+  </div>
+  <div class='flex-fill new-user-wrapper'>
+    <a href=" {{ url_for('matches.get_matches') }}">
+    <button id='Look at Community' class='p-4 btn btn-primary' type='button'>View Community</button>
+    </a>
+  </div>
+</div>
   <script type='text/javascript' src="{{ url_for("static", filename="dashboard.js") }}"></script>
   <script type='text/javascript'>
     addShowHideModal();

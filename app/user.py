@@ -81,8 +81,8 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
         else:
             new_gender = 'Male' if new_gender == 'boy' else 'Female'
 
-        low_bound_rent = round(abs(random.gauss(1100, 300)))
-        user = User(new_name, new_user, i, new_age, new_gender, 
+        low_bound_rent = min(round(abs(random.gauss(1100, 300))), 10000)
+        user = User(new_name, new_user, i, new_age, new_gender,
                     gender_pref=random.choice([True, False]),
                     smoke=random.choice([True, False]),
                     rent=(low_bound_rent, round(low_bound_rent + random.uniform(0, 200))),
@@ -107,7 +107,7 @@ def csv_write(users: list[User], dest: str) -> None:
     with open(dest, 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
         for user in users:
-            csv_writer.writerow([user.name, user.username, str(user.id), 
+            csv_writer.writerow([user.name, user.username, str(user.id),
                                  str(user.age), user.gender, str(user.gender_pref),
                                  str(user.smoke), str(user.rent), str(user.pets),
                                  str(user.contact), str(user.location),
@@ -179,7 +179,7 @@ def csv_read(user_file: str) -> list[User]:
             else:
                 num_roommates = int(row[14])
 
-            new_user = User(name, username, id, age, gender, gender_pref, 
+            new_user = User(name, username, id, age, gender, gender_pref,
                             smoke, rent, pets, contact, location, noise,
                             guests, cleanliness, num_roommates
             )
@@ -196,7 +196,7 @@ if __name__ == '__main__':
     # csv_write(generate_random_users('csv_files/names.csv', 5), 'csv_files/test.csv')
 
     # import python_ta
-    # 
+    #
     # python_ta.check_all(config={
     #     'max-line-length': 120
     # })

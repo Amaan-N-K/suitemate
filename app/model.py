@@ -1,9 +1,9 @@
 from flask import current_app, g
 from flask_sqlalchemy import SQLAlchemy
-from . import db
+# from . import db
 import user
 
-
+db = SQLAlchemy()
 class User(db.Model):
     """
     A custom data type that represents each user

@@ -18,7 +18,7 @@ from flask import (
     g, session, request, Blueprint, redirect, render_template, flash, url_for
 )
 from __init__ import db
-from find_match import convert_to_user_flask, convert_to_user_single
+from db_helpers import convert_to_user_flask, convert_to_user_single
 import model
 from sqlalchemy.exc import IntegrityError
 from user import User
@@ -55,15 +55,24 @@ def get_matches():
     tree.add_user_to_tree(cur_user)
     communities = tree.find_all_leaves()
 
-    my_network.create_network_all(communities, cur_user, 50)
+    # Change this number to modify the number of random suggestions given between two random
+    # users in the graph when the webpage is reloaded or recieves a request. Feel free 
+    # to increase the number of random connections (performance hits should be expected 
+    # for large # of suggestions added). 1000 is another good number to try out. Note this
+    # can get expecially slow with when simple=False for our user suggestions
+    my_network.create_network_all(communities, cur_user, 100)
 
     suggestions = [sugg.item for sugg in my_network.get_user(cur_user.id).suggestions]
 
     if suggestions == []:
-        my_network.random_suggestion_user(cur_user) # add atleast one random suggestion
+        # add atleast one random suggestion
+        # Change simple to false to run community matching algorithm. Warning: slow
+        # for large number of users (which can be adjusted in __init__), can cause
+        # lots of stack frames being added for large networks
+        my_network.random_suggestion_user(cur_user, simple=True)
     else:
         if random.choice([True, False]):
-            my_network.random_suggestion_user(cur_user)
+            my_network.random_suggestion_user(cur_user, simple=True)
 
         suggestions = [sugg.item for sugg in my_network.get_user(cur_user.id).suggestions]
 
@@ -123,11 +132,12 @@ def community():
 
     return render_template('matches/community.html', cur_community=cur_community)
 
-# if __name__ == '__main__':
-#     import python_ta
-#     
-#     python_ta.check_all(config={
-#         'max-line-length': 120,
-#         'extra-imports': ['flask', 'decision_tree', 'random', 'model', 
-#                           'sqlalchemy', 'user', 'main', 'social_graph', 'auth']
-#     })
+
+if __name__ == '__main__':
+    import python_ta
+    
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'extra-imports': ['flask', 'decision_tree', 'random', 'model', 
+                          'sqlalchemy', 'user', 'main', 'social_graph', 'auth']
+    })

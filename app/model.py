@@ -17,8 +17,10 @@ class from SQLAlchemy.
 
 The classes here should not be accessed outside of a Flask app context.
 """
-from __init__ import db
+# from __init__ import db
+from flask_sqlalchemy import SQLAlchemy
 import user
+db = SQLAlchemy()
 
 
 class User(db.Model):

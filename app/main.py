@@ -1,9 +1,15 @@
 """
-Simulation of the suitemate program
+CSC111 Winter 2023 Final Project: suitemate
+
+Derek Huynh, James Yung, Andrew Xie, Amaan Khan
+
+================================================
+
+Main file responsible for running the flask app. Simply type "python main.py"
+to launch the website and navigate to localhost:5000 in your browser (or just
+click the link provided in the console).
 """
 from __future__ import annotations
-
-import random
 
 from social_graph import Network
 from user import User
@@ -64,16 +70,17 @@ def create_data(lst: list[User]) -> list:
 
 
 if __name__ == '__main__':
-    # import python_ta
-    # 
-    # python_ta.check_all(config={
-    #     'max-line-length': 120
-    # })
+    import python_ta
+    
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'extra-imports': [],
+        'disable': ['unused-import', 'R1702', 'E9998', 'E9999', 'W0125'],
+        'allowed-io': ['read_packet_csv']
+    })
 
     # Creating and running flask app
     from __init__ import create_app, db
-    import model
 
     app = create_app()
     app.run(debug=False)
-

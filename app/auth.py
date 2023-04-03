@@ -17,7 +17,7 @@ from flask import (
 )
 from __init__ import db
 from model import User
-from find_match import convert_to_user_single
+from db_helpers import convert_to_user_single
 from sqlalchemy.exc import IntegrityError
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -170,8 +170,8 @@ def requires_auth(view):
     return check_auth
 
 
-# if __name__ == '__main__':
-#     import python_ta
-#     python_ta.check_all(config={
-#         'max-line-length': 120
-#     })
+if __name__ == '__main__':
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120
+    })

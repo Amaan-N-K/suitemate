@@ -1,5 +1,5 @@
 """
-CSC111 Winter 2023 Final Project: Suite Mate
+CSC111 Winter 2023 Final Project: suitemate
 
 Derek Huynh, James Yung, Andrew Xie, Amaan Khan
 
@@ -17,6 +17,7 @@ import os
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from python_ta.contracts import check_contracts
+import model
 
 db = SQLAlchemy()
 
@@ -44,7 +45,6 @@ def create_app(test_config=None):
     # Registering database initialization
     db.init_app(app)
 
-    import model
     from user import generate_random_users
 
     @app.before_first_request

@@ -306,18 +306,27 @@ class Network:
             u2 = self._users[random.choice(keys)]
             self.add_suggestion(u1.item, u2.item)
 
-    def random_suggestion_user(self, user: User) -> None:
+    def random_suggestion_user(self, user: User, simple: Optional[bool] = True) -> None:
         """
         Randomly suggest across different communities for this user.
 
         Preconditions:
             - len(self._users) >= 2
         """
-
-        u1 = self._users[user.id]
-        keys = list(self._users.keys())
-        u2 = self._users[random.choice(keys)]
-        self.add_suggestion(u1.item, u2.item)
+        if simple:
+            u1 = self._users[user.id]
+            keys = list(self._users.keys())
+            u2 = self._users[random.choice(keys)]
+            self.add_suggestion(u1.item, u2.item)
+        else:
+            u1 = self._users[user.id]
+            community = u1.find_all_connected_matches(set())
+            s = set(self._users.keys()).difference(community[0])
+            keys = list(self._users.keys())
+            u2 = self._users[random.choice(keys)]
+            random_user_id = random.choice(list(s))
+            u2 = self._users[random_user_id]
+            self.add_suggestion(u1.item, u2.item)
 
     def print_graph(self):
         """

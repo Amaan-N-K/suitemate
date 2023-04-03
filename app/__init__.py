@@ -1,9 +1,25 @@
+"""
+CSC111 Winter 2023 Final Project: Suite Mate
+
+Derek Huynh, James Yung, Andrew Xie, Amaan Khan
+
+================================================
+
+This module is where we create our flask app which is responsible for serving all of our api endpoints
+and is used for all of flask modules and defining our SQLAlchemy database
+
+Comment out check contracts to generate users more quickly.
+"""
+
 import os
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
+from python_ta.contracts import check_contracts
 
 db = SQLAlchemy()
 
+
+# @check_contracts
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 

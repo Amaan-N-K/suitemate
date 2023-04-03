@@ -366,8 +366,6 @@ def get_users_preferences(users: list[User]) -> list[list[int | str | tuple[int,
 
 
 if __name__ == '__main__':
-    parameters = read_file("csv_files/decision_tree_parameters.csv")
-    decision_tree = build_decision_tree(parameters, None)
     # import python_ta
     # python_ta.check_all(config={
     #     'max-line-length': 120,
@@ -375,32 +373,15 @@ if __name__ == '__main__':
     #     'disable': ['unused-import'],
     #     'allowed-io': ['read_packet_csv']
     # })
+
+
+    # parameters = read_file("csv_files/decision_tree_parameters.csv")
+    # decision_tree = build_decision_tree(parameters, None)
     # for choice in decision_tree.partitions:
     #   print(list(decision_tree.partitions[choice].partitions.keys()))
 
-    import user
-    file = 'csv_files/big_test.csv'
-    users = user.csv_read(file)# list of users
-    for u in users:
-        decision_tree.add_user_to_tree(u)
-    # new_user = User("a", "user", 12, 1, "Male", True, True, (1401, 1700), False, "nah", None, 2, True, 2, 3)
-    # print(get_user_preferences(new_user))
-    # decision_tree.add_user_to_tree(new_user)
-    # new_user = User("b", "user", 100, 1, "Male", True, True, (1401, 1700), True, "nah", None, 2, True, 2, 2)
-    # print(get_user_preferences(new_user))
-    # decision_tree.add_user_to_tree(new_user)
-    # user_to_match = users[0]
-    # print(get_user_preferences(user_to_match))
-    # print("------")
-    # matches_tree = decision_tree.find_closest_matches(user_to_match)
-    # print(matches_tree)
-    # print(decision_tree.count_leaves())
-    # for lst in decision_tree.find_all_leaves():
-    #   for u in lst:
-    #     if not isinstance(u, User):
-    #       print(False)
-    # print(True)
-    # print(len(decision_tree.find_all_leaves()))
-    # new_user = User(name='c', username='c', id=68e2, age=21, gender='other', gender_pref=True, smoke=True, rent=(1956, 2128), pets=True, contact='jacquelyn162@gmail.com', location=('Toronto', 'Ontario'), noise=1, guests=True, cleanliness=2, num_roommates=3)
-    # print(decision_tree.find_closest_matches(new_user))
-    # User(name='Jacquelyn', username='jacquelyn_611', id=682, age=81, gender='other', gender_pref=True, smoke=True, rent=(1956, 2128), pets=True, contact='jacquelyn162@gmail.com', location=('Toronto', 'Ontario'), noise=1, guests=True, cleanliness=2, num_roommates=3)
+    # import user
+    # file = 'csv_files/big_test.csv'
+    # users = user.csv_read(file)# list of users
+    # for u in users:
+    #     decision_tree.add_user_to_tree(u)

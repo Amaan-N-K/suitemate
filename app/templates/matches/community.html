@@ -4,7 +4,35 @@
     <h1>No community so far!</h1>
 {% else %}
     {% for u in cur_community %}
-        <h1>{{u}}</h1>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{u.username}} | {{u.name}}</h5>
+          <p class="card-text">
+            Contact: {{u.contact}} <br>
+            Age: {{u.age}} <br>
+            Gender: {{u.gender}} <br>
+            Rent: {{u.rent}} <br>
+            # of Roommates: {{u.roommates}} <br>
+            {% if u.pets %}
+                Pets: Allowed <br>
+            {% else %}
+                Pets: Not allowed <br>
+            {% endif %}
+            Cleanliness: {{u.cleanliness}} <br>
+            {% if u.guests %}
+                Guests: Allowed <br>
+            {% else %}
+                Guests: Not allowed <br>
+            {% endif %}
+            {% if u.smoking %}
+                Smoking: Allowed <br>
+            {% else %}
+                Smoking: Not allowed <br>
+            {% endif %}
+            Noise level: {{u.noise}}
+          </p>
+        </div>
+      </div>
     {% endfor %}
 {% endif %}
 {% endblock %}

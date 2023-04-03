@@ -335,10 +335,13 @@ def get_user_preferences(user_: User) -> list[int | str | tuple[int, ...] | bool
                    (2001, 2300), (2301, 2600), (2601, 2900), (2901, 3200), (3201, 12000))
     user_rent_range = None
     mid = (user_.rent[0] + user_.rent[1]) // 2
-    for low, high in rent_ranges:
-        if low <= mid <= high:
-            user_rent_range = (low, high)
-            break
+    if user_.rent[0] > 12000:
+        user_rent_range = rent_ranges[-1]
+    else:
+        for low, high in rent_ranges:
+            if low <= mid <= high:
+                user_rent_range = (low, high)
+                break
 
     return [user_rent_range, user_.gender_pref, user_.num_roommates, user_.pets,
             user_.cleanliness, user_.guests, user_.smoke, user_.noise]

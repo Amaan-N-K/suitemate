@@ -20,6 +20,7 @@ The classes here should not be accessed outside of a Flask app context.
 from __init__ import db
 import user
 
+
 class User(db.Model):
     """
     A custom data type that inherits from the SQLAlchemy ORM base declarative class.
@@ -126,11 +127,11 @@ def convert_and_write(users: list[User]) -> None:
             db.session.commit()
 
 
-if __name__ == '__main__':
-    import python_ta
-
-    python_ta.check_all(config={
-        'max-line-length': 120,
-        'extra-imports': ['user', '__init__'],
-        'disable': ['abstract-method', 'unused-import']
-    })
+# if __name__ == '__main__':
+#     import python_ta
+# 
+#     python_ta.check_all(config={
+#         'max-line-length': 120,
+#         'extra-imports': ['user', '__init__'],
+#         'disable': ['abstract-method', 'unused-import']
+#     })

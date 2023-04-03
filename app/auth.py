@@ -62,7 +62,7 @@ def register():
                     pets=request.form['pets'] == 'True',
                     location=request.form['location'],
                     noise=int(request.form['noise']),
-                    guests=bool(request.form['guests']),
+                    guests=request.form['guests'] == 'True',
                     cleanliness=int(request.form['cleanliness']),
                     num_roommates=int(request.form['num_roommates']),
 
@@ -170,8 +170,8 @@ def requires_auth(view):
     return check_auth
 
 
-if __name__ == '__main__':
-    import python_ta
-    python_ta.check_all(config={
-        'max-line-length': 120
-    })
+# if __name__ == '__main__':
+#     import python_ta
+#     python_ta.check_all(config={
+#         'max-line-length': 120
+#     })

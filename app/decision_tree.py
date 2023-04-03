@@ -6,13 +6,10 @@ Derek Huynh, James Yung, Andrew Xie, Amaan Khan
 ================================================
 
 This module is where we implemented our decision tree which is generated from a csv file containing the
-parameters of the tree. The preferences of the users are nodes in the tree in order of most ot least important
-from the node to the leaves, where the users with the corresponding preferences are stored. Each DecisionTree
-type represents the current category, or preference choice being made, and deicision which stores the decision
-made at the previous node. Subtrees are also called partitions and stored as dictionaries, with the choice being
-the key and the parititon being the value. The users are stored in a list called users at leaves. With this tree,
-you can add users to it and find possible room mates based off of their preferences by calling the appropriate
-methods.
+parameters of the tree. 
+
+The preferences of the users are nodes in the tree in order of most to least important
+from the node to the leaves, where the users with the corresponding preferences are stored.
 
 This module also includes functions that returns the preferences of the users in order of importance
 and the csv read for the parameters decision tree.
@@ -36,10 +33,10 @@ class DecisionTree:
 
     Instance Attributes
     ---
-    user: the user that the tree is making predictions for. The DecisionTree will access
-          its data
     category: the category that each child will split up
-    _partitions: the segmentations of the population based on the current particular category.
+    decision: the decision made from the parent if applicable
+    users: an optional list of users that have the same combination of preferences to end up in that leaf
+    partitions: the segmentations of the population based on the current particular category.
 
     Representation Invariants:
         - (len(self.partitions) == 0 and len(self.users) >= 0) or (len(self.partitions) > 0 and len(self.users) == 0)

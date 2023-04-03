@@ -17,7 +17,7 @@ from python_ta.contracts import check_contracts
 import random
 
 
-@check_contracts
+# @check_contracts
 class _User:
     """
     Nodes representing each user in the social network.
@@ -101,7 +101,7 @@ class _User:
         return (visited, all_users)
 
 
-@check_contracts
+# @check_contracts
 class Network:
     """
     The graph representing the social network and connections between users

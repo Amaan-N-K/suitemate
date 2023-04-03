@@ -23,8 +23,8 @@ from __future__ import annotations
 import math
 import csv
 from typing import Optional
-from user import User
 from python_ta.contracts import check_contracts
+from user import User
 
 
 # @check_contracts

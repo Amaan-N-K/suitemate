@@ -6,7 +6,7 @@ from python_ta.contracts import check_contracts
 from typing import Optional
 from sqlalchemy.orm import Session, DeclarativeBase
 from sqlalchemy import create_engine, select, Column, Integer, String, Boolean, Float
-from user import User as Us
+from user import User
 from user import generate_random_users
 import social_graph
 import model

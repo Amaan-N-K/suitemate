@@ -20,8 +20,9 @@ from typing import Optional
 from python_ta.contracts import check_contracts
 
 
+
+# @check_contracts
 @dataclass
-@check_contracts
 class User:
     """
     A custom data type that represents each user
@@ -64,7 +65,7 @@ class User:
     num_roommates: Optional[int] = None  # 1, 2, 3, 4 or more
 
 
-@check_contracts
+# @check_contracts
 def generate_random_users(name_file: str, num_user: int) -> list[User]:
     """
     generate a random list of users. Number of users wanted in the generated can be specified
@@ -115,7 +116,7 @@ def generate_random_users(name_file: str, num_user: int) -> list[User]:
     return users
 
 
-@check_contracts
+# @check_contracts
 def csv_write(users: list[User], dest: str) -> None:
     """
     Overwrite a given csv file with a given list of user data.
@@ -131,7 +132,7 @@ def csv_write(users: list[User], dest: str) -> None:
                                  str(user.num_roommates)])
 
 
-@check_contracts
+# @check_contracts
 def csv_read(user_file: str) -> list[User]:
     """
     csv file reader. This function returns a list of users from a given csv file.

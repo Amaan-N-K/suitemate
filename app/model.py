@@ -127,11 +127,11 @@ def convert_and_write(users: list[User]) -> None:
             db.session.commit()
 
 
-if __name__ == '__main__':
-    import python_ta
-
-    python_ta.check_all(config={
-        'max-line-length': 120,
-        'extra-imports': ['user', '__init__'],
-        'disable': ['abstract-method', 'unused-import']
-    })
+# if __name__ == '__main__':
+#     import python_ta
+# 
+#     python_ta.check_all(config={
+#         'max-line-length': 120,
+#         'extra-imports': ['user', '__init__'],
+#         'disable': ['abstract-method', 'unused-import']
+#     })

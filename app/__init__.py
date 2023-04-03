@@ -6,7 +6,9 @@ Derek Huynh, James Yung, Andrew Xie, Amaan Khan
 ================================================
 
 This module is where we create our flask app which is responsible for serving all of our api endpoints
-and is used for all of flask modules and defining our SQLAlchemy database
+and is used for all of flask modules and defining our SQLAlchemy database. Here we also generate a
+synthetic dataset of users and do a mass insertion into our database. You can edit the number of users
+inserted into the data base to scale your simulation. We found that 20,000 was a reasonable number.
 
 Comment out check contracts to generate users more quickly.
 """
@@ -47,8 +49,11 @@ def create_app(test_config=None):
 
     @app.before_first_request
     def generate_users_and_insert_into_db():
+        # Clear the db after opening up a new session
         db.session.query(model.User).delete()
         db.session.commit()
+
+        # Feel free to edit the number of users to generate
         list_users = generate_random_users('csv_files/names.csv', 20000)
         entry = []
         for u in list_users:
@@ -57,11 +62,9 @@ def create_app(test_config=None):
         db.session.add_all(entry)
         db.session.commit()
 
-    # from . import auth
     import auth
     app.register_blueprint(auth.bp)
 
-    #from . import dashboard
     import dashboard
     app.register_blueprint(dashboard.bp)
 
@@ -72,8 +75,6 @@ def create_app(test_config=None):
         return render_template('base.html')
 
     app.add_url_rule('/', endpoint='home', view_func=main_template)
-
-    # from . import model
 
     with app.app_context():
         db.create_all()

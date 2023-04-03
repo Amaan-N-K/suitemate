@@ -55,7 +55,7 @@ def get_matches():
     tree.add_user_to_tree(cur_user)
     communities = tree.find_all_leaves()
 
-    my_network.create_network_all(communities, cur_user, 500)
+    my_network.create_network_all(communities, cur_user, 50)
 
     suggestions = [sugg.item for sugg in my_network.get_user(cur_user.id).suggestions]
 
@@ -123,11 +123,11 @@ def community():
 
     return render_template('matches/community.html', cur_community=cur_community)
 
-if __name__ == '__main__':
-    import python_ta
-    
-    python_ta.check_all(config={
-        'max-line-length': 120,
-        'extra-imports': ['flask', 'decision_tree', 'random', 'model', 
-                          'sqlalchemy', 'user', 'main', 'social_graph', 'auth']
-    })
+# if __name__ == '__main__':
+#     import python_ta
+#     
+#     python_ta.check_all(config={
+#         'max-line-length': 120,
+#         'extra-imports': ['flask', 'decision_tree', 'random', 'model', 
+#                           'sqlalchemy', 'user', 'main', 'social_graph', 'auth']
+#     })

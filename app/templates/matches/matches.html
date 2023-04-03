@@ -1,34 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="d-flex flex-column justify-content-center">
 {% for match in user_matches %}
 <form action="" method="post">
 <div class="card" style="width: 18rem;">
     <div class="card-body">
       <h5 class="card-title">{{match.username}} | {{match.name}}</h5>
       <p class="card-text">
-        Age: {{match.age}}
-        Gender: {{match.gender}}
-        Rent: {{match.rent}}
-        ID: {{match.id}}
-        # of Roommates: {{match.roommates}}
+        Age: {{match.age}} <br>
+        Gender: {{match.gender}} <br>
+        Rent: {{match.rent}} <br>
+        # of Roommates: {{match.roommates}} <br>
         {% if match.pets %}
-            Pets: Allowed
+            Pets: Allowed <br>
         {% else %}
-            Pets: Not allowed
+            Pets: Not allowed <br>
         {% endif %}
-        Cleanliness: {{match.cleanliness}}
+        Cleanliness: {{match.cleanliness}} <br>
         {% if match.guests %}
-            Guests: Allowed
+            Guests: Allowed <br>
         {% else %}
-            Guests: Not allowed
+            Guests: Not allowed <br>
         {% endif %}
         {% if match.smoking %}
-            Smoking: Allowed
+            Smoking: Allowed <br>
         {% else %}
-            Smoking: Not allowed
+            Smoking: Not allowed <br>
         {% endif %}
-        {{match.noise}}
+        Noise level: {{match.noise}}
       </p>
         <div class="auth-field">
             <button class="submit" type="submit" name="other_id", value="{{ match.id }}">
@@ -41,5 +39,4 @@
   </div>
 </form>
 {% endfor %}
-</div>
 {% endblock %}

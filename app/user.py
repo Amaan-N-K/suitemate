@@ -1,5 +1,5 @@
 """
-CSC111 Winter 2023 Final Project: Suite Mate
+CSC111 Winter 2023 Final Project: suitemate
 
 Derek Huynh, James Yung, Andrew Xie, Amaan Khan
 
@@ -21,7 +21,7 @@ from python_ta.contracts import check_contracts
 
 
 @dataclass
-# @check_contracts
+@check_contracts
 class User:
     """
     A custom data type that represents each user
@@ -46,7 +46,6 @@ class User:
     Representation Invariants:
         - 17 <= self.age <= 100
         - 1 <= self.num_roommates <= 4
-
     """
     name: str
     username: str
@@ -65,7 +64,7 @@ class User:
     num_roommates: Optional[int] = None  # 1, 2, 3, 4 or more
 
 
-# @check_contracts
+@check_contracts
 def generate_random_users(name_file: str, num_user: int) -> list[User]:
     """
     generate a random list of users. Number of users wanted in the generated can be specified
@@ -200,21 +199,18 @@ def csv_read(user_file: str) -> list[User]:
             new_user = User(name, username, id, age, gender, gender_pref,
                             smoke, rent, pets, contact, location, noise,
                             guests, cleanliness, num_roommates
-                            )
+            )
             users.append(new_user)
 
     return users
 
 
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
-
-    csv_write(generate_random_users('csv_files/names.csv', 10000), 'random_users/test.csv')
+    import python_ta
+    
+    python_ta.check_all(config={
+        'max-line-length': 120
+    })
+    # csv_write(generate_random_users('csv_files/names.csv', 10000), 'random_users/test.csv')
     # csv_write(generate_random_users('csv_files/names.csv', 5), 'csv_files/test.csv')
 
-    # import python_ta
-    #
-    # python_ta.check_all(config={
-    #     'max-line-length': 120
-    # })

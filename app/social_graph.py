@@ -241,56 +241,12 @@ class Network:
         """
         Randomly suggest users to each other from different communities
         """
-        # communities = self.find_connected_communities()
-        #
-        # for _ in range(n):
-        #     index_1 = random.randint(0, len(communities) - 1)
-        #     index_2 = random.randint(0, len(communities) - 1)
-        #
-        #     while index_1 == index_2:
-        #         index_2 = random.randint(0, len(communities) - 1)
-        #
-        #     community1 = communities[index_1]
-        #     community2 = communities[index_2]
-        #     user1 = random.choice(community1)
-        #     user2 = random.choice(community2)
-        #
-        #     print(user1, user2)
-        #     if isinstance(user1, list):
-        #         user1 = user1[0]
-        #     if isinstance(user2, list):
-        #         user2 = user2[0]
-        #
-        #     while user1.user_id == exclude.id and user2.user_id == exclude.id:
-        #         # user1 = random.choice(communities[index_1])
-        #         # user2 = random.choice(communities[index_2])
-        #
-        #         user1 = random.choice(community1)
-        #         user2 = random.choice(community2)
-        #
-        #         if isinstance(user1, list):
-        #             user1 = user1[0]
-        #         if isinstance(user2, list):
-        #             user2 = user2[0]
-        #
-        #     print(user1, user2)
-        #     self.add_suggestion(user1.item, user2.item)
-        #
-        #     self.random_request(user1.item, user2.item)
-        #     self.random_accept(user2.item, user1.item)
 
         for _ in range(n):
             keys = list(self._users.keys())
             u1 = self._users[random.choice(keys)]
-            # community = u1.find_all_connected_matches(set())
-            # s = set(self._users.keys()).difference(community[0])
-            # random_user_id = random.choice(list(s))
-            # u2 = self._users[random_user_id]
             u2 = self._users[random.choice(keys)]
             self.add_suggestion(u1.item, u2.item)
-            # if u1.user_id != exclude.id and u2.user_id != exclude.id:
-            #     self.random_request(u1.item, u2.item)
-            #     self.random_accept(u2.item, u1.item)
 
     def random_suggestion_user(self, user: User) -> None:
         """

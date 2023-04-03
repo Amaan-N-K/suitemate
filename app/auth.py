@@ -1,3 +1,17 @@
+"""
+CSC111 Winter 2023 Final Project: suitemate
+
+Derek Huynh, James Yung, Andrew Xie, Amaan Khan
+
+================================================
+
+Flask views for user registration and authentication. Based on code from Flask's official
+tutorial, with specific adaptations to our SQLAlchemy database as well as specific
+request processing for our custom data types. After a user authenticates into the website,
+we cache their User dataclass into the browser session, allowing for easy access to their
+attributes.
+"""
+
 from flask import (
     g, session, request, Blueprint, redirect, render_template, flash, url_for, abort
 )
@@ -11,6 +25,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
+
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -32,21 +47,8 @@ def register():
         if password is None:
             error.append("You must enter a valid password")
 
-        # Store username and password hash into db
-        # db = get_db()
-
         # Except any errors, like if the username is not unique
         try:
-            # db.execute(
-            #     "INSERT INTO user (username, password) VALUES (?, ?)",
-            #     (username, generate_password_hash(password))
-            # )
-            # db.execute(
-            #     """INSERT INTO user (
-            #     username, password) VALUES (?, ?)""",
-            #     (username, generate_password_hash(password))
-            # )
-            #print(request.form['first_name'], request.form['age'])
             user = User(
                     username=username,
                     password=generate_password_hash(password),
@@ -78,6 +80,7 @@ def register():
 
     return render_template("auth/register.html")
 
+
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     """
@@ -98,15 +101,6 @@ def login():
         password = request.form["password"]
         error = None
 
-        # Query db to get user info if exists
-        # db = get_db()
-
-        # Will be an empty list if no results
-        # user_info = db.execute(
-        #     "SELECT * FROM user WHERE username=?",
-        #     (username,)
-        # ).fetchone()
-
         user = User(username=username, password=password)
         user_res = db.session.execute(db.select(User).where(User.username == username))
         user_info = user_res.one_or_none()
@@ -126,23 +120,8 @@ def login():
             error = "Password was not valid"
         else:
             cur_user = convert_to_user_single(user_info[0])
-            # print(cur_user)
-            # print(user_info[0].gender_pref)
             session['cur_user'] = cur_user
             session['username'] = username
-            # session['name'] = cur_user.name
-            # session['contact'] = cur_user.contact
-            # session['age'] = cur_user.age
-            # session['gender'] = cur_user.gender
-            # session['gender_pref'] = 'Yes' if cur_user.gender_pref == 'yes' else 'No'
-            # session['smoke'] = 'Yes' if cur_user.smoke == 'Yes' else 'No'
-            # session['rent'] = cur_user.rent
-            # session['pets'] = 'Yes' if cur_user.pets == 'Yes' else 'No'
-            # session['location'] = cur_user.location
-            # session['noise'] = cur_user.noise
-            # session['guests'] = cur_user.guests
-            # session['cleanliness'] = int(cur_user.cleanliness)
-            # session['num_roommates'] = cur_user.num_roommates
 
             return redirect(
                 url_for('dashboard.dashboard', username=session['username']))
@@ -159,6 +138,7 @@ def logout():
     """
     session.clear()
     return redirect(url_for('home'))
+
 
 def requires_auth(view):
     """
@@ -188,3 +168,10 @@ def requires_auth(view):
 
         return view(*args, **kwargs)
     return check_auth
+
+
+if __name__ == '__main__':
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120
+    })

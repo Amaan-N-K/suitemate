@@ -1,5 +1,5 @@
 """
-find match
+A test module for defining helper functions that aid in working with the SQLAlchemy database
 """
 from __future__ import annotations
 from python_ta.contracts import check_contracts
@@ -107,10 +107,13 @@ def convert_to_user(eng) -> list[Us]:
         accum = []
         stmt = select(UserDB).where(UserDB.id >= 1)
         for user in session.scalars(stmt):
-            u = Us(name=user.name, username=user.username, id=user.id, age=user.age, gender=user.gender,
-                   gender_pref=user.gender_pref, smoke=user.smoke, pets=user.pets,
-                   contact=user.contact, location=user.location, noise=user.noise, guests=user.guests,
-                   cleanliness=user.cleanliness, num_roommates=user.num_roommates)
+            u = Us(
+                name=user.name, username=user.username, id=user.id, age=user.age,
+                gender=user.gender, gender_pref=user.gender_pref, smoke=user.smoke, 
+                pets=user.pets, contact=user.contact, location=user.location, 
+                noise=user.noise, guests=user.guests, cleanliness=user.cleanliness, 
+                num_roommates=user.num_roommates
+            )
 
             accum.append(u)
         return accum
@@ -147,5 +150,5 @@ def convert_to_user_single(user: model.User) -> Us:
 
 
 if __name__ == '__main__':
-    list_users = generate_random_users('csv_files/names.csv', 1000)
-    convert_and_write(list_users)
+    # list_users = generate_random_users('csv_files/names.csv', 1000)
+    # convert_and_write(list_users)

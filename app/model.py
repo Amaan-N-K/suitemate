@@ -1,12 +1,31 @@
-from flask import current_app, g
-from flask_sqlalchemy import SQLAlchemy
+"""
+CSC111 Winter 2023 Final Project: suitemate
+
+Derek Huynh, James Yung, Andrew Xie, Amaan Khan
+
+================================================
+
+Defining the ORM for the Flask webapp using the SQLAlchemy extension to Flask.
+
+The User class represents an abstraction of a SQL schema, which
+allows us to integrate our database better with built in python objects and data types.
+
+The User class definition relies on the db object defined in __init__.py along with the
+routines for constructing the Flask app. It is a convienent extension that allows us to
+access methods from SQLAlchemy without having explicitly inherit from the standard base
+class from SQLAlchemy.
+
+The classes here should not be accessed outside of a Flask app context.
+"""
 from __init__ import db
-from werkzeug.security import generate_password_hash, check_password_hash
 import user
 
 class User(db.Model):
     """
-    A custom data type that represents each user
+    A custom data type that inherits from the SQLAlchemy ORM base declarative class.
+    Represents an entry into a table for a user of the suitemate app.
+
+
     Instance Attributes:
         - name: The name of the user
         - username: the user's username (log in credentials)
@@ -23,31 +42,35 @@ class User(db.Model):
         - guests: whether user is fine with having guests
         - cleanliness: cleanliness preference of the user
         - num_roommates: number of roomates the user is looking for (e.g. 1, 2, 3, 4+)
+
     Representation Invariants:
         - 17 <= self.age <= 100
-        - 1 <= self.num_roommates <= 100
+        - 1 <= self.num_roommates <= 4
+        - 1 <= cleanliness <= 3
+        - 1 <= noise <= 3
     """
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
-    name = db.Column(db.String)
-    contact = db.Column(db.String, nullable=False)
-    age = db.Column(db.Integer)
-    gender = db.Column(db.String)
-    gender_pref = db.Column(db.Boolean)
-    smoke = db.Column(db.Boolean)
-    rent = db.Column(db.Float)
-    pets = db.Column(db.Boolean)
-    location = db.Column(db.String)
-    noise = db.Column(db.Integer)
-    guests = db.Column(db.Integer)
-    cleanliness = db.Column(db.Integer)
-    num_roommates = db.Column(db.Integer)
+    id: int = db.Column(db.Integer, primary_key=True)
+    username: str = db.Column(db.String, unique=True, nullable=False)
+    password: str = db.Column(db.String, nullable=False)
+    name: str = db.Column(db.String)
+    contact: str = db.Column(db.String, nullable=False)
+    age: int = db.Column(db.Integer)
+    gender: str = db.Column(db.String)
+    gender_pref: bool = db.Column(db.Boolean)
+    smoke: bool = db.Column(db.Boolean)
+    rent: float = db.Column(db.Float)
+    pets: bool = db.Column(db.Boolean)
+    location: str = db.Column(db.String)
+    noise: int = db.Column(db.Integer)
+    guests: int = db.Column(db.Integer)
+    cleanliness: int = db.Column(db.Integer)
+    num_roommates: int = db.Column(db.Integer)
 
 
 def convert_to_model(user: user.User) -> User:
     """
-    Given a user from the original user.py file, return the equivalent User db model.
+    Given a user from the our custom User dataclass defined in user.py, return the
+    equivalent User db model.
     """
     new_id = user.id
     new_user = user.username
@@ -77,7 +100,7 @@ def convert_to_model(user: user.User) -> User:
         gender_pref=new_gender_pref,
         smoke=new_smoke,
         rent=new_rent,
-        pets=new_pets, 
+        pets=new_pets,
         location=new_location,
         noise=new_noise,
         guests=new_guests,
@@ -90,7 +113,10 @@ def convert_to_model(user: user.User) -> User:
 
 def convert_and_write(users: list[User]) -> None:
     """
-    given users, add it to the database
+    Given users, add it to an instance of the Flask-SQLAlchemy database.
+
+    Preconditions
+        - all fields in an element in Users is valid according to the model
     """
     for user in users:
         user_res = db.session.execute(db.select(User).where(User.id == user.id))
@@ -98,3 +124,13 @@ def convert_and_write(users: list[User]) -> None:
         if user_info is not None:
             db.session.add(user_res)
             db.session.commit()
+
+
+if __name__ == '__main__':
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'extra-imports': ['user', '__init__'],
+        'disable': ['abstract-method', 'unused-import']
+    })

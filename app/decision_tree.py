@@ -1,22 +1,20 @@
 """
-"""
-"""
 CSC111 Winter 2023 Final Project: Suite Mate
 
 Derek Huynh, James Yung, Andrew Xie, Amaan Khan
 
 ================================================
 
-This module is where we implemented our decision tree which is generated from a csv file containing the 
-parameters of the tree. The preferences of the users are nodes in the tree in order of most ot least important 
-from the node to the leaves, where the users with the corresponding preferences are stored. 
-Each DecisionTree type represents the current category, or preference choice being made, and deicision which
-stores the decision made at the previous node. Subtrees are also called partitions and stored as 
-dictionaries, with the choice being the key and the parititon being the value. The users are stored in a list called 
-users at leaves. With this tree, you can add users to it and find possible room mates based off of their preferences 
-by calling the appropriate methods.
+This module is where we implemented our decision tree which is generated from a csv file containing the
+parameters of the tree. The preferences of the users are nodes in the tree in order of most ot least important
+from the node to the leaves, where the users with the corresponding preferences are stored. Each DecisionTree
+type represents the current category, or preference choice being made, and deicision which stores the decision
+made at the previous node. Subtrees are also called partitions and stored as dictionaries, with the choice being
+the key and the parititon being the value. The users are stored in a list called users at leaves. With this tree,
+you can add users to it and find possible room mates based off of their preferences by calling the appropriate
+methods.
 
-This module also includes functions that returns the preferences of the users in order of importance 
+This module also includes functions that returns the preferences of the users in order of importance
 and the csv read for the parameters decision tree.
 
 Comment out check contracts to generate users more quickly.
@@ -361,12 +359,12 @@ def get_users_preferences(users: list[User]) -> list[list[int | str | tuple[int,
 
 if __name__ == '__main__':
     import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'extra-imports': ['csv', 'user', 'math'],
-    #     'disable': ['unused-import', 'R1702', 'E9998'],
-    #     'allowed-io': ['read_packet_csv']
-    # })
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'extra-imports': ['csv', 'user', 'math'],
+        'disable': ['unused-import', 'R1702', 'E9998'],
+        'allowed-io': ['read_packet_csv']
+    })
 
     # parameters = read_file("csv_files/decision_tree_parameters.csv")
     # decision_tree = build_decision_tree(parameters, None)

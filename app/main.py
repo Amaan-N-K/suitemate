@@ -64,20 +64,11 @@ def create_data(lst: list[User]) -> list:
 
 
 if __name__ == '__main__':
-    import doctest
-
-    # doctest.testmod()
-
-    # test_list = generate_random_users('csv_files/names.csv', 5)
-    # # test_list = create_data(test_list)
-    # network = create_network(test_list)
-    # import pickle
-    #
-    # with open('test_network.pkl', 'wb') as f:
-    #     pickle.dump(network, f)
-    # with open('test_network.pkl', 'rb') as f:
-    #     loaded_network = pickle.load(f)
-    # print(loaded_network._users)
+    # import python_ta
+    # 
+    # python_ta.check_all(config={
+    #     'max-line-length': 120
+    # })
 
     # Creating and running flask app
     from __init__ import create_app, db
@@ -85,8 +76,4 @@ if __name__ == '__main__':
 
     app = create_app()
     app.run(debug=True)
-    # import python_ta
-    #
-    # python_ta.check_all(config={
-    #     'max-line-length': 120
-    # })
+

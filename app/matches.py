@@ -18,10 +18,10 @@ from flask import (
     g, session, request, Blueprint, redirect, render_template, flash, url_for
 )
 from __init__ import db
+from find_match import convert_to_user_flask, convert_to_user_single
 import model
 from sqlalchemy.exc import IntegrityError
 from user import User
-from main import create_network
 from social_graph import Network, _User
 from auth import requires_auth
 
@@ -30,40 +30,6 @@ my_network = Network()
 
 parameters = decision_tree.read_file("csv_files/decision_tree_parameters.csv")
 tree = decision_tree.build_decision_tree(parameters, None)
-
-
-def convert_to_user_flask(users: list[model.User]) -> list[User]:
-    """
-    Converts from a list of results from a SQLAlchemy query to a list
-    of custom user dataclasses
-    """
-    all_users = [convert_to_user_single(u) for u in users]
-    return all_users
-
-
-def convert_to_user_single(user: model.User) -> User:
-    """
-    Helper function that converts a sngle instance of a resulting SQLAlchemy query
-    to an instance of a custom User dataclass
-    """
-    ret = User(name=user.name, 
-             username=user.username, 
-             id=user.id,
-             age=user.age,
-             rent=user.rent, 
-             gender=user.gender,
-             gender_pref=bool(user.gender_pref),
-             smoke=bool(user.smoke),
-             pets=bool(user.pets),
-             contact=user.contact,
-             location=user.location,
-             noise=user.noise,
-             guests=user.guests, 
-             cleanliness=user.cleanliness,
-             num_roommates=user.num_roommates
-    )
-
-    return ret
 
 
 @requires_auth

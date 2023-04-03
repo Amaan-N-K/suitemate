@@ -20,6 +20,7 @@ The classes here should not be accessed outside of a Flask app context.
 from __init__ import db
 import user
 
+
 class User(db.Model):
     """
     A custom data type that inherits from the SQLAlchemy ORM base declarative class.

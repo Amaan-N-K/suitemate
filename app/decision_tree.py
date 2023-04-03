@@ -6,7 +6,7 @@ Derek Huynh, James Yung, Andrew Xie, Amaan Khan
 ================================================
 
 This module is where we implemented our decision tree which is generated from a csv file containing the
-parameters of the tree. 
+parameters of the tree.
 
 The preferences of the users are nodes in the tree in order of most to least important
 from the node to the leaves, where the users with the corresponding preferences are stored.
@@ -50,6 +50,11 @@ class DecisionTree:
 
     # @check_contracts
     def __init__(self, category: str, initial_users: Optional[list[User]] = None) -> None:
+        """
+        Initialize a partition of the decision tree given a specific category/ feature we are givne that
+        maps to a set of specific values we can split on. We can also optionally pass a list of users to
+        populate the leafs of the tree.
+        """
         self.category = category
         self.decision = None
         self.partitions = {}

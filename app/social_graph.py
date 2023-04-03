@@ -1,5 +1,14 @@
 """
-Social graph connecting user matches
+CSC111 Winter 2023 Final Project: suitemate
+
+Derek Huynh, James Yung, Andrew Xie, Amaan Khan
+
+================================================
+
+This module represents the matches, suggestions and requests between users within a social network.
+This file handles the interactions between users (e.g. Sending an invitation to room together, accepting
+a request to room together, find common matches betwen users, etc.) and stores part of the data collected
+in a social graph.
 """
 from __future__ import annotations
 from typing import Optional
@@ -8,10 +17,29 @@ from python_ta.contracts import check_contracts
 import random
 
 
-# @check_contracts
+@check_contracts
 class _User:
     """
-    vertex of the graph representing each user
+    Nodes representing each user in the social network.
+
+    Instance Attributes:
+        - item: The user data class represented
+        - user_id: the id of the user
+        - suggestions: the _Users suggested to this _User
+        - matches: the _Users that decided to match with this User
+        - requests: the _Users that want to match with this User
+
+    Representation Invariants:
+        - self not in self.suggestions
+        - self not in self.matches
+        - self not in self.requests
+        - all(self in u.suggestions for u in self.suggestions)
+        - all(self in u.matches for u in self.matches)
+        - all(self not in u.matches for u in self.suggestions)
+        - all(self not in u.suggestions for u in self.matches)
+        - all(self not in u.matches for u in self.requests)
+        - all(u not in self.suggestions for u in self.requests)
+
     """
     item: User
     user_id: int
@@ -19,37 +47,48 @@ class _User:
     matches: Optional[set[_User]] = set()
     requests: Optional[set[_User]] = set()
 
-    # @check_contracts
     def __init__(self, item: User, suggestions: set[_User]) -> None:
+        """
+        Initialize a node representing the user's personal information and preferences, suggested users,
+        matched users and requested users.
+        """
         self.item = item
         self.user_id = item.id
         self.suggestions = suggestions
         self.matches = set()
         self.requests = set()
 
-    # @check_contracts
     def accept_request(self, other: _User) -> None:
         """
-        move request to match.
+        Move use _User from request to match. This function accepts an invitation
+        to room with another user.
+
+        Preconditions:
+            - self.user_id != other.user_id
         """
 
         self.requests.remove(other)
         self.matches.add(other)
         other.matches.add(self)
 
-    # @check_contracts
     def send_request(self, other: _User) -> None:
         """
-        move suggestion to request
+        Move _User from suggestion to request This function sends an invitation
+        to room with another user
+
+        Preconditions:
+            - self.user_id != other.user_id
         """
 
         self.suggestions.remove(other)
         other.requests.add(self)
 
-    # @check_contracts
     def find_all_connected_matches(self, visited: set[int]) -> tuple[set[int], list[_User]]:
         """
-        find all users connected to self.
+        Find all users connected to self.
+
+        Preconditions:
+            - self not in visited
         """
         visited.add(self.user_id)
         all_users = [self]
@@ -62,51 +101,55 @@ class _User:
         return (visited, all_users)
 
 
-# @check_contracts
+@check_contracts
 class Network:
     """
-    The graph representing the network of matches betwen users
+    The graph representing the social network and connections between users
+
+    Representation Invariants:
+        - all(u_id == self._users[u_id].user_id for u_id in self._users)
     """
     _users: dict[int, _User]
 
-    # @check_contracts
-    def __init__(self) -> None:
+    def __init__(self):
         """
-        Initialized an empty network
+        Initialize an empty network
         """
         self._users = {}
 
-    # @check_contracts
     def is_empty(self) -> bool:
         """
-        return if empty
+        Return whether the graph is empty or not
+
+        Preconditions:
+            - isinstance(self._users, dict)
         """
         return len(self._users) == 0
 
-    # @check_contracts
-    def get_user(self, id_of_user: int) -> _User | None:
+    def get_user(self, id_of_user: int) -> Optional[_User]:
         """
-        return user
+        Return the user with the coresponding id
+
+        Preconditions:
+            - id_of_user >= 0
         """
         if id_of_user in self._users:
             return self._users[id_of_user]
         else:
             return None
 
-    # @check_contracts
     def add_user(self, user: User) -> None:
         """
-        add user to given graph
+        Add a user to the graph
 
         Preconditions:
             - user not in self._users
         """
         self._users[user.id] = _User(user, set())
 
-    # @check_contracts
     def add_suggestion(self, user1: User, user2: User) -> None:
         """
-        add a suggestion between 2 users
+        Add a suggestion between 2 users
 
         Preconditions:
             - user1 != user2
@@ -121,25 +164,10 @@ class Network:
         u1.suggestions.add(u2)
         u2.suggestions.add(u1)
 
-    # @check_contracts
-    def add_match_random(self, user1: User, user2: User) -> None:
-        """
-        Only adds a match between two users if the sum of their user ids is divisible by 2.
-
-        Preconditions:
-            - user1 != user2
-            - user1.user_id in self._users and user2.user_id in self._users
-        """
-        if (user1.id + user2.id) % 2 == 0:
-            u1 = self._users[user1.id]
-            u2 = self._users[user2.id]
-            u1.matches.add(u2)
-            u2.matches.add(u1)
-
-    # @check_contracts
     def send_request(self, user1: User, user2: User) -> None:
         """
-        send request from user1 to user2
+        Send a request to be matched from user1 to user2
+
         Preconditions:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
@@ -148,10 +176,10 @@ class Network:
         u2 = self._users[user2.id]
         u1.send_request(u2)
 
-    # @check_contracts
     def accept_request(self, user1: User, user2: User) -> None:
         """
         user1 accepts request from user2
+
         Preconditions:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
@@ -160,10 +188,12 @@ class Network:
         u2 = self._users[user2.id]
         u1.accept_request(u2)
 
-    # @check_contracts
     def check_suggestion(self, user1: User, user2: User) -> bool:
         """
         check whether 2 users have a suggestion
+
+        Preconditions:
+            - user1 != user2
         """
         if user1.id in self._users and user2.id in self._users:
             u1 = self._users[user1.id]
@@ -173,10 +203,10 @@ class Network:
         else:
             return False
 
-    # @check_contracts
     def check_request(self, user1: User, user2: User) -> bool:
         """
         check if user2 sent a request to user1 or if they are a match
+
         Preconditions:
             - user1 != user2
             - user1.user_id in self._users and user2.user_id in self._users
@@ -191,10 +221,12 @@ class Network:
         else:
             return False
 
-    # @check_contracts
     def get_suggestions(self, user: User) -> set[int]:
         """
         return a set of user ids for the matches of the given user
+
+        Preconditions:
+            - user.user_id in self._users
         """
         if user.id in self._users:
             u = self._users[user.id]
@@ -202,11 +234,13 @@ class Network:
         else:
             raise ValueError
 
-    # @check_contracts
     def find_new_suggestion(self, user: User) -> None:
         """
         if 2 or more matches of user have another user in common, suggest the common user to user. Common user cannot
         already be a suggestion
+
+        Preconditions:
+            - user.user_id in self._users
         """
         u = self._users[user.id]
         if len(u.matches) < 2:
@@ -221,7 +255,6 @@ class Network:
             for suggested_user in common_matches:
                 self.add_suggestion(u.item, suggested_user.item)
 
-    # @check_contracts
     def _find_common_matches(self, u1: _User, u2: _User, avoid: _User) -> set[_User]:
         """
         find all the common matches between users and return them in a set. avoid is not a common user.
@@ -234,18 +267,22 @@ class Network:
             common_matches.remove(avoid)
         return common_matches
 
-    # @check_contracts
     def find_all_new_suggestions(self) -> None:
         """
-        Find all new suggestions if they exist for every node
+        Find all new suggestions if they exist for every node.
+
+        Preconditions:
+            - u_id is unique
         """
         for u_id in self._users:
             self.find_new_suggestion(self._users[u_id].item)
 
-    # @check_contracts
     def find_connected_communities(self) -> list[list[_User]]:
         """
-        find all connected communities in the network
+        Find all connected communities in the network.
+
+        Preconditions:
+            - all u_id in self is unique
         """
         communities = []
         visited = set()
@@ -256,34 +293,32 @@ class Network:
                 communities.append(connected[1])
         return communities
 
-    # @check_contracts
-    def random_suggestions(self, exclude: User, n: Optional[int] = 1) -> None:
+    def random_suggestions(self, n: Optional[int] = 1) -> None:
         """
-        Randomly suggest users to each other from different communities
-        """
+        Randomly suggest users to each other from different communities.
 
+        Preconditions:
+            - all users in Network is unique
+        """
         for _ in range(n):
             keys = list(self._users.keys())
             u1 = self._users[random.choice(keys)]
             u2 = self._users[random.choice(keys)]
             self.add_suggestion(u1.item, u2.item)
 
-    # @check_contracts
     def random_suggestion_user(self, user: User) -> None:
         """
-        Randomly suggest across different communities for this user
+        Randomly suggest across different communities for this user.
+
+        Preconditions:
+            - len(self._users) >= 2
         """
 
         u1 = self._users[user.id]
-        # community = u1.find_all_connected_matches(set())
-        # s = set(self._users.keys()).difference(community[0])
         keys = list(self._users.keys())
         u2 = self._users[random.choice(keys)]
-        # random_user_id = random.choice(list(s))
-        # u2 = self._users[random_user_id]
         self.add_suggestion(u1.item, u2.item)
 
-    # @check_contracts
     def print_graph(self):
         """
         prints the network
@@ -293,26 +328,34 @@ class Network:
             print(f"suggestions: {key}, {[u.user_id for u in vertex.suggestions]}")
             print(f"matches: {key}, {[u.user_id for u in vertex.matches]}")
 
-    # @check_contracts
     def random_request(self, u1: User, u2: User) -> None:
         """
-        ranomly send a request
+        Send a request that is paired with random acceptence
+
+        Precondition:
+            - u1.id in self._users
+            - u2.id in self._users
         """
         self.send_request(u1, u2)
 
-    # @check_contracts
     def random_accept(self, u1: User, u2: User) -> None:
         """
         ranomly accept a request
-        """
 
+        Precondition:
+            - u1.id in self._users
+            - u2.id in self._users
+        """
         if random.choice([True, False]):
             self.accept_request(u1, u2)
 
-    # @check_contracts
     def create_network_single_community(self, suggestions: list[User], exclude: User) -> None:
         """
-        create a network from suggestions
+        Create a network from suggestions. Do not add any matches between any users in suggestions and
+        exclude
+
+        Precondition:
+            - exclude in suggestions
         """
         if len(suggestions) == 1:
             self.add_user(suggestions[0])
@@ -328,12 +371,15 @@ class Network:
 
                 visited.add((u1.id, u2.id))
 
-    # @check_contracts
     def create_network_all(self, all_suggestions: list[list[User]], exclude: User, n: Optional[int] = 1000) -> None:
         """
-        all suggs
+        Create a network from all suggestions. Do not add any matches between any users in all_suggestions and
+        exclude
+
+        Precondition:
+            - any(exclude in suggestions for suggestions in all_suggestions)
         """
         for suggestion in all_suggestions:
             self.create_network_single_community(suggestion, exclude)
 
-        self.random_suggestions(exclude, n)
+        self.random_suggestions(n)
